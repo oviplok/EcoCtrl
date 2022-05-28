@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">EcoCtrl</string>
+    <string name="login">Вход</string>
+    <string name="anon_log">Войти как гость</string>
+    <string name="signin">Регитсрация</string>
+    <string name="insert_pass">Введите пароль</string>
+    <string name="insert_email">Введите почту</string>
+    <string name="insert_level">Введите должность</string>
+    <string name="go_back">Вернуться</string>
+    <string name="places">Поиск предприятия или места</string>
+    <string name="search">Поиск</string>
+    <string name="maybe">Тут будут данные… Возможно</string>
+    <string name="change_info">Изменить</string>
+    <string name="district">Введите место</string>
+</resources>

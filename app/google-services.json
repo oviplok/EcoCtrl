@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "60562605728",
+    "project_id": "ecoctrl-d2e17",
+    "storage_bucket": "ecoctrl-d2e17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60562605728:android:80c79e6cd18ee6dde66bc5",
+        "android_client_info": {
+          "package_name": "it.mirea.ecoctrl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60562605728-iik3bnk2eqsmh4kurv5o4kf3mairiieh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.mirea.ecoctrl",
+            "certificate_hash": "f310af1639f64f850a1ef6cc92e7547f8c241a1e"
+          }
+        },
+        {
+          "client_id": "60562605728-gdsgmm82vf2p7g7o9pmpgsqau0id14q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkGS7-EX8aetlRZPUH4ESgFU2y-UAOq8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60562605728-gdsgmm82vf2p7g7o9pmpgsqau0id14q5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
