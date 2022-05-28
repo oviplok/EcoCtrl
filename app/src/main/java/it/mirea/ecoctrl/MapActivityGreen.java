@@ -84,27 +84,6 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
         add = findViewById(R.id.addInfo);
         find = findViewById(R.id.finder);
 
-        // Начальное положение карты, не работает (удалено)
-        /*mapDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-
-                } else {
-                    infoPlace.setTextColor(Color.parseColor("#CC0000"));
-                    infoPlace.setTextSize(30);
-                    infoPlace.setText("Ничего не найдено...");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                infoPlace.setTextColor(Color.parseColor("#CC0000"));
-                infoPlace.setTextSize(30);
-                infoPlace.setText("Сервер не работает...");
-            }
-        });*/
         show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
