@@ -3,7 +3,6 @@ package it.mirea.ecoctrl;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,12 +22,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import it.mirea.ecoctrl.Models.User;
 
 
@@ -202,9 +198,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 auth.signInAnonymously();
-                ////////////////////////////
-                startActivity(new Intent(MainActivity.this, MapActivityGreen.class));
+                Intent intent = new Intent(MainActivity.this, MapActivityRed.class);
+                String anon = "anon";
+                intent.putExtra("email", anon);
+                startActivity(intent);
+              //  startActivity(new Intent(MainActivity.this, MapActivityGreen.class));
             }
+
         });
         log_act.setPositiveButton("Вход", new DialogInterface.OnClickListener() {
             @Override
@@ -242,15 +242,24 @@ public class MainActivity extends AppCompatActivity {
                                         String userlevel = documentSnapshot.getString(level);
                                         ///вход с опред уровнем доступа
                                         if (userlevel.equals(green)){
-                                            startActivity(new Intent(MainActivity.this,
-                                                    MapActivityGreen.class));
+                                            /////////////////////
+                                            Intent intent = new Intent(MainActivity.this, MapActivityGreen.class);
+                                            intent.putExtra("email", email.getText().toString());
+                                            startActivity(intent);
+                                            //startActivity(new Intent(MainActivity.this,
+                                              //      MapActivityGreen.class));
 
                                         }
                                         //if (userlevel.equals(red)){
                                         // }
-                                        else
-                                            startActivity(new Intent(MainActivity.this,
-                                                    MapActivityRed.class));
+                                        else{
+                                            Intent intent = new Intent(MainActivity.this, MapActivityRed.class);
+                                            intent.putExtra("email", email.getText().toString());
+                                            startActivity(intent);
+                                          // startActivity(new Intent(MainActivity.this,
+                                                  //  MapActivityRed.class));
+                                        }
+
 
 
                                     }

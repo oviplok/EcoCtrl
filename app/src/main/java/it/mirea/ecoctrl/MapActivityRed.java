@@ -3,15 +3,16 @@ package it.mirea.ecoctrl;
 import androidx.fragment.app.FragmentActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-////
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,18 +20,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-///
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-///
 import it.mirea.ecoctrl.databinding.ActivityMapRedBinding;
 
 
 public class MapActivityRed extends FragmentActivity implements OnMapReadyCallback {
     RelativeLayout red;
-
     String place = "place";
     String metanInfo = "met";
     String azdInfo = "azd";
@@ -39,11 +38,11 @@ public class MapActivityRed extends FragmentActivity implements OnMapReadyCallba
     String search;
 
     Button show;
+    ImageButton usr;
     EditText find;
     TextView infoPlace;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference mapCol = db.collection("places");
-    //DocumentReference mapDoc = db.collection("places").document("РТУ МИРЭА");
 
 
     private GoogleMap mMap;
@@ -60,6 +59,23 @@ public class MapActivityRed extends FragmentActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        usr = findViewById(R.id.userButton);
+        String email = getIntent().getExtras().getString("email");
+        //Snackbar.make(red, "Здравствуйте, "+email, Snackbar.LENGTH_SHORT).show();
+        usr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (email.equals("anon")){
+                    Snackbar.make(red, "Вы вошли анонимно!", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(MapActivityRed.this, UsrActivity.class);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -69,7 +85,6 @@ public class MapActivityRed extends FragmentActivity implements OnMapReadyCallba
         infoPlace = findViewById(R.id.infoPlaces);
         show = findViewById(R.id.showPoint);
         find = findViewById(R.id.finder);
-
         show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +103,7 @@ public class MapActivityRed extends FragmentActivity implements OnMapReadyCallba
         else{
             search = find.getText().toString();
             mapCol.document(search).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @SuppressLint("SetTextI18n")////////?
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()){

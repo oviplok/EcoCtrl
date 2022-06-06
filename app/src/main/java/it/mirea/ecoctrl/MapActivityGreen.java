@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -51,6 +52,7 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
     Button show;
     ImageButton change;
     ImageButton add;
+    ImageButton usr;
     EditText find;
     TextView infoPlace;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -72,6 +74,24 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        usr = findViewById(R.id.userButton);
+        String email = getIntent().getStringExtra("email").toString();
+       // Snackbar.make(green, "Здравствуйте, "+email, Snackbar.LENGTH_SHORT).show();
+        usr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //лучше вырезать if
+                if (email.equals("anon")){
+                    Snackbar.make(green, "Анонимный вход", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(MapActivityGreen.this, UsrActivity.class);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -102,6 +122,7 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
                 showAddInfo();
             }
         });
+
 
     }
 
@@ -292,45 +313,45 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
                 //возможные ошибки (переделать в свитч)
                 if (TextUtils.isEmpty(AddPlace.getText().toString())) {
                     Snackbar.make(green, "Введите место", Snackbar.LENGTH_SHORT).show();
-                    showChangeInfo();
+                    showAddInfo();
                     return;
                 }
                 double met = Double.parseDouble(AddMetan.getText().toString());
                 if (met < 0 ) {
                     Snackbar.make(green, "Значения метана не верны", Snackbar.LENGTH_SHORT).show();
-                    showChangeInfo();
+                    showAddInfo();
                     return;
                 }
                 if (TextUtils.isEmpty(AddMetan.getText().toString())) {
                     Snackbar.make(green, "Введите значения метана", Snackbar.LENGTH_SHORT).show();
-                    showChangeInfo();
+                    showAddInfo();
                     return;
                 }
                 double serd = Double.parseDouble(AddSerd.getText().toString());
                 if (serd <0 ) {
                     Snackbar.make(green, "Значения серы не верны", Snackbar.LENGTH_SHORT).show();
-                    showChangeInfo();
+                    showAddInfo();
                     return;
                 }
                 if (TextUtils.isEmpty(AddSerd.getText().toString())) {
                     Snackbar.make(green, "Значения отсутствуют", Snackbar.LENGTH_SHORT).show();
-                    showChangeInfo();
+                    showAddInfo();
                     return;
                 }
 
                 if (TextUtils.isEmpty(AddAzd.getText().toString())) {
                     Snackbar.make(green, "Значения отсутствуют", Snackbar.LENGTH_SHORT).show();
-                    showChangeInfo();
+                    showAddInfo();
                     return;
                 }
                 if (TextUtils.isEmpty(AddLat.getText().toString())) {
                     Snackbar.make(green, "Значения отсутствуют", Snackbar.LENGTH_SHORT).show();
-                    showChangeInfo();
+                    showAddInfo();
                     return;
                 }
                 if (TextUtils.isEmpty(AddLng.getText().toString())) {
                     Snackbar.make(green, "Значения отсутствуют", Snackbar.LENGTH_SHORT).show();
-                    showChangeInfo();
+                    showAddInfo();
                     return;
                 }
                 double azd = Double.parseDouble(AddAzd.getText().toString());

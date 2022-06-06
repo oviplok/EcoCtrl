@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoCtrl">
-
+        <activity
+            android:name=".UsrActivity"
+            android:exported="true" />
         <activity
             android:name=".MapActivityGreen"
             android:exported="true" />
@@ -34,7 +36,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="MAPS_API_KEY" />
+            android:value="AIzaSyCFsUanJ814h2uIDDjc4NtHncsMvrVKusE" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
