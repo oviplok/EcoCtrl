@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText email = SigIn_Window.findViewById(R.id.email_sig);
         final EditText password = SigIn_Window.findViewById(R.id.password_sig);
-        final EditText userlevel = SigIn_Window.findViewById(R.id.lvl_sig);
+        final EditText userjob = SigIn_Window.findViewById(R.id.job_sig);
 
 
         reg_act.setNegativeButton("Вернуться", new DialogInterface.OnClickListener() {
@@ -102,11 +103,12 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 //Проверка почты на сколько это почта
-                /*if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
                     Snackbar.make(root, "Не похоже на почту", Snackbar.LENGTH_LONG).show();
                     showRegWindow();
                     return;
-                }*/
+                }
+               /* другой способ проверки почты
                 Matcher m = Pattern.compile(
                         "[a-zA-Z0-9]+[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~.]*@[a-zA-Z0-9\\-_.]+\\.[a-zA-Z]+"
                          ).matcher(email.getText().toString());
@@ -114,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(root, "Не похоже на почту", Snackbar.LENGTH_LONG).show();
                     showRegWindow();
                     return;
-                }
+                }*/
 
-                if (TextUtils.isEmpty(userlevel.getText().toString())) {
+                if (TextUtils.isEmpty(userjob.getText().toString())) {
                     Snackbar.make(root, "Введите должность", Snackbar.LENGTH_LONG).show();
                     showRegWindow();
                     return;
@@ -131,19 +133,18 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //Регистрация юзера
-                //есть дырки но не критичные
                 auth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 User user = new User();
                                 user.setEmail(email.getText().toString());
-                                user.setLvl(userlevel.getText().toString());
+                                user.setJob(userjob.getText().toString());
                                 user.setPassword(password.getText().toString());
                                 Map<String, Object> userCode = new HashMap<>();
                                 userCode.put("email", email.getText().toString());
                                 userCode.put("level", "red");
-                                userCode.put("UserPos",userlevel.getText().toString());
+                                userCode.put("UserPos",userjob.getText().toString());
                                 userCode.put("password", password.getText().toString());
                                 ////// запись в базу важности
                                 passCol.document(email.getText().toString()).set(userCode).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                                         Snackbar.make(root,"Не удалось записать в базу доступов", Snackbar.LENGTH_LONG).show();
                                     }
                                 });
-
+                                //Мб вырезать?
                                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -197,11 +198,12 @@ public class MainActivity extends AppCompatActivity {
         log_act.setNeutralButton("Войти как гость", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                auth.signInAnonymously();
                 Intent intent = new Intent(MainActivity.this, MapActivityRed.class);
                 String anon = "anon";
-                intent.putExtra("email", anon);
+                User user = new User();
+                user.setEmail(anon);
                 startActivity(intent);
+                auth.signInAnonymously();
               //  startActivity(new Intent(MainActivity.this, MapActivityGreen.class));
             }
 
@@ -216,12 +218,9 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 //Проверка почты на сколько это почта
-                Matcher m = Pattern.compile(
-                        "[a-zA-Z0-9]+[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~.]*@[a-zA-Z0-9\\-_.]+\\.[a-zA-Z]+"
-                ).matcher(email.getText().toString());
-                if(!(m.find() && m.group().equals(email.getText().toString()))){
+                if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
                     Snackbar.make(root, "Не похоже на почту", Snackbar.LENGTH_LONG).show();
-                    showLogInWindow();
+                    showRegWindow();
                     return;
                 }
 

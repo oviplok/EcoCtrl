@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoCtrl">
         <activity
+            android:name=".AddNewInfoActivity"
+            android:exported="true" />
+        <activity
             android:name=".UsrActivity"
             android:exported="true" />
         <activity

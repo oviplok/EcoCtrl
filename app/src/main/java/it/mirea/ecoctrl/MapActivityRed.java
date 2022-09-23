@@ -1,12 +1,17 @@
 package it.mirea.ecoctrl;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,12 +24,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import it.mirea.ecoctrl.databinding.ActivityMapRedBinding;
 
 
@@ -36,6 +46,9 @@ public class MapActivityRed extends FragmentActivity implements OnMapReadyCallba
     String serdInfo = "serd";
     String point = "point";
     String search;
+
+
+    //ImageButton add_Room;
 
     Button show;
     ImageButton usr;
@@ -55,13 +68,13 @@ public class MapActivityRed extends FragmentActivity implements OnMapReadyCallba
         binding = ActivityMapRedBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         red = findViewById(R.id.red_action);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         usr = findViewById(R.id.userButton);
+
         String email = getIntent().getExtras().getString("email");
-        //Snackbar.make(red, "Здравствуйте, "+email, Snackbar.LENGTH_SHORT).show();
+
         usr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +89,89 @@ public class MapActivityRed extends FragmentActivity implements OnMapReadyCallba
             }
         });
 
+    }
+
+    private void showAddRoom() {
+        AlertDialog.Builder ch_wind = new AlertDialog.Builder(this);
+        ch_wind.setTitle("Добавление данных в личную базу");
+        ch_wind.setMessage("Введите данные");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View Ch_Window = inflater.inflate(R.layout.activity_add,null);
+
+        ch_wind.setView(Ch_Window);
+
+        final EditText AddPlace = Ch_Window.findViewById(R.id.place_for_add);
+        final EditText AddMetan = Ch_Window.findViewById(R.id.metan_for_add);
+        final EditText AddSerd = Ch_Window.findViewById(R.id.serd_for_add);
+        final EditText AddAzd = Ch_Window.findViewById(R.id.azd_for_add);
+        final EditText AddLat = Ch_Window.findViewById(R.id.lat_for_add);
+        final EditText AddLng = Ch_Window.findViewById(R.id.lng_for_add);
+
+        ch_wind.setNegativeButton("Вернуться", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        ch_wind.setPositiveButton("Изменить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                //возможные ошибки (переделать в свитч)
+                if (TextUtils.isEmpty(AddPlace.getText().toString())) {
+                    Snackbar.make(red, "Введите место", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+                double met = Double.parseDouble(AddMetan.getText().toString());
+                if (met < 0 ) {
+                    Snackbar.make(red, "Значения метана не верны", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+                if (TextUtils.isEmpty(AddMetan.getText().toString())) {
+                    Snackbar.make(red, "Введите значения метана", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+                double serd = Double.parseDouble(AddSerd.getText().toString());
+                if (serd <0 ) {
+                    Snackbar.make(red, "Значения серы не верны", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+                if (TextUtils.isEmpty(AddSerd.getText().toString())) {
+                    Snackbar.make(red, "Значения отсутствуют", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(AddAzd.getText().toString())) {
+                    Snackbar.make(red, "Значения отсутствуют", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+                if (TextUtils.isEmpty(AddLat.getText().toString())) {
+                    Snackbar.make(red, "Значения отсутствуют", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+                if (TextUtils.isEmpty(AddLng.getText().toString())) {
+                    Snackbar.make(red, "Значения отсутствуют", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+                double azd = Double.parseDouble(AddAzd.getText().toString());
+                if (azd < 0) {
+                    Snackbar.make(red, "значения азота неверны", Snackbar.LENGTH_SHORT).show();
+                    showAddRoom();
+                    return;
+                }
+////////////////////////
+            }
+        });
+        ch_wind.show();
     }
 
     @Override
