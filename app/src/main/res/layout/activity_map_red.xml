@@ -80,9 +80,9 @@
         android:id="@+id/userButton"
         android:layout_width="53dp"
         android:layout_height="48dp"
-        android:layout_below="@+id/infoPlaces"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="77dp"
+        android:layout_marginBottom="3dp"
         android:background="#00FFFFFF"
         android:foreground="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_action_user" />

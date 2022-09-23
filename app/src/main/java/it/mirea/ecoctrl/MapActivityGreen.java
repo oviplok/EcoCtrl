@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-////
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,17 +24,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-///
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-///
 import java.util.HashMap;
 import java.util.Map;
 
+import it.mirea.ecoctrl.Models.User;
 import it.mirea.ecoctrl.databinding.ActivityMapGreenBinding;
 
 
@@ -75,6 +72,8 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         usr = findViewById(R.id.userButton);
+        //User user = new User();
+        //String email = user.getEmail();
         String email = getIntent().getStringExtra("email").toString();
        // Snackbar.make(green, "Здравствуйте, "+email, Snackbar.LENGTH_SHORT).show();
         usr.setOnClickListener(new View.OnClickListener() {

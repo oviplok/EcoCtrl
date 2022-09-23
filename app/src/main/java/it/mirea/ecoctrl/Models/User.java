@@ -1,24 +1,26 @@
 package it.mirea.ecoctrl.Models;
 
 public class User {
-    private String lvl, email, password;
+    private String job, email, password;
 
     public User() {}
 
-    public User(String name, String email, String password) {
+    public User(String job, String email, String password) {
         this.password = password;
         this.email = email;
-        this.lvl = name;
+        this.job = job;
     }
 
+
+
     //получ уровень
-    public String getLvl() {
-        return lvl;
+    public String getJob() {
+        return job;
     }
 
     //установ уровень
-    public void setLvl(String lvl) {
-        this.lvl = lvl;
+    public void setJob(String lvl) {
+        this.job = lvl;
     }
 
     //получ почту

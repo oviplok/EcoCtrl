@@ -23,6 +23,8 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.mirea.ecoctrl.Models.User;
+
 public class UsrActivity extends AppCompatActivity {
     ConstraintLayout USR;
     String lvl ="level", pass_check="password",UsrPos="UserPos";
@@ -34,6 +36,7 @@ public class UsrActivity extends AppCompatActivity {
     Button change;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        User profile= new User();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usr);
         mail = findViewById(R.id.email_view);
@@ -44,36 +47,41 @@ public class UsrActivity extends AppCompatActivity {
         old_pass = findViewById(R.id.old_pass);
         new_pass = findViewById(R.id.new_pass);
         String email = getIntent().getStringExtra("email");
+
     user.document(email).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
         @Override
         public void onSuccess(DocumentSnapshot documentSnapshot) {
-            mail.setText("Ваша почта: "+email);
+            level.setText("Ваша почта: "+mail);
             String infoLVL = documentSnapshot.getString(lvl);
             String infoPos = documentSnapshot.getString(UsrPos);
-            level.setText("Ваш уроваень доступа: "+infoLVL);
+            level.setText("Ваш уровень доступа: "+infoLVL);
             pos.setText("Должность: "+ infoPos);
         }
+
     });
-    back.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (level.getText().toString().equals("green")){
-                Intent intent = new Intent(UsrActivity.this, MapActivityGreen.class);
-                intent.putExtra("email", email);
-                startActivity(intent);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String gr="green",rd="red";
+                if (level.getText().toString().equals(gr)){
+                    Intent intent = new Intent(UsrActivity.this, MapActivityGreen.class);
+                    //intent.putExtra("email", email);
+                    startActivity(intent);
+                }
+                else if(level.getText().toString().equals(rd)){
+                    Intent intent = new Intent(UsrActivity.this, MapActivityRed.class);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                }
+               else
+                {
+                    Snackbar.make(USR, "Ошибка сервера!",
+                            Snackbar.LENGTH_LONG).show();
+                    //Intent intent = new Intent(UsrActivity.this, MainActivity.class);
+                   // startActivity(intent);
+                }
             }
-            else if(level.getText().toString().equals("red")){
-                Intent intent = new Intent(UsrActivity.this, MapActivityRed.class);
-                intent.putExtra("email", email);
-                startActivity(intent);
-            }
-            else
-            {
-                Intent intent = new Intent(UsrActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        }
-    });
+        });
     change.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
