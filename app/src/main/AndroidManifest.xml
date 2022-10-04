@@ -16,19 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoCtrl">
         <activity
-            android:name=".AddNewInfoActivity"
+            android:name=".views.activities.UsrActivity"
             android:exported="true" />
         <activity
-            android:name=".UsrActivity"
+            android:name=".views.activities.MapActivity"
             android:exported="true" />
         <activity
-            android:name=".MapActivityGreen"
+            android:name=".cutContent.MapActivityRed"
             android:exported="true" />
         <activity
-            android:name=".MapActivityRed"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".views.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

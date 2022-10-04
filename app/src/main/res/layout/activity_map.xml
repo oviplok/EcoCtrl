@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:map="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/red_action"
+    android:id="@+id/map_action"
     android:background="@drawable/eco_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapActivityRed">
+    tools:context=".views.activities.MapActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,7 +35,8 @@
         android:layout_marginEnd="124dp"
         android:fontFamily="@font/comfortaa"
         android:text="@string/search"
-        map:layout_anchorGravity="center" />
+        map:layout_anchorGravity="center"
+        tools:ignore="TextContrastCheck" />
 
     <fragment
         android:id="@+id/map"
@@ -44,7 +45,7 @@
         android:layout_height="224dp"
         android:layout_below="@+id/showPoint"
         android:layout_marginTop="13dp"
-        tools:context=".MapActivityRed" />
+        tools:context=".cutContent.MapActivityRed" />
 
     <EditText
         android:id="@+id/finder"
@@ -77,6 +78,18 @@
         android:textColor="@color/black" />
 
     <ImageButton
+        android:id="@+id/changeInfo"
+        android:layout_width="51dp"
+        android:layout_height="44dp"
+        android:layout_alignTop="@+id/userButton"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="60dp"
+        android:layout_toStartOf="@+id/userButton"
+        android:background="#00FFFFFF"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:src="@drawable/ic_action_changeinf" />
+
+    <ImageButton
         android:id="@+id/userButton"
         android:layout_width="53dp"
         android:layout_height="48dp"
@@ -87,7 +100,17 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_action_user" />
 
-
+    <ImageButton
+        android:id="@+id/addInfo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignTop="@+id/userButton"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/userButton"
+        android:background="#00FFFFFF"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:src="@drawable/ic_action_add" />
 
 
 </RelativeLayout>

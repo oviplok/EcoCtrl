@@ -5,7 +5,7 @@
     android:id="@+id/root_action"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".views.activities.MainActivity">
 
 
     <ImageView
@@ -66,7 +66,7 @@
         android:layout_marginBottom="30dp"
         android:fontFamily="@font/comfortaa"
         android:shadowColor="@color/black"
-        android:text="@string/signin" />
+        android:text="@string/registr" />
 
 
 </RelativeLayout>

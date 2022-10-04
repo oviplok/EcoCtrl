@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/eco_background"
-    tools:context=".UsrActivity">
+    tools:context=".views.activities.UsrActivity">
 
     <TextView
         android:id="@+id/email_view"
@@ -43,13 +43,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@mipmap/ic_usr_icon_round" />
+        app:srcCompat="@drawable/ic_action_pers" />
 
     <Button
         android:id="@+id/pass_change"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text="@string/change_pass"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +65,7 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_action_arrow_back"
+        app:srcCompat="@drawable/ic_action_back"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -77,6 +76,7 @@
         android:ems="10"
         android:hint="@string/old_pass"
         android:inputType="textPassword"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EcoCtrl</string>
+    <string name="login">   Вход   </string>
+    <string name="anon_log">Войти как гость</string>
+    <string name="registr">Регитсрация</string>
+    <string name="insert_pass">Введите пароль</string>
+    <string name="insert_email">Введите почту</string>
+    <string name="insert_level">Введите должность</string>
+    <string name="go_back">Вернуться</string>
+    <string name="places">Поиск предприятия или места</string>
+    <string name="search">Поиск</string>
+    <string name="maybe">Тут будут данные… Возможно</string>
+    <string name="change_info">Изменить</string>
+    <string name="district">Введите место</string>
+    <string name="old_pass">Старый пароль</string>
+    <string name="new_pass">Новый пароль</string>
+    <string name="change_pass">Изменить пароль</string>
+    <string name="inf_acc">Вы вошли как:</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+</resources>

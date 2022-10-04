@@ -1,8 +1,9 @@
-package it.mirea.ecoctrl;
+package it.mirea.ecoctrl.views.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,31 +21,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
-import java.util.HashMap;
-import java.util.Map;
-
-import it.mirea.ecoctrl.Models.User;
-import it.mirea.ecoctrl.databinding.ActivityMapGreenBinding;
+////import it.mirea.ecoctrl.databinding.ActivityMapGreenBinding;
+import it.mirea.ecoctrl.R;
+import it.mirea.ecoctrl.databinding.ActivityMapBinding;
+import it.mirea.ecoctrl.models.Place;
+import it.mirea.ecoctrl.viewModels.MapViewModel;
 
 
-public class MapActivityGreen extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+    private MapViewModel mapViewModel;
     RelativeLayout green;
-
-    String place = "place";
-    String metanInfo = "met";
-    String azdInfo = "azd";
-    String serdInfo = "serd";
-    String point = "point";
-    String search;
 
     Button show;
     ImageButton change;
@@ -52,47 +40,55 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
     ImageButton usr;
     EditText find;
     TextView infoPlace;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference mapCol = db.collection("places");
-    //DocumentReference mapDoc = db.collection("places").document("РТУ МИРЭА");
 
 
     private GoogleMap mMap;
-    private ActivityMapGreenBinding binding;
+    private ActivityMapBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = ActivityMapGreenBinding.inflate(getLayoutInflater());
+        initMapViewModel();
+        binding = ActivityMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        green = findViewById(R.id.green_action);
+        green = findViewById(R.id.map_action);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         usr = findViewById(R.id.userButton);
-        //User user = new User();
-        //String email = user.getEmail();
+        infoPlace = findViewById(R.id.infoPlaces);
+        show = findViewById(R.id.showPoint);
+        change = findViewById(R.id.changeInfo);
+        add = findViewById(R.id.addInfo);
+        find = findViewById(R.id.finder);
         String email = getIntent().getStringExtra("email").toString();
-       // Snackbar.make(green, "Здравствуйте, "+email, Snackbar.LENGTH_SHORT).show();
+        String lvl = getIntent().getStringExtra("lvl").toString();
+        if (email.equals("anon") ){
+            change.setVisibility(View.GONE);
+            add.setVisibility(View.GONE);
+            usr.setVisibility(View.GONE);
+        }
+        else if(lvl.equals("red")){
+            change.setVisibility(View.GONE);
+            add.setVisibility(View.GONE);
+        }
+
         usr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //лучше вырезать if
-                if (email.equals("anon")){
-                    Snackbar.make(green, "Анонимный вход", Snackbar.LENGTH_SHORT).show();
-                }
-                else {
-                    Intent intent = new Intent(MapActivityGreen.this, UsrActivity.class);
+                    Intent intent = new Intent(MapActivity.this, UsrActivity.class);
                     intent.putExtra("email", email);
                     startActivity(intent);
-                }
             }
         });
 
     }
 
+    private void initMapViewModel() {
+        mapViewModel = new ViewModelProvider(this)
+                .get(MapViewModel.class);
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -132,33 +128,30 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
             infoPlace.setTextSize(30);
             infoPlace.setText("Введите название в поиск!");
         } else {
-            search = find.getText().toString();
-            mapCol.document(search).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            //search = find.getText().toString();
+            mapViewModel.showPoint(find.getText().toString());
+            mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists()) {
+                public void onChanged(Place place) {
+                    if (place.mapResult){
                         infoPlace.setTextColor(Color.parseColor("#FF000000"));
                         infoPlace.setTextSize(20);
-                        String placeSee = documentSnapshot.getString(place);
-                        String infoMet = documentSnapshot.getString(metanInfo);
-                        String infoSerd = documentSnapshot.getString(serdInfo);
-                        String infoAzd = documentSnapshot.getString(azdInfo);
-                        GeoPoint Geo = documentSnapshot.getGeoPoint(point);
-                        double lat = Geo.getLatitude();
-                        double lng = Geo.getLongitude();
-                        LatLng pointSee = new LatLng(lat, lng);
-                        infoPlace.setText("Метан: "+infoMet+
-                                "\nСеры диоксид: "+infoSerd+"\nАзота диоксид: "+infoAzd);
+
+                        infoPlace.setText("Метан: "+place.metanInfo+
+                                "\nСеры диоксид: "+place.serdInfo+"\nАзота диоксид: "+place.azdInfo);
                         float zoomLevel = 16.0f;
-                        mMap.addMarker(new MarkerOptions().position(pointSee).title(placeSee));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pointSee,zoomLevel));
-                    } else {
+                        mMap.addMarker(new MarkerOptions().position(place.pointSee).title(place.place_name));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.pointSee,zoomLevel));
+                        place.mapResult=false;
+                    }
+                    else {
                         infoPlace.setTextColor(Color.parseColor("#CC0000"));
                         infoPlace.setTextSize(30);
                         infoPlace.setText("Ничего не найдено...");
                     }
                 }
             });
+
         }
 
     }
@@ -228,56 +221,27 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
                     showChangeInfo();
                     return;
                 }
+                mapViewModel.changePoint(chPlace.getText().toString(),
+                        chMetan.getText().toString(), chSerd.getText().toString(),chAzd.getText().toString());
 
-                mapCol.document(chPlace.getText().toString()).get().
-                        addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+
                             @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                                if (documentSnapshot.exists()){
-                                    GeoPoint Geo = documentSnapshot.getGeoPoint(point);
-                                    Map<String, Object> InfoChangeMap = new HashMap<>();
-                                    InfoChangeMap.put("place", chPlace.getText().toString());
-                                    InfoChangeMap.put("met", chMetan.getText().toString());
-                                    InfoChangeMap.put("serd", chSerd.getText().toString());
-                                    InfoChangeMap.put("azd", chAzd.getText().toString());
-                                    InfoChangeMap.put("point", Geo);
-                                    mapCol.document(chPlace.getText().toString()).set(InfoChangeMap)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    Snackbar.make(green, "Все прошло успешно!",
-                                                            Snackbar.LENGTH_LONG).show();
-
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Snackbar.make(green, "Не удалось изменить в базе(ошибка №2)",
-                                                    Snackbar.LENGTH_LONG).show();
-                                            showChangeInfo();
-                                            return;
-                                        }
-                                    });
+                            public void onChanged(Place place) {
+                                if (place.mapResult){
+                                    Snackbar.make(green, "Данные изменены",
+                                            Snackbar.LENGTH_LONG).show();
+                                    place.mapResult=false;
+                                    find.setText(chPlace.getText().toString());
+                                    showPoint();
                                 }
-                                else {
-
-                                    Snackbar.make(green, "Данные не существуют!",
+                                else{
+                                    Snackbar.make(green, "Не удалось изменить",
                                             Snackbar.LENGTH_LONG).show();
                                     showChangeInfo();
-                                    return;
                                 }
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Snackbar.make(green, "Не удалось изменить в базе(ошибка №1)",
-                                Snackbar.LENGTH_LONG).show();
-                        showChangeInfo();
-                        return;
-                    }
-                });
-
+                        });
             }
         });
         ch_wind.show();
@@ -355,59 +319,32 @@ public class MapActivityGreen extends FragmentActivity implements OnMapReadyCall
                 }
                 double azd = Double.parseDouble(AddAzd.getText().toString());
                 if (azd < 0) {
-                    Snackbar.make(green, "значения азота неверны", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(green, "Значения азота неверны", Snackbar.LENGTH_SHORT).show();
                     showChangeInfo();
                     return;
                 }
 
-                mapCol.document(AddPlace.getText().toString()).get().
-                        addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists()){
-                                    Snackbar.make(green, "Данные существуют!",
-                                            Snackbar.LENGTH_LONG).show();
-                                    showChangeInfo();
-                                    return;
-                                }
-                                else{
-                                    double Lng = Double.parseDouble(AddLng.getText().toString());
-                                    double Lat = Double.parseDouble(AddLat.getText().toString());
-                                    GeoPoint Geo= new GeoPoint(Lat,Lng);
-                                    Map<String, Object> InfoChangeMap = new HashMap<>();
-                                    InfoChangeMap.put("place", AddPlace.getText().toString());
-                                    InfoChangeMap.put("met", AddMetan.getText().toString());
-                                    InfoChangeMap.put("serd", AddSerd.getText().toString());
-                                    InfoChangeMap.put("azd", AddAzd.getText().toString());
-                                    InfoChangeMap.put("point", Geo);
-                                    mapCol.document(AddPlace.getText().toString()).set(InfoChangeMap)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    Snackbar.make(green, "Все прошло успешно!",
-                                                            Snackbar.LENGTH_LONG).show();
+                mapViewModel.AddPoint(AddPlace.getText().toString(),
+                        AddMetan.getText().toString(), AddSerd.getText().toString(),AddAzd.getText().toString(),AddLng.getText().toString(),AddLng.getText().toString());
 
+                mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
 
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Snackbar.make(green, "Не удалось изменить в базе(ошибка записи)",
-                                                    Snackbar.LENGTH_LONG).show();
-                                            showChangeInfo();
-                                            return;
-                                        }
-                                    });
-                                }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Snackbar.make(green, "Не удалось изменить в базе(ошибка в базе)",
-                                Snackbar.LENGTH_LONG).show();
+                    public void onChanged(Place place) {
+                        if (place.mapResult){
+                            Snackbar.make(green, "Данные добавлены",
+                                    Snackbar.LENGTH_LONG).show();
+                            place.mapResult=false;
+                            find.setText(AddPlace.getText().toString());
+                            showPoint();
+                        }
+                        else{
+                            Snackbar.make(green, "Не удалось изменить",
+                                    Snackbar.LENGTH_LONG).show();
+                            showChangeInfo();
+                        }
                     }
                 });
-
             }
         });
         ch_wind.show();
