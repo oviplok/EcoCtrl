@@ -21,7 +21,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public void LogInWindow(String email,String password) {
 
-        if(email == "anon"){
+        if(email.equals("anon")){
             userLiveData = userFireBaseRepository.AnonLogIn();
         }
         else {

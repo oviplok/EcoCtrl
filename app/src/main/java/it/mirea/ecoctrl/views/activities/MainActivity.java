@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +28,15 @@ import it.mirea.ecoctrl.viewModels.MainViewModel;
 
 
 public class MainActivity extends AppCompatActivity {
+    private static final String SHARED_PREF = "sharedPrefs";
+    private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
+    private static final String LVL = "lvl";
     private MainViewModel mainViewModel;
 
-    Button to_reg, to_login;
 
+    Button to_reg, to_login;
+    boolean connected = false;
     RelativeLayout root;
 
     @Override
@@ -37,10 +45,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initMainViewModel();
 
+        SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
+        String Email =sharedPreferences.getString(EMAIL,"");
+        String LEVEL=sharedPreferences.getString(LVL,"");
+        String Password=sharedPreferences.getString(PASSWORD,"");
+
         to_reg = findViewById(R.id.to_registr);
         to_login = findViewById(R.id.to_login);
 
         root = findViewById(R.id.root_action);
+
+        //CONNECTION *****WIP*****
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+
+            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
+                mainViewModel.LogInWindow(Email,Password);
+                mapAct(Email,LEVEL);
+            }
+        }
+        else {
+            connected = false;
+            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
+                mapAct(Email,LEVEL);
+            }
+            else{
+                mapAct("anon","red");
+            }
+        }
 
         to_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,20 +89,23 @@ public class MainActivity extends AppCompatActivity {
                 showRegWindow();
 
             }
-
         });
     }
 
-    //////////////////////////////////////////////////////////////////////////////
     private void initMainViewModel() {
         mainViewModel = new ViewModelProvider(this)
                 .get(MainViewModel.class);
     }
-//////////////////////////////////////////////////////////////////////////////
+
+    private void mapAct(String email,String lvl){
+        Intent intent = new Intent(MainActivity.this, MapActivity.class);
+        intent.putExtra("email", email);
+        intent.putExtra("lvl", lvl);
+        startActivity(intent);
+    }
 
     //Регистрация
     private void showRegWindow() {
-
 
         AlertDialog.Builder reg_act = new AlertDialog.Builder(this);
         reg_act.setTitle("Регистрация");
@@ -80,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
         final EditText email = SigIn_Window.findViewById(R.id.email_sig);
         final EditText password = SigIn_Window.findViewById(R.id.password_sig);
         final EditText userjob = SigIn_Window.findViewById(R.id.job_sig);
-
 
         reg_act.setNegativeButton("Вернуться", new DialogInterface.OnClickListener() {
             @Override
@@ -125,12 +162,15 @@ public class MainActivity extends AppCompatActivity {
                 mainViewModel.userLiveData.observe(MainActivity.this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
-                        if (user.usrResult){
-                            Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                            Log.e("Activ",email.getText().toString()+" "+user.lvl);
-                            intent.putExtra("email", user.email);
-                            intent.putExtra("lvl", user.lvl);
-                            startActivity(intent);
+                        if (user.isUsrResult()){
+
+                            SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString(EMAIL, user.getEmail());
+                            editor.putString(PASSWORD, user.getPassword());
+                            editor.putString(LVL, user.getLvl());
+                            editor.apply();
+                            mapAct(EMAIL,LVL);
                         }
                         else {
                             Snackbar.make(root,"Ошибка регистрации.",Snackbar.LENGTH_SHORT).show();
@@ -171,11 +211,9 @@ public class MainActivity extends AppCompatActivity {
                 mainViewModel.userLiveData.observe(MainActivity.this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
-                        if (user.usrResult){
-                            Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                            intent.putExtra("email", "anon");
-                            intent.putExtra("lvl", "red");
-                            startActivity(intent);
+                        if (user.isUsrResult()){
+                            mapAct("anon","red");
+
                         }
                     }
                 });
@@ -209,14 +247,18 @@ public class MainActivity extends AppCompatActivity {
                 mainViewModel.userLiveData.observe(MainActivity.this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
-                        if (user.usrResult){
-                            Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                            intent.putExtra("email", user.email);
-                            intent.putExtra("lvl", user.lvl);
-                            startActivity(intent);
+                        if (user.isUsrResult()){
+
+                            SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString(EMAIL, user.getEmail());
+                            editor.putString(PASSWORD, user.getPassword());
+                            editor.putString(LVL, user.getLvl());
+                            editor.apply();
+                            mapAct(user.getEmail(), user.getLvl());
                         }
                         else{
-                            Snackbar.make(root,"Ошибка авторизации."+user.email+" "+user.lvl,Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(root,getString(R.string.auth_error)+user.getEmail()+" "+user.getLvl(),Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -225,5 +267,4 @@ public class MainActivity extends AppCompatActivity {
         });
         log_act.show();
     }
-
 }

@@ -18,7 +18,7 @@ public class UsrViewModel extends AndroidViewModel {
         super(application);
         userFireBaseRepository = new UserFireBaseRepository();
     }
-
+/*
     public static String back_check(String lvl) {
         if(lvl.equals("red")){
             return "red";
@@ -29,7 +29,7 @@ public class UsrViewModel extends AndroidViewModel {
         else{
             return "error";
         }
-    }
+    }*/
 
     public void Check_acc(String email) {
         userLiveData = userFireBaseRepository.Check_acc(email);

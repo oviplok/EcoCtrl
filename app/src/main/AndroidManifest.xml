@@ -4,6 +4,8 @@
     package="it.mirea.ecoctrl"
     tools:ignore="CoarseFineLocation">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
@@ -20,9 +22,6 @@
             android:exported="true" />
         <activity
             android:name=".views.activities.MapActivity"
-            android:exported="true" />
-        <activity
-            android:name=".cutContent.MapActivityRed"
             android:exported="true" />
         <activity
             android:name=".views.activities.MainActivity"

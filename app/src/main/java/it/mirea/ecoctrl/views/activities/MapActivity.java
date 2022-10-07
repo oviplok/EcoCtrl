@@ -5,9 +5,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -41,6 +45,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     EditText find;
     TextView infoPlace;
 
+    String email;
+    String lvl;
+
+    boolean connected = false;
 
     private GoogleMap mMap;
     private ActivityMapBinding binding;
@@ -62,16 +70,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         change = findViewById(R.id.changeInfo);
         add = findViewById(R.id.addInfo);
         find = findViewById(R.id.finder);
-        String email = getIntent().getStringExtra("email").toString();
-        String lvl = getIntent().getStringExtra("lvl").toString();
-        if (email.equals("anon") ){
-            change.setVisibility(View.GONE);
-            add.setVisibility(View.GONE);
-            usr.setVisibility(View.GONE);
+        email = getIntent().getStringExtra("email").toString();
+        lvl = getIntent().getStringExtra("lvl").toString();
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
         }
-        else if(lvl.equals("red")){
-            change.setVisibility(View.GONE);
-            add.setVisibility(View.GONE);
+        else{
+            connected = false;
+            Snackbar.make(green, R.string.no_internet, Snackbar.LENGTH_SHORT).show();
+        }
+
+        if (email.equals("anon") ){
+            usr.setVisibility(View.GONE);
         }
 
         usr.setOnClickListener(new View.OnClickListener() {
@@ -126,31 +140,36 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         if (TextUtils.isEmpty(find.getText().toString())) {
             infoPlace.setTextColor(Color.parseColor("#CC0000"));
             infoPlace.setTextSize(30);
-            infoPlace.setText("Введите название в поиск!");
+            infoPlace.setText(R.string.set_name);
         } else {
-            //search = find.getText().toString();
-            mapViewModel.showPoint(find.getText().toString());
-            mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
-                @Override
-                public void onChanged(Place place) {
-                    if (place.mapResult){
-                        infoPlace.setTextColor(Color.parseColor("#FF000000"));
-                        infoPlace.setTextSize(20);
+            //local DB
+            if(!connected || email.equals("anon") || lvl.equals("red")){
 
-                        infoPlace.setText("Метан: "+place.metanInfo+
-                                "\nСеры диоксид: "+place.serdInfo+"\nАзота диоксид: "+place.azdInfo);
-                        float zoomLevel = 16.0f;
-                        mMap.addMarker(new MarkerOptions().position(place.pointSee).title(place.place_name));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.pointSee,zoomLevel));
-                        place.mapResult=false;
+            }
+            else {
+                mapViewModel.showPoint(find.getText().toString());
+                mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onChanged(Place place) {
+                        if (place.isMapResult()) {
+                            infoPlace.setTextColor(Color.parseColor("#FF000000"));
+                            infoPlace.setTextSize(20);
+                            infoPlace.setText(getString(R.string.metan) + place.getMetanInfo() +
+                                    getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
+                            float zoomLevel = 16.0f;
+                            mMap.addMarker(new MarkerOptions().position(place.getPointSee()).title(place.getPlace_name()));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getPointSee(), zoomLevel));
+                            place.setMapResult(false);
+                        } else {
+                            infoPlace.setTextColor(Color.parseColor("#CC0000"));
+                            infoPlace.setTextSize(30);
+                            infoPlace.setText(R.string.no_inf);
+                        }
                     }
-                    else {
-                        infoPlace.setTextColor(Color.parseColor("#CC0000"));
-                        infoPlace.setTextSize(30);
-                        infoPlace.setText("Ничего не найдено...");
-                    }
-                }
-            });
+                });
+
+            }
 
         }
 
@@ -188,7 +207,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     return;
                 }
                 double met = Double.parseDouble(chMetan.getText().toString());
-                if (met < 0 ) {
+                if (met < 0) {
                     Snackbar.make(green, "Значения метана не верны", Snackbar.LENGTH_SHORT).show();
                     showChangeInfo();
                     return;
@@ -199,7 +218,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     return;
                 }
                 double serd = Double.parseDouble(chSerd.getText().toString());
-                if (serd <0 ) {
+                if (serd < 0) {
                     Snackbar.make(green, "Значения серы не верны", Snackbar.LENGTH_SHORT).show();
                     showChangeInfo();
                     return;
@@ -217,31 +236,38 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 }
                 double azd = Double.parseDouble(chAzd.getText().toString());
                 if (azd < 0) {
-                    Snackbar.make(green, "значения азота неверны", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(green, "Значения азота неверны", Snackbar.LENGTH_SHORT).show();
                     showChangeInfo();
                     return;
                 }
-                mapViewModel.changePoint(chPlace.getText().toString(),
-                        chMetan.getText().toString(), chSerd.getText().toString(),chAzd.getText().toString());
 
-                mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                if(!connected || email.equals("anon") || lvl.equals("red")){
 
-                            @Override
-                            public void onChanged(Place place) {
-                                if (place.mapResult){
-                                    Snackbar.make(green, "Данные изменены",
-                                            Snackbar.LENGTH_LONG).show();
-                                    place.mapResult=false;
-                                    find.setText(chPlace.getText().toString());
-                                    showPoint();
-                                }
-                                else{
-                                    Snackbar.make(green, "Не удалось изменить",
-                                            Snackbar.LENGTH_LONG).show();
-                                    showChangeInfo();
-                                }
+
+
+                }
+
+                else {
+                    mapViewModel.changePoint(chPlace.getText().toString(),
+                            chMetan.getText().toString(), chSerd.getText().toString(), chAzd.getText().toString());
+
+                    mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                        @Override
+                        public void onChanged(Place place) {
+                            if (place.isMapResult()) {
+                                Snackbar.make(green, "Данные изменены",
+                                        Snackbar.LENGTH_LONG).show();
+                                place.setMapResult(false);//=false;
+                                find.setText(chPlace.getText().toString());
+                                showPoint();
+                            } else {
+                                Snackbar.make(green, "Не удалось изменить",
+                                        Snackbar.LENGTH_LONG).show();
+                                showChangeInfo();
                             }
-                        });
+                        }
+                    });
+                }
             }
         });
         ch_wind.show();
@@ -324,27 +350,31 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     return;
                 }
 
-                mapViewModel.AddPoint(AddPlace.getText().toString(),
-                        AddMetan.getText().toString(), AddSerd.getText().toString(),AddAzd.getText().toString(),AddLng.getText().toString(),AddLng.getText().toString());
+                if(!connected || email.equals("anon") || lvl.equals("red")){
 
-                mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                }
+                else {
+                    mapViewModel.AddPoint(AddPlace.getText().toString(),
+                            AddMetan.getText().toString(), AddSerd.getText().toString(), AddAzd.getText().toString(), AddLng.getText().toString(), AddLng.getText().toString());
 
-                    @Override
-                    public void onChanged(Place place) {
-                        if (place.mapResult){
-                            Snackbar.make(green, "Данные добавлены",
-                                    Snackbar.LENGTH_LONG).show();
-                            place.mapResult=false;
-                            find.setText(AddPlace.getText().toString());
-                            showPoint();
+                    mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+
+                        @Override
+                        public void onChanged(Place place) {
+                            if (place.isMapResult()) {
+                                Snackbar.make(green, "Данные добавлены",
+                                        Snackbar.LENGTH_LONG).show();
+                                place.setMapResult(false);//=false;
+                                find.setText(AddPlace.getText().toString());
+                                showPoint();
+                            } else {
+                                Snackbar.make(green, "Не удалось изменить",
+                                        Snackbar.LENGTH_LONG).show();
+                                showChangeInfo();
+                            }
                         }
-                        else{
-                            Snackbar.make(green, "Не удалось изменить",
-                                    Snackbar.LENGTH_LONG).show();
-                            showChangeInfo();
-                        }
-                    }
-                });
+                    });
+                }
             }
         });
         ch_wind.show();

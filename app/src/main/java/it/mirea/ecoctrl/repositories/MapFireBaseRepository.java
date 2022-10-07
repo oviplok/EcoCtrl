@@ -22,7 +22,7 @@ public class MapFireBaseRepository {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference places;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference mapCol = db.collection(Place.callPath);
+    private CollectionReference mapCol = db.collection(Place.getCallPath());
     private Place place = new Place();
 
 
@@ -33,18 +33,20 @@ public class MapFireBaseRepository {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    place.place_name = documentSnapshot.getString("place");
-                    place.metanInfo = documentSnapshot.getString("met");
-                    place.serdInfo = documentSnapshot.getString("serd");
-                    place.azdInfo = documentSnapshot.getString("azd");
+                    place.setPlace_name(documentSnapshot.getString("place"));// = documentSnapshot.getString("place");
+                    place.setMetanInfo(documentSnapshot.getString("met"));// = documentSnapshot.getString("met");
+                    place.setSerdInfo(documentSnapshot.getString("serd"));// = documentSnapshot.getString("serd");
+                    place.setAzdInfo(documentSnapshot.getString("azd"));// = documentSnapshot.getString("azd");
                     GeoPoint geo = documentSnapshot.getGeoPoint("point");
-                    place.lat = geo.getLatitude();
-                    place.lng = geo.getLongitude();
-                    place.pointSee=new LatLng(place.lat,place.lng);
-                    place.mapResult = true;
+                    place.setLat(geo.getLatitude());//lat = geo.getLatitude();
+                    place.setLng(geo.getLongitude());//lng = geo.getLongitude();
+                    LatLng pointSee=new LatLng(place.getLat(),place.getLng());
+                    place.setPointSee(pointSee);
+
+                    place.setMapResult(true);// = true;
                     mapLiveData.setValue(place);
                 } else {
-                    place.mapResult = false;
+                    place.setMapResult(false);// = false;
                     mapLiveData.setValue(place);
                 }
             }
@@ -67,25 +69,25 @@ public class MapFireBaseRepository {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            place.mapResult = true;
+                                            place.setMapResult(true);// = true;
                                             mapLiveData.setValue(place);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    place.mapResult = false;
+                                    place.setMapResult(false);// = false;
                                     mapLiveData.setValue(place);
                                 }
                             });
                         } else {
-                            place.mapResult = false;
+                            place.setMapResult(false);// = false;
                             mapLiveData.setValue(place);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                place.mapResult = false;
+                place.setMapResult(false);// = false;
                 mapLiveData.setValue(place);
             }
         });
@@ -99,7 +101,7 @@ public class MapFireBaseRepository {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()){
-                            place.mapResult = false;
+                            place.setMapResult(false);// = false;
                             mapLiveData.setValue(place);
                         }
                         else{
@@ -107,14 +109,14 @@ public class MapFireBaseRepository {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            place.mapResult = true;
+                                            place.setMapResult(true);// = true;
                                             mapLiveData.setValue(place);
 
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    place.mapResult = false;
+                                    place.setMapResult(false);// = false;
                                     mapLiveData.setValue(place);
                                 }
                             });
@@ -123,7 +125,7 @@ public class MapFireBaseRepository {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                place.mapResult = false;
+                place.setMapResult(false);// = false;
                 mapLiveData.setValue(place);
             }
         });
