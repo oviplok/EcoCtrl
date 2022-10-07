@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapActivityGreen"
+    tools:context=".views.activities.MapActivity"
     app:cardElevation="10dp">
 
 
     <EditText
         android:id="@+id/place_for_change"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -26,7 +26,7 @@
     <EditText
         android:id="@+id/metan_for_change"
         android:hint="Измерения метана"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/email_log"
         android:layout_alignParentStart="true"
@@ -40,7 +40,7 @@
     <EditText
         android:id="@+id/serd_for_change"
         android:hint="Измерения диокс. серы"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/email_log"
         android:layout_alignParentStart="true"
@@ -54,7 +54,7 @@
     <EditText
         android:id="@+id/azd_for_change"
         android:hint="Измерения диокс. азота"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/email_log"
         android:layout_alignParentStart="true"

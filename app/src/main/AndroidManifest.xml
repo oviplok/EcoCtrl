@@ -15,15 +15,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoCtrl">
-
         <activity
-            android:name=".MapActivityGreen"
+            android:name=".views.activities.UsrActivity"
             android:exported="true" />
         <activity
-            android:name=".MapActivityRed"
+            android:name=".views.activities.MapActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".cutContent.MapActivityRed"
+            android:exported="true" />
+        <activity
+            android:name=".views.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
