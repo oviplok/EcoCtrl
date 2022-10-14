@@ -23,7 +23,7 @@ import android.widget.RelativeLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.mirea.ecoctrl.R;
-import it.mirea.ecoctrl.models.User;
+import it.mirea.ecoctrl.repositories.models.User;
 import it.mirea.ecoctrl.viewModels.MainViewModel;
 
 
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         to_reg = findViewById(R.id.to_registr);
         to_login = findViewById(R.id.to_login);
-
         root = findViewById(R.id.root_action);
 
         //CONNECTION *****WIP*****
@@ -108,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
     private void showRegWindow() {
 
         AlertDialog.Builder reg_act = new AlertDialog.Builder(this);
-        reg_act.setTitle("Регистрация");
-        reg_act.setMessage("Введите данные регистрации");
+        reg_act.setTitle(R.string.registration);
+        reg_act.setMessage(R.string.insert_authData);
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View SigIn_Window = inflater.inflate(R.layout.activity_reg, null);
@@ -217,9 +216,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-
             }
-
         });
         log_act.setPositiveButton("Вход", new DialogInterface.OnClickListener() {
             @Override

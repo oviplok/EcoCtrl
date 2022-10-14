@@ -1,4 +1,4 @@
-package it.mirea.ecoctrl.repositories;
+package it.mirea.ecoctrl.repositories.fireBase;
 
 import android.util.Log;
 
@@ -18,32 +18,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.mirea.ecoctrl.models.User;
+import it.mirea.ecoctrl.repositories.models.User;
 
 public class UserFireBaseRepository {
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    ;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference users;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference passCol = db.collection(User.getCallPath());
     private User user = new User();
-
-/*
-    РАБОТАЕТ КАК ПОСТИРОНИЯ, Я ВООБЩЕ НЕ ПОНИМАЮ ЧТО ТУТ ПРОСИХОДИТ
-
-    вроде все исправилось,возможно были проблемы именно с firebase
-    upd: опять не работает
-    upd: входит со 2 попытки :\
-    upd: походу дыра в системе + файрбейз не работает нормально
-    upd: вроде все починил
-    upd: для кого я это пишу?
-    upd: ***РЕЗАНУТЬ ЛОГИ И УБРАТЬ КОСТЫЛИ***
-
-   */
-
 
     public MutableLiveData<User> AnonLogIn() {
         MutableLiveData<User> isUserAuthLiveData = new MutableLiveData<>();
@@ -69,7 +54,6 @@ public class UserFireBaseRepository {
                         passCol.document(user.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                //String userlevel = documentSnapshot.getString("level");
                                 user.setLvl(documentSnapshot.getString("level"));
                                 user.setUsrResult(true);
                                 isUserAuthLiveData.setValue(user);

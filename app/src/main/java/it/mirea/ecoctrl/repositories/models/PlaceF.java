@@ -1,25 +1,36 @@
-package it.mirea.ecoctrl.models;
+package it.mirea.ecoctrl.repositories.models;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 
-public class Place implements Serializable {
-    private String place_name,metanInfo,serdInfo, azdInfo;
-   // public GeoPoint geo;
-    private double lat,lng;
-    private static String callPath = "places";
+public class PlaceF implements Serializable {
+
+    public String place_name;
+
 
     @Exclude
     private boolean mapResult;
-    private LatLng pointSee; //= new LatLng(lat, lng);
 
-    public Place(){
-    }
+    private static String callPath = "places";
 
-    public Place(String place_name, String metanInfo,
-                 String serdInfo,String azdInfo,LatLng pointSee,boolean mapResult){
+    private String metanInfo;
+    private String azdInfo;
+    private String serdInfo;
+    private double lat;
+    private double lng;
+    private LatLng pointSee;
+
+    public PlaceF(){ }
+
+    public PlaceF(String place_name, String metanInfo,
+                  String serdInfo, String azdInfo, LatLng pointSee, boolean mapResult){
+
         this.place_name=place_name;
         this.metanInfo=metanInfo;
         this.serdInfo=serdInfo;
@@ -80,10 +91,6 @@ public class Place implements Serializable {
         return callPath;
     }
 
-   // public static void setCallPath(String callPath) {
-     //   Place.callPath = callPath;
-    //}
-
     public boolean isMapResult() {
         return mapResult;
     }
@@ -100,3 +107,4 @@ public class Place implements Serializable {
         this.pointSee = pointSee;
     }
 }
+

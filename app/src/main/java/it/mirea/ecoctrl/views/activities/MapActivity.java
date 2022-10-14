@@ -14,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -25,18 +26,24 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 ////import it.mirea.ecoctrl.databinding.ActivityMapGreenBinding;
+
 import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.databinding.ActivityMapBinding;
-import it.mirea.ecoctrl.models.Place;
+import it.mirea.ecoctrl.repositories.models.Place;
+import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.MapViewModel;
 
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private MapViewModel mapViewModel;
+    private MapRoomDatabase mapRoomDatabase;
     RelativeLayout green;
+
 
     Button show;
     ImageButton change;
@@ -57,6 +64,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initMapViewModel();
+        mapViewModel.getPlaceLiveData();
         binding = ActivityMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         green = findViewById(R.id.map_action);
@@ -72,7 +80,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         find = findViewById(R.id.finder);
         email = getIntent().getStringExtra("email").toString();
         lvl = getIntent().getStringExtra("lvl").toString();
-
+        mapRoomDatabase= MapRoomDatabase.getInstance(getApplicationContext());
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
@@ -102,6 +110,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private void initMapViewModel() {
         mapViewModel = new ViewModelProvider(this)
                 .get(MapViewModel.class);
+
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -137,6 +146,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     //Работа поиска
     private void showPoint() {
+
+        Log.e("SearchPart","searching...");
         if (TextUtils.isEmpty(find.getText().toString())) {
             infoPlace.setTextColor(Color.parseColor("#CC0000"));
             infoPlace.setTextSize(30);
@@ -144,14 +155,102 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         } else {
             //local DB
             if(!connected || email.equals("anon") || lvl.equals("red")){
+                Log.e("SearchPart"," not connected");
 
+                mapViewModel.showPlace(find.getText().toString(),"off",this);
+                mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                    @Override
+                    public void onChanged(Place place) {
+                        if (place.getPlace_name()!=null) {
+                            infoPlace.setTextColor(Color.parseColor("#FF000000"));
+                            infoPlace.setTextSize(20);
+                            infoPlace.setText(getString(R.string.metan) + place.getMetanInfo() +
+                                    getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
+                            float zoomLevel = 16.0f;
+                            LatLng getPointSee = new LatLng(place.getLat(),place.getLng());
+                            mMap.addMarker(new MarkerOptions().position(getPointSee).title(place.getPlace_name()));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
+                        } else {
+                            infoPlace.setTextColor(Color.parseColor("#CC0000"));
+                            infoPlace.setTextSize(30);
+                            infoPlace.setText(R.string.no_inf);
+                        }
+                    }
+                });
             }
             else {
-                mapViewModel.showPoint(find.getText().toString());
+                Log.e("SearchPart", "connected");
+
+                mapViewModel.showPlace(find.getText().toString(), "off", this);
                 mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onChanged(Place place) {
+                        if (place.getPlace_name() != null) {
+                            infoPlace.setTextColor(Color.parseColor("#FF000000"));
+                            infoPlace.setTextSize(20);
+                            infoPlace.setText(place.getPlace_name() + ":\n" +
+                                    getString(R.string.metan) + place.getMetanInfo() +
+                                    getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
+                            float zoomLevel = 16.0f;
+                            LatLng getPointSee = new LatLng(place.getLat(), place.getLng());
+                            mMap.addMarker(new MarkerOptions().position(getPointSee).title(place.getPlace_name()));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
+                        } else {
+                            infoPlace.setTextColor(Color.parseColor("#CC0000"));
+                            infoPlace.setTextSize(30);
+                            infoPlace.setText(R.string.no_inf);
+                        }
+                    }
+                });
+            }
+
+               // mapViewModel.showPlace();
+               /* mapViewModel.showPlace(find.getText().toString(),"off");
+                mapRoomDatabase.placeDAO().getPlace(find.getText().toString()).observe(this, new Observer<List<Place>>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onChanged(List<Place> places) {
+                        Log.e("SearchPart","starts");
+
+
+                       // String joined = TextUtils.join(", ", places.get(0).getAzdInfo());
+
+                        infoPlace.setTextColor(Color.parseColor("#FF000000"));
+                        infoPlace.setTextSize(20);
+                        infoPlace.setText(places.get(0).getClass().toString());
+                        infoPlace.setText(getString(R.string.metan) + places.get(0) +
+                                getString(R.string.serd) + places.get(0).getSerdInfo() + getString(R.string.azd) + places.get(0).getAzdInfo());
+                        LatLng getPointSee = new LatLng(places.get(0).getLat(),places.get(0).getLng());
+                        float zoomLevel = 16.0f;
+                        mMap.addMarker(new MarkerOptions().position(getPointSee).title(places.get(0).getPlace_name()));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
+                        Log.e("SearchPart","done");*/
+                //});
+               /* mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                    @Override
+                    public void onChanged(Place place) {
+                        if (place.getPlace_name()!=null) {
+                            infoPlace.setTextColor(Color.parseColor("#FF000000"));
+                            infoPlace.setTextSize(20);
+                            infoPlace.setText(getString(R.string.metan) + place.getMetanInfo() +
+                                    getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
+                            float zoomLevel = 16.0f;
+                            LatLng getPointSee = new LatLng(place.getLat(),place.getLng());
+                            mMap.addMarker(new MarkerOptions().position(getPointSee).title(place.getPlace_name()));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
+                        } else {
+                            infoPlace.setTextColor(Color.parseColor("#CC0000"));
+                            infoPlace.setTextSize(30);
+                            infoPlace.setText(R.string.no_inf);
+                        }
+                    }
+                });*/
+              /*  mapViewModel.showPlace(find.getText().toString(),"on");
+                mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceFire>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onChanged(PlaceFire place) {
                         if (place.isMapResult()) {
                             infoPlace.setTextColor(Color.parseColor("#FF000000"));
                             infoPlace.setTextSize(20);
@@ -167,13 +266,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             infoPlace.setText(R.string.no_inf);
                         }
                     }
-                });
+                });*/
 
             }
 
         }
 
-    }
+   // }
 
     private void showChangeInfo() {
         AlertDialog.Builder ch_wind = new AlertDialog.Builder(this);
@@ -243,17 +342,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
                 if(!connected || email.equals("anon") || lvl.equals("red")){
 
-
+                    mapViewModel.changePlace(chPlace.getText().toString(),
+                            chMetan.getText().toString(), chSerd.getText().toString(),
+                            chAzd.getText().toString(),"off");
 
                 }
-
                 else {
-                    mapViewModel.changePoint(chPlace.getText().toString(),
-                            chMetan.getText().toString(), chSerd.getText().toString(), chAzd.getText().toString());
+                    mapViewModel.changePlace(chPlace.getText().toString(),
+                            chMetan.getText().toString(), chSerd.getText().toString(),
+                            chAzd.getText().toString(),"on");
 
-                    mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                    mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
                         @Override
-                        public void onChanged(Place place) {
+                        public void onChanged(PlaceF place) {
                             if (place.isMapResult()) {
                                 Snackbar.make(green, "Данные изменены",
                                         Snackbar.LENGTH_LONG).show();
@@ -296,7 +397,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
         });
 
-        ch_wind.setPositiveButton("Изменить", new DialogInterface.OnClickListener() {
+        ch_wind.setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 //возможные ошибки (переделать в свитч)
@@ -349,28 +450,35 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     showChangeInfo();
                     return;
                 }
-
+                Log.e("MapAct","con_part");
                 if(!connected || email.equals("anon") || lvl.equals("red")){
+                    Log.e("MapAct","not connected");
+                    mapViewModel.AddPlace(AddPlace.getText().toString(),
+                            AddMetan.getText().toString(), AddSerd.getText().toString(), AddAzd.getText().toString(),
+                            AddLng.getText().toString(), AddLng.getText().toString(),"off");
+
 
                 }
                 else {
-                    mapViewModel.AddPoint(AddPlace.getText().toString(),
-                            AddMetan.getText().toString(), AddSerd.getText().toString(), AddAzd.getText().toString(), AddLng.getText().toString(), AddLng.getText().toString());
-
-                    mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
-
+                    Log.e("MapAct","connected");
+                    mapViewModel.AddPlace(AddPlace.getText().toString(),
+                            AddMetan.getText().toString(), AddSerd.getText().toString(), AddAzd.getText().toString(),
+                            AddLng.getText().toString(), AddLng.getText().toString(),"on");
+                    mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
                         @Override
-                        public void onChanged(Place place) {
+                        public void onChanged(PlaceF place) {
                             if (place.isMapResult()) {
                                 Snackbar.make(green, "Данные добавлены",
                                         Snackbar.LENGTH_LONG).show();
-                                place.setMapResult(false);//=false;
+                                place.setMapResult(false);
                                 find.setText(AddPlace.getText().toString());
+                                Log.e("AddPart","added");
                                 showPoint();
                             } else {
-                                Snackbar.make(green, "Не удалось изменить",
+                                Snackbar.make(green, "Не удалось добавить",
                                         Snackbar.LENGTH_LONG).show();
-                                showChangeInfo();
+                                Log.e("AddPart","not added");
+                               // showChangeInfo();
                             }
                         }
                     });

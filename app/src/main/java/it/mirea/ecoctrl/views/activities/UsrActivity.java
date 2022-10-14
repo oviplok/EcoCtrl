@@ -6,8 +6,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+//import com.google.firebase.firestore.CollectionReference;
+//import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import it.mirea.ecoctrl.models.User;
+import it.mirea.ecoctrl.repositories.models.User;
 import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.viewModels.UsrViewModel;
 
@@ -33,17 +33,15 @@ public class UsrActivity extends AppCompatActivity {
     ConstraintLayout USR;
     String lvl;
     int back_tap;
-  //  String lvl ="level", pass_check="password",UsrPos="UserPos";
     TextView mail,level,pos;
     EditText old_pass,new_pass;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference user = db.collection("Users");
+    //FirebaseFirestore db = FirebaseFirestore.getInstance();
+   // CollectionReference user = db.collection("Users");
     ImageButton back;
     Button change;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usr);
         mail = findViewById(R.id.email_view);
@@ -59,24 +57,20 @@ public class UsrActivity extends AppCompatActivity {
         initUsrViewModel();
         Check_Acc(email);
 
-
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                back_tap++;
-                if (back_tap==2){
-                    Back_but(email);
+                if (back_tap==1){
+                    Back_but();
                     back_tap=0;
                 }
                 else
                 {
+                    back_tap++;
                     Snackbar.make(USR, "If you want exit from your account, tap again",
                             Snackbar.LENGTH_LONG).show();
                 }
             }
-
-
         });
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,12 +80,10 @@ public class UsrActivity extends AppCompatActivity {
         });
     }
 
-    //////////////////////////////////////////////////////////////////////////////
     private void initUsrViewModel() {
         usrViewModel = new ViewModelProvider(this)
                 .get(UsrViewModel.class);
     }
-//////////////////////////////////////////////////////////////////////////////
 
     private void Check_Acc(String email){
         usrViewModel.Check_acc(email);
@@ -118,7 +110,7 @@ public class UsrActivity extends AppCompatActivity {
     }
 
 
-    private void Back_but(String email){
+    private void Back_but(){
         Intent intent = new Intent(UsrActivity.this, MainActivity.class);
         SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -126,42 +118,8 @@ public class UsrActivity extends AppCompatActivity {
         editor.putString(PASSWORD, "");
         editor.putString(LVL, "");
         editor.apply();
-        switch (lvl){
-            case ("red"):
-                intent.putExtra("email", email);
-                intent.putExtra("lvl","red");
-                startActivity(intent);
-                break;
-            case("green"):
-                //Intent intent = new Intent(UsrActivity.this, MapActivity.class);
-                intent.putExtra("email", email);
-                intent.putExtra("lvl","green");
-                startActivity(intent);
-                break;
-            default:
-                Snackbar.make(USR, "Произошла ошибка!",
-                        Snackbar.LENGTH_LONG).show();
-                break;
-
-        }
+        startActivity(intent);
     }
-
-       /* String lvl =UsrViewModel.back_check(level.getText().toString());
-        String gr="green",rd="red";
-
-            Intent intent = new Intent(UsrActivity.this, MapActivity.class);
-            intent.putExtra("email", email);
-            intent.putExtra("lvl","green");
-            startActivity(intent);
-
-        if (lvl == "error")
-        {
-            Snackbar.make(USR, "Ошибка сервера!",
-                    Snackbar.LENGTH_LONG).show();
-        }*/
-
-
-
 
     private void Change_Pass(String email,String oldPass,String newPass){
         if (TextUtils.isEmpty(new_pass.getText().toString())) {
@@ -175,7 +133,6 @@ public class UsrActivity extends AppCompatActivity {
 
         usrViewModel.Change_pass(email,oldPass,newPass);
         usrViewModel.userLiveData.observe(UsrActivity.this, new Observer<User>() {
-
 
             @Override
             public void onChanged(User user) {
@@ -191,6 +148,5 @@ public class UsrActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }

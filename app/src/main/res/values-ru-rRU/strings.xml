@@ -36,4 +36,6 @@
     <string name="no_inf">Ничего не найдено…</string>
     <string name="auth_error">Ошибка авторизации</string>
     <string name="no_internet">Нет подключения к сети, доступна только локальная БД</string>
+    <string name="registration">Регистрация</string>
+    <string name="insert_authData">Введите данные регистрации</string>
 </resources>

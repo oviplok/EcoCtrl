@@ -35,4 +35,6 @@
     <string name="no_inf">No results…</string>
     <string name="auth_error">Auth Error</string>
     <string name="no_internet">No internet connection, you use only local DB</string>
+    <string name="registration">Регистрация</string>
+    <string name="insert_authData">Введите данные регистрации</string>
 </resources>

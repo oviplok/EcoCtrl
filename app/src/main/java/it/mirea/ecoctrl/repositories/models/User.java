@@ -1,4 +1,4 @@
-package it.mirea.ecoctrl.models;
+package it.mirea.ecoctrl.repositories.models;
 
 import com.google.firebase.firestore.Exclude;
 
@@ -57,10 +57,6 @@ public class User implements Serializable {
     public static String getCallPath() {
         return callPath;
     }
-
-  //  public static void setCallPath(String callPath) {
-   //     User.callPath = callPath;
-   // }
 
     public boolean isUsrResult() {
         return usrResult;
