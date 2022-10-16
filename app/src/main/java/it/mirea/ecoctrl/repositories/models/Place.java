@@ -28,6 +28,9 @@ public class Place {
     @ColumnInfo(name = "lng")
     public double lng;
 
+    @ColumnInfo(name = "fav")
+    public boolean fav;
+
     public Place(){
     }
 
@@ -49,9 +52,14 @@ public class Place {
         place.setAzdInfo(placeF.getAzdInfo());
         place.setMetanInfo(placeF.getMetanInfo());
         place.setSerdInfo(placeF.getSerdInfo());
+        place.setFav(placeF.isFav());
 
         return place;
     }
+
+    public boolean isFav() { return fav; }
+
+    public void setFav(boolean fav) { this.fav = fav; }
 
     public String getPlace_name() {
         return place_name;

@@ -35,8 +35,6 @@ public class UsrActivity extends AppCompatActivity {
     int back_tap;
     TextView mail,level,pos;
     EditText old_pass,new_pass;
-    //FirebaseFirestore db = FirebaseFirestore.getInstance();
-   // CollectionReference user = db.collection("Users");
     ImageButton back;
     Button change;
 

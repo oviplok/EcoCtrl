@@ -36,13 +36,14 @@ public class PlaceOps {
     }
 
     public static PlaceF insertInfo(String addPlace, String addMetan,
-                                    String addSerd, String addAzd, String addLng, String addLat){
+                                    String addSerd, String addAzd, String addLng, String addLat,boolean fav){
 
         PlaceF placeF = new PlaceF();
         placeF.setPlace_name(addPlace);
         placeF.setAzdInfo(addAzd);
         placeF.setMetanInfo(addMetan);
         placeF.setSerdInfo(addSerd);
+        placeF.setFav(fav);
         if((addLat.equals("") || addLng.equals(""))){
 
         }

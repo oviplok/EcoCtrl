@@ -26,6 +26,8 @@ public class PlaceF implements Serializable {
     private double lng;
     private LatLng pointSee;
 
+    public boolean fav;
+
     public PlaceF(){ }
 
     public PlaceF(String place_name, String metanInfo,
@@ -38,6 +40,10 @@ public class PlaceF implements Serializable {
         this.pointSee=pointSee;
         this.mapResult=mapResult;
     }
+
+    public boolean isFav() { return fav; }
+
+    public void setFav(boolean fav) { this.fav = fav; }
 
     public String getPlace_name() {
         return place_name;

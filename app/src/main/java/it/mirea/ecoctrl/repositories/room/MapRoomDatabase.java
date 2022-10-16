@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.room.DAO.PlaceDAO;
 
-@Database(entities = {Place.class}, version = 7)
+@Database(entities = {Place.class}, version = 8)
 public abstract class MapRoomDatabase extends RoomDatabase {
 
     private static MapRoomDatabase instance;

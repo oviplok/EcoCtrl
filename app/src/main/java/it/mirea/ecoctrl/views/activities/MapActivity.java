@@ -1,5 +1,6 @@
 package it.mirea.ecoctrl.views.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -46,6 +47,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
 
     Button show;
+    ImageButton star;
     ImageButton change;
     ImageButton add;
     ImageButton usr;
@@ -56,6 +58,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     String lvl;
 
     boolean connected = false;
+    boolean searchRes;
+    boolean ex;
 
     private GoogleMap mMap;
     private ActivityMapBinding binding;
@@ -72,6 +76,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        star = findViewById(R.id.starButton);
         usr = findViewById(R.id.userButton);
         infoPlace = findViewById(R.id.infoPlaces);
         show = findViewById(R.id.showPoint);
@@ -140,13 +145,120 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 showAddInfo();
             }
         });
+        star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               showAddFav();
+            }
+        });
+    }
 
+    private void showAddFav() {
+        if (TextUtils.isEmpty(find.getText().toString()) || !searchRes) {
+            Snackbar.make(green, "Ошибка добавления в закладки",
+                    Snackbar.LENGTH_LONG).show();
+        }
+        else{
+            if(connected) {
+
+                Log.e("FavStar","connected");
+                mapViewModel.showPlace(find.getText().toString(), "on", this);
+                Log.e("FavStar","after ViewModel");
+                mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                    @Override
+                    public void onChanged(@Nullable Place place) {
+                        if (place != null) {
+                            mapViewModel.changePlace(place.getPlace_name(),
+                                    place.getMetanInfo(), place.getSerdInfo(),
+                                    place.getAzdInfo(), "on", true);
+                            searchRes = true;
+                            Log.e("FavStar","added");
+                         //   Snackbar.make(green, "add in fav", Snackbar.LENGTH_LONG).show();
+                            star.setImageResource(R.drawable.ic_action_full_star);
+                        } else {
+                            Log.e("FavStar","FireStart");
+                            mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
+                                @Override
+                                public void onChanged(@Nullable PlaceF placeF) {
+                                    if (placeF != null) {
+                                        String Lng = Double.toString(placeF.getLng());
+                                        String Lat = Double.toString(placeF.getLat());
+                                        mapViewModel.AddPlace(placeF.getPlace_name(),
+                                                placeF.getMetanInfo(), placeF.getSerdInfo(),
+                                                placeF.getAzdInfo(), Lng, Lat, true, "on");
+                                       // Snackbar.make(green, "add in fav", Snackbar.LENGTH_LONG).show();
+                                        star.setImageResource(R.drawable.ic_action_full_star);
+                                        searchRes = true;
+                                        Log.e("FavStar","FireEnd");
+                                    } else {
+                                        Snackbar.make(green, "Ошибка добавления в закладки",
+                                                Snackbar.LENGTH_LONG).show();
+                                        searchRes = false;
+                                    }
+                                }
+                            });
+
+                           // Log.e("FavStar","not added");
+                            //Snackbar.make(green, "так",
+                              //      Snackbar.LENGTH_LONG).show();
+                            //searchRes = false;
+                        }
+                    }
+                });
+               // Log.e("FireStar","StartStart");
+               // if (!searchRes) {
+                /*Log.e("FavStar","FireStart");
+                mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
+                    @Override
+                    public void onChanged(@Nullable PlaceF placeF) {
+                        if (placeF != null) {
+                            String Lng = Double.toString(placeF.getLng());
+                            String Lat = Double.toString(placeF.getLat());
+                            mapViewModel.AddPlace(placeF.getPlace_name(),
+                                    placeF.getMetanInfo(), placeF.getSerdInfo(),
+                                    placeF.getAzdInfo(), Lng, Lat, true, "on");
+                            Snackbar.make(green, "add in fav",
+                                    Snackbar.LENGTH_LONG).show();
+                            star.setImageResource(R.drawable.ic_action_full_star);
+                            searchRes = true;
+                            Log.e("FavStar","FireEnd");
+                        } else {
+                            Snackbar.make(green, "Ошибка добавления в закладки",
+                                    Snackbar.LENGTH_LONG).show();
+                            searchRes = false;
+                        }
+                    }
+                });*/
+               // }
+            } else{
+                Log.e("FavStar","no connection");
+                mapViewModel.showPlace(find.getText().toString(), "off", this);
+                Log.e("FavStar","after ViewModel");
+                mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                    @Override
+                    public void onChanged(@Nullable Place place) {
+                        if (place != null) {
+                            mapViewModel.changePlace(place.getPlace_name(),
+                                    place.getMetanInfo(), place.getSerdInfo(),
+                                    place.getAzdInfo(), "on", true);
+                            //Snackbar.make(green, "add in fav", Snackbar.LENGTH_LONG).show();
+                            star.setImageResource(R.drawable.ic_action_full_star);
+                            searchRes = true;
+                        } else {
+                            searchRes = false;
+                           // Snackbar.make(green, "Ошибка добавления в закладки", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+
+        }
 
     }
 
     //Работа поиска
     private void showPoint() {
-
+        searchRes = false;
         Log.e("SearchPart","searching...");
         if (TextUtils.isEmpty(find.getText().toString())) {
             infoPlace.setTextColor(Color.parseColor("#CC0000"));
@@ -159,9 +271,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
                 mapViewModel.showPlace(find.getText().toString(),"off",this);
                 mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                    @SuppressLint("SetTextI18n")
                     @Override
-                    public void onChanged(Place place) {
-                        if (place.getPlace_name()!=null) {
+                    public void onChanged(@Nullable Place place) {
+                        if (place!=null) {
                             infoPlace.setTextColor(Color.parseColor("#FF000000"));
                             infoPlace.setTextSize(20);
                             infoPlace.setText(getString(R.string.metan) + place.getMetanInfo() +
@@ -170,109 +283,74 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             LatLng getPointSee = new LatLng(place.getLat(),place.getLng());
                             mMap.addMarker(new MarkerOptions().position(getPointSee).title(place.getPlace_name()));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
+                            searchRes = true;
                         } else {
                             infoPlace.setTextColor(Color.parseColor("#CC0000"));
                             infoPlace.setTextSize(30);
                             infoPlace.setText(R.string.no_inf);
+                            searchRes = false;
                         }
                     }
                 });
             }
             else {
                 Log.e("SearchPart", "connected");
-
-                mapViewModel.showPlace(find.getText().toString(), "off", this);
+                mapViewModel.showPlace(find.getText().toString(), "on", this);
                 mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
                     @SuppressLint("SetTextI18n")
                     @Override
-                    public void onChanged(Place place) {
-                        if (place.getPlace_name() != null) {
+                    public void onChanged(@Nullable Place place) {
+                        if (place != null) {
                             infoPlace.setTextColor(Color.parseColor("#FF000000"));
                             infoPlace.setTextSize(20);
                             infoPlace.setText(place.getPlace_name() + ":\n" +
                                     getString(R.string.metan) + place.getMetanInfo() +
                                     getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
                             float zoomLevel = 16.0f;
+                            if(place.isFav()){
+                                star.setImageResource(R.drawable.ic_action_full_star);
+                            }
+                            else{
+                                star.setImageResource(R.drawable.ic_action_empty_star);
+                            }
                             LatLng getPointSee = new LatLng(place.getLat(), place.getLng());
                             mMap.addMarker(new MarkerOptions().position(getPointSee).title(place.getPlace_name()));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
-                        } else {
-                            infoPlace.setTextColor(Color.parseColor("#CC0000"));
-                            infoPlace.setTextSize(30);
-                            infoPlace.setText(R.string.no_inf);
+                            searchRes = true;
+                        }
+                        else {
+                            searchRes = false;
                         }
                     }
                 });
-            }
-
-               // mapViewModel.showPlace();
-               /* mapViewModel.showPlace(find.getText().toString(),"off");
-                mapRoomDatabase.placeDAO().getPlace(find.getText().toString()).observe(this, new Observer<List<Place>>() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onChanged(List<Place> places) {
-                        Log.e("SearchPart","starts");
-
-
-                       // String joined = TextUtils.join(", ", places.get(0).getAzdInfo());
-
-                        infoPlace.setTextColor(Color.parseColor("#FF000000"));
-                        infoPlace.setTextSize(20);
-                        infoPlace.setText(places.get(0).getClass().toString());
-                        infoPlace.setText(getString(R.string.metan) + places.get(0) +
-                                getString(R.string.serd) + places.get(0).getSerdInfo() + getString(R.string.azd) + places.get(0).getAzdInfo());
-                        LatLng getPointSee = new LatLng(places.get(0).getLat(),places.get(0).getLng());
-                        float zoomLevel = 16.0f;
-                        mMap.addMarker(new MarkerOptions().position(getPointSee).title(places.get(0).getPlace_name()));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
-                        Log.e("SearchPart","done");*/
-                //});
-               /* mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
-                    @Override
-                    public void onChanged(Place place) {
-                        if (place.getPlace_name()!=null) {
-                            infoPlace.setTextColor(Color.parseColor("#FF000000"));
-                            infoPlace.setTextSize(20);
-                            infoPlace.setText(getString(R.string.metan) + place.getMetanInfo() +
-                                    getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
-                            float zoomLevel = 16.0f;
-                            LatLng getPointSee = new LatLng(place.getLat(),place.getLng());
-                            mMap.addMarker(new MarkerOptions().position(getPointSee).title(place.getPlace_name()));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
-                        } else {
-                            infoPlace.setTextColor(Color.parseColor("#CC0000"));
-                            infoPlace.setTextSize(30);
-                            infoPlace.setText(R.string.no_inf);
+                if(!searchRes){
+                    mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onChanged(PlaceF place) {
+                            if (place.isMapResult()) {
+                                infoPlace.setTextColor(Color.parseColor("#FF000000"));
+                                infoPlace.setTextSize(20);
+                                star.setImageResource(R.drawable.ic_action_empty_star);
+                                infoPlace.setText(getString(R.string.metan) + place.getMetanInfo() +
+                                        getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
+                                float zoomLevel = 16.0f;
+                                mMap.addMarker(new MarkerOptions().position(place.getPointSee()).title(place.getPlace_name()));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getPointSee(), zoomLevel));
+                                place.setMapResult(false);
+                                searchRes = true;
+                            } else {
+                                infoPlace.setTextColor(Color.parseColor("#CC0000"));
+                                infoPlace.setTextSize(30);
+                                infoPlace.setText(R.string.no_inf);
+                                searchRes = false;
+                            }
                         }
-                    }
-                });*/
-              /*  mapViewModel.showPlace(find.getText().toString(),"on");
-                mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceFire>() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onChanged(PlaceFire place) {
-                        if (place.isMapResult()) {
-                            infoPlace.setTextColor(Color.parseColor("#FF000000"));
-                            infoPlace.setTextSize(20);
-                            infoPlace.setText(getString(R.string.metan) + place.getMetanInfo() +
-                                    getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
-                            float zoomLevel = 16.0f;
-                            mMap.addMarker(new MarkerOptions().position(place.getPointSee()).title(place.getPlace_name()));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getPointSee(), zoomLevel));
-                            place.setMapResult(false);
-                        } else {
-                            infoPlace.setTextColor(Color.parseColor("#CC0000"));
-                            infoPlace.setTextSize(30);
-                            infoPlace.setText(R.string.no_inf);
-                        }
-                    }
-                });*/
-
+                    });
+                }
             }
-
         }
-
-   // }
+    }
 
     private void showChangeInfo() {
         AlertDialog.Builder ch_wind = new AlertDialog.Builder(this);
@@ -344,13 +422,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
                     mapViewModel.changePlace(chPlace.getText().toString(),
                             chMetan.getText().toString(), chSerd.getText().toString(),
-                            chAzd.getText().toString(),"off");
+                            chAzd.getText().toString(),"off",false);
 
                 }
                 else {
                     mapViewModel.changePlace(chPlace.getText().toString(),
                             chMetan.getText().toString(), chSerd.getText().toString(),
-                            chAzd.getText().toString(),"on");
+                            chAzd.getText().toString(),"on",false);
 
                     mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
                         @Override
@@ -455,7 +533,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     Log.e("MapAct","not connected");
                     mapViewModel.AddPlace(AddPlace.getText().toString(),
                             AddMetan.getText().toString(), AddSerd.getText().toString(), AddAzd.getText().toString(),
-                            AddLng.getText().toString(), AddLng.getText().toString(),"off");
+                            AddLng.getText().toString(), AddLng.getText().toString(),false,"off");
 
 
                 }
@@ -463,7 +541,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     Log.e("MapAct","connected");
                     mapViewModel.AddPlace(AddPlace.getText().toString(),
                             AddMetan.getText().toString(), AddSerd.getText().toString(), AddAzd.getText().toString(),
-                            AddLng.getText().toString(), AddLng.getText().toString(),"on");
+                            AddLng.getText().toString(), AddLng.getText().toString(),false,"on");
                     mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
                         @Override
                         public void onChanged(PlaceF place) {
@@ -487,5 +565,4 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         });
         ch_wind.show();
     }
-
 }

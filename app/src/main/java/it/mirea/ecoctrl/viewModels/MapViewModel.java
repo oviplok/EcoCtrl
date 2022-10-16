@@ -26,12 +26,7 @@ public class MapViewModel extends AndroidViewModel {
 
     public LiveData<Place> placeLiveData;
     public LiveData<PlaceF> placeFireLiveData;
-    //private final
-  //  public LiveData<List<Place>> getPlace;
-   // private final LiveData<List<Place>> mAllWords;
-    private final MutableLiveData<String> toSee = new MutableLiveData<>();
-    //private final LiveData<List<Place>> places = Transformations.switchMap(toSee, String See ->
-    //        mapRoomRepository.findPlace(See));
+    //private final MutableLiveData<String> toSee = new MutableLiveData<>();
 
 
     public LiveData<Place> getPlaceLiveData() {
@@ -46,34 +41,29 @@ public class MapViewModel extends AndroidViewModel {
         super(application);
         mapRoomRepository = new MapRoomRepository(application);
         mapFireBaseRepository = new MapFireBaseRepository();
-        //getPlace= mapFireBaseRepository.g
-
     }
 
-    public void showPlace(String search,String intern,LifecycleOwner owner) {
+    public void showPlace(String search, String intern, LifecycleOwner owner) {
         if(intern.equals("off")){
             placeLiveData = mapRoomRepository.findPlace(search, owner);
 
         }else
         {
+            placeFireLiveData = mapFireBaseRepository.SearchPlace(search);
             placeLiveData = mapRoomRepository.findPlace(search, owner);
-          //  mapRoomRepository.findPlace(search, owner);
-           // placeFireLiveData = mapFireBaseRepository.SearchPlace(search);
         }
     }
 
 
-    public void changePlace(String chPlace, String chMetan, String chSerd, String chAzd,String intern) {
+    public void changePlace(String chPlace, String chMetan,
+                            String chSerd, String chAzd,String intern,boolean fav) {
         Place place=new Place();
-        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,"","");
+        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,"","",fav);
         if(intern.equals("off"))
         {
-            //placeOp.insertInfo(chPlace,chMetan,chSerd,chAzd,"","");
             mapRoomRepository.ChangePlace(placeF);
-           // placeOp.insertInfo(chPlace);
         }
         else {
-           // placeOp.insertInfo(chPlace,chMetan,chSerd,chAzd,"","");
             mapRoomRepository.ChangePlace(placeF);
             Map<String, Object> InfoChangeMap = placeOps.MakeMap(chPlace,chMetan,chSerd,chAzd,"","");
             placeFireLiveData = mapFireBaseRepository.ChangePlace(chPlace, InfoChangeMap);
@@ -81,10 +71,9 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     public void AddPlace(String addPlace, String addMetan,
-                         String addSerd, String addAzd, String addLng, String addLat,String intern) {
-        //Place place = new Place();
+                         String addSerd, String addAzd, String addLng, String addLat,boolean fav, String intern) {
         Log.e("AddPlace",addPlace);
-        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat);
+        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat,fav);
 
         if(intern.equals("off"))
         {
@@ -97,7 +86,6 @@ public class MapViewModel extends AndroidViewModel {
 
             mapRoomRepository.AddPlace(placeF);
             placeFireLiveData = mapFireBaseRepository.AddPlace(addPlace,InfoChangeMap);
-          //  Log.e("AddPlaceIN","fire_oke");
             }
     }
 }

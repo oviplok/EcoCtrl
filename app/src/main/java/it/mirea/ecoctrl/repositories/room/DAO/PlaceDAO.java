@@ -24,16 +24,13 @@ public interface PlaceDAO {
     @Delete
     void deletePlace(Place place);
 
-  //  @Query("DELETE FROM places")
-//    void deleteAllPlaces(Place place);
-
     @Query("SELECT * FROM places")
     LiveData<List<Place>> getAllPlaces();
 
     @Query("SELECT * FROM places WHERE place LIKE :place")
     LiveData<Place> getPlace(String place);
-    //LiveData
-   // @Query("SELECT * FROM places WHERE place_name = % || :id || %")
-    //Place getPlace(String id);
+
+    //@Query("SELECT * FROM places WHERE fav LIKE :fav")
+   // LiveData<List<Place>> findFav(boolean fav);
 
 }

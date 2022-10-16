@@ -27,36 +27,14 @@ public class MapRoomRepository {
     }
     public void getAllPlaces(){
         Log.e("msg",allPlaces.toString());
-        //return allPlaces;
     }
-    //MutableLiveData<Place>
 
 
     public LiveData<Place> findPlace(String place_name,LifecycleOwner owner) {
         searchPlace = placeDAO.getPlace(place_name);
         MutableLiveData<Place> mapLiveData = new MutableLiveData<>();
-        //MapRoomDatabase.databaseWriteExecutor.execute(() -> {
-          //         placeDAO.getPlace(place_name);
-        //});
-       // mapLiveData.setValue(List<Place> );
-       /* searchPlace.observe(owner, (Place places) -> {
-            mapLiveData.setValue(places.stream()
-                    .filter(place -> place_name.equals(place.getPlace_name()))
-                    .findAny()
-                    .orElse(null)
-            );
-        });*/
-        //mapLiveData.setValue(placeDAO.getPlace(place_name));
         return searchPlace;
     }
-       /* allPlaces.observe(owner, (List<Place> places) -> {
-            mapLiveData.setValue(places.stream()
-                    .filter(place -> place_name.equals(place.getPlace_name()))
-                    .findAny()
-                    .orElse(null)
-            );
-    });*/
-       // mapLiveData.setValue();
 
 
 
