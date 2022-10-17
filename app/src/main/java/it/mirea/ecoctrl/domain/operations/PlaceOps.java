@@ -1,4 +1,4 @@
-package it.mirea.ecoctrl.domain;
+package it.mirea.ecoctrl.domain.operations;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.domain.models.PlaceF;
 
 public class PlaceOps {
 
@@ -43,7 +43,7 @@ public class PlaceOps {
         placeF.setAzdInfo(addAzd);
         placeF.setMetanInfo(addMetan);
         placeF.setSerdInfo(addSerd);
-        placeF.setFav(fav);
+       // placeF.setFav(fav);
         if((addLat.equals("") || addLng.equals(""))){
 
         }

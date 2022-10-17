@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 import it.mirea.ecoctrl.repositories.models.Place;
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.domain.models.PlaceF;
 import it.mirea.ecoctrl.repositories.room.DAO.PlaceDAO;
 
 public class MapRoomRepository {
@@ -25,18 +25,13 @@ public class MapRoomRepository {
 
 
     }
-    public void getAllPlaces(){
-        Log.e("msg",allPlaces.toString());
-    }
-
+    public LiveData<List<Place>> getAllPlaces(){ return allPlaces; }
 
     public LiveData<Place> findPlace(String place_name,LifecycleOwner owner) {
         searchPlace = placeDAO.getPlace(place_name);
         MutableLiveData<Place> mapLiveData = new MutableLiveData<>();
         return searchPlace;
     }
-
-
 
     public void  AddPlace(PlaceF placeF){
        Place place = Place.convertFromFire(placeF);

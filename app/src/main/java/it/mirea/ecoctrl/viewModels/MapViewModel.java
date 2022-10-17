@@ -7,14 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import java.util.Map;
 
-import it.mirea.ecoctrl.domain.PlaceOps;
+import it.mirea.ecoctrl.domain.operations.PlaceOps;
 import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.fireBase.MapFireBaseRepository;
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.domain.models.PlaceF;
 import it.mirea.ecoctrl.repositories.room.MapRoomRepository;
 
 public class MapViewModel extends AndroidViewModel {
@@ -25,13 +24,8 @@ public class MapViewModel extends AndroidViewModel {
 
 
     public LiveData<Place> placeLiveData;
+   // public LiveData<Place> placeFavLiveData;
     public LiveData<PlaceF> placeFireLiveData;
-    //private final MutableLiveData<String> toSee = new MutableLiveData<>();
-
-
-    public LiveData<Place> getPlaceLiveData() {
-        return placeLiveData;
-    }
 
     public void showAll(){
         mapRoomRepository.getAllPlaces();
@@ -44,14 +38,14 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     public void showPlace(String search, String intern, LifecycleOwner owner) {
-        if(intern.equals("off")){
-            placeLiveData = mapRoomRepository.findPlace(search, owner);
 
-        }else
-        {
-            placeFireLiveData = mapFireBaseRepository.SearchPlace(search);
-            placeLiveData = mapRoomRepository.findPlace(search, owner);
-        }
+            if (intern.equals("off")) {
+                placeLiveData = mapRoomRepository.findPlace(search, owner);
+
+            } else {
+                placeFireLiveData = mapFireBaseRepository.SearchPlace(search);
+                placeLiveData = mapRoomRepository.findPlace(search, owner);
+            }
     }
 
 

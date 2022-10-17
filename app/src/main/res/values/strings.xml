@@ -37,4 +37,6 @@
     <string name="no_internet">No internet connection, you use only local DB</string>
     <string name="registration">Регистрация</string>
     <string name="insert_authData">Введите данные регистрации</string>
+    <string name="back_to_map">Snap back to reality</string>
+    <string name="more">Подробнее…</string>
 </resources>

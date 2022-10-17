@@ -38,4 +38,6 @@
     <string name="no_internet">Нет подключения к сети, доступна только локальная БД</string>
     <string name="registration">Регистрация</string>
     <string name="insert_authData">Введите данные регистрации</string>
+    <string name="back_to_map">Snap back to reality</string>
+    <string name="more">Подробнее…</string>
 </resources>

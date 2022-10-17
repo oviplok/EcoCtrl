@@ -1,4 +1,4 @@
-package it.mirea.ecoctrl.repositories.models;
+package it.mirea.ecoctrl.domain.models;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -26,7 +26,7 @@ public class PlaceF implements Serializable {
     private double lng;
     private LatLng pointSee;
 
-    public boolean fav;
+    //public boolean fav=false;
 
     public PlaceF(){ }
 
@@ -41,9 +41,9 @@ public class PlaceF implements Serializable {
         this.mapResult=mapResult;
     }
 
-    public boolean isFav() { return fav; }
+    //public boolean isFav() { return fav; }
 
-    public void setFav(boolean fav) { this.fav = fav; }
+   // public void setFav(boolean fav) { this.fav = fav; }
 
     public String getPlace_name() {
         return place_name;

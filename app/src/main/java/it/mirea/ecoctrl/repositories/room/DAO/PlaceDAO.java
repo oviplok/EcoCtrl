@@ -30,7 +30,7 @@ public interface PlaceDAO {
     @Query("SELECT * FROM places WHERE place LIKE :place")
     LiveData<Place> getPlace(String place);
 
-    //@Query("SELECT * FROM places WHERE fav LIKE :fav")
-   // LiveData<List<Place>> findFav(boolean fav);
+   // @Query("SELECT * FROM places WHERE fav>0")
+   // LiveData<List<Place>> getFav();
 
 }
