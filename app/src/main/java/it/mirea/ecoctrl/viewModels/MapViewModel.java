@@ -50,9 +50,11 @@ public class MapViewModel extends AndroidViewModel {
 
 
     public void changePlace(String chPlace, String chMetan,
-                            String chSerd, String chAzd,String intern,boolean fav) {
-        Place place=new Place();
-        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,"","",fav);
+                            String chSerd, String chAzd,String intern,double chLng,double chLat) {
+       // Place place=new Place();
+        String Lng=""+chLng;
+        String Lat=""+chLat;
+        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,Lng,Lat);
         if(intern.equals("off"))
         {
             mapRoomRepository.ChangePlace(placeF);
@@ -67,7 +69,7 @@ public class MapViewModel extends AndroidViewModel {
     public void AddPlace(String addPlace, String addMetan,
                          String addSerd, String addAzd, String addLng, String addLat,boolean fav, String intern) {
         Log.e("AddPlace",addPlace);
-        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat,fav);
+        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat);
 
         if(intern.equals("off"))
         {

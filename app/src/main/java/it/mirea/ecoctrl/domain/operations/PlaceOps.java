@@ -36,7 +36,7 @@ public class PlaceOps {
     }
 
     public static PlaceF insertInfo(String addPlace, String addMetan,
-                                    String addSerd, String addAzd, String addLng, String addLat,boolean fav){
+                                    String addSerd, String addAzd, String addLng, String addLat){
 
         PlaceF placeF = new PlaceF();
         placeF.setPlace_name(addPlace);
@@ -44,15 +44,15 @@ public class PlaceOps {
         placeF.setMetanInfo(addMetan);
         placeF.setSerdInfo(addSerd);
        // placeF.setFav(fav);
-        if((addLat.equals("") || addLng.equals(""))){
+       // if((addLat.equals("") || addLng.equals(""))){
 
-        }
-        else{
+        //}
+       // else{
             double Lng = Double.parseDouble(addLng);
             double Lat = Double.parseDouble(addLat);
             placeF.setLat(Lat);
             placeF.setLng(Lng);
-        }
+        //}
         Log.e("AddOper", placeF.getPlace_name());
         return placeF;
 

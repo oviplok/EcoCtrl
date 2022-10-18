@@ -505,17 +505,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 }
 
                 if(!connected || email.equals("anon") || lvl.equals("red")){
-
-                    mapViewModel.changePlace(chPlace.getText().toString(),
-                            chMetan.getText().toString(), chSerd.getText().toString(),
-                            chAzd.getText().toString(),"off",false);
+                    mapViewModel.showPlace(chPlace.getText().toString(),"on",MapActivity.this);
+                    mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                        @Override
+                        public void onChanged(Place place) {
+                            mapViewModel.changePlace(chPlace.getText().toString(),
+                                    chMetan.getText().toString(), chSerd.getText().toString(),
+                                    chAzd.getText().toString(),"off",place.getLng(),place.getLat());
+                        }
+                    });
 
                 }
                 else {
-                    mapViewModel.changePlace(chPlace.getText().toString(),
-                            chMetan.getText().toString(), chSerd.getText().toString(),
-                            chAzd.getText().toString(),"on",false);
 
+                    mapViewModel.showPlace(chPlace.getText().toString(),"on",MapActivity.this);
+                    mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
+                        @Override
+                        public void onChanged(Place place) {
+                            mapViewModel.changePlace(chPlace.getText().toString(),
+                                    chMetan.getText().toString(), chSerd.getText().toString(),
+                                    chAzd.getText().toString(),"on",place.getLng(),place.getLat());
+                        }
+                    });
                     mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
                         @Override
                         public void onChanged(PlaceF place) {
