@@ -1,4 +1,4 @@
-package it.mirea.ecoctrl.repositories;
+package it.mirea.ecoctrl.di;
 
 import android.os.Handler;
 import android.os.Looper;

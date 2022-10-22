@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.mirea.ecoctrl.domain.models.User;
+import it.mirea.ecoctrl.repositories.models.User;
 
 public class UserFireBaseRepository {
 

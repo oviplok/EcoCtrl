@@ -23,7 +23,7 @@ import android.widget.RelativeLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.mirea.ecoctrl.R;
-import it.mirea.ecoctrl.domain.models.User;
+import it.mirea.ecoctrl.repositories.models.User;
 import it.mirea.ecoctrl.viewModels.MainViewModel;
 
 

@@ -30,12 +30,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
-////import it.mirea.ecoctrl.databinding.ActivityMapGreenBinding;
+//import it.mirea.ecoctrl.databinding.ActivityMapGreenBinding;
 
 import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.databinding.ActivityMapBinding;
+import it.mirea.ecoctrl.di.ServiceLocator;
 import it.mirea.ecoctrl.repositories.models.Place;
-import it.mirea.ecoctrl.domain.models.PlaceF;
+import it.mirea.ecoctrl.repositories.models.PlaceF;
 import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.MapViewModel;
 
@@ -68,7 +69,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initMapViewModel();
-        //mapViewModel.getPlaceLiveData();
+
+        ServiceLocator.getInstance().initBase(getApplication());
+
         binding = ActivityMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         green = findViewById(R.id.map_action);
@@ -372,8 +375,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             infoPlace.setTextColor(Color.parseColor("#FF000000"));
                             infoPlace.setTextSize(20);
                             LatLng getPointSee = new LatLng(place.getLat(), place.getLng());
-                            infoPlace.setText(place.getPlace_name() + ":\n" +
-                                    getString(R.string.metan) + place.getMetanInfo() +
+                            infoPlace.setText(getString(R.string.metan) + place.getMetanInfo() +
                                     getString(R.string.serd) + place.getSerdInfo() + getString(R.string.azd) + place.getAzdInfo());
                             float zoomLevel = 16.0f;
                            // fav=place.isFav();

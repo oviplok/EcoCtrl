@@ -15,21 +15,20 @@ import it.mirea.ecoctrl.repositories.room.DAO.PlaceDAO;
 
 @Database(entities = {Place.class}, version = 9)
 public abstract class MapRoomDatabase extends RoomDatabase {
+    public abstract PlaceDAO placeDAO();
 
-    private static MapRoomDatabase instance;
+    private static volatile MapRoomDatabase instance;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    public abstract PlaceDAO placeDAO();
-
-    public static synchronized MapRoomDatabase getInstance(Context context){
+    public static MapRoomDatabase getInstance(Context context){
         if (instance == null) {
             synchronized (MapRoomDatabase.class) {
                 if (instance == null) {
                     instance = Room.databaseBuilder(context.getApplicationContext(),
                             MapRoomDatabase.class, "place_database")
-                            .fallbackToDestructiveMigration()
+                            //.fallbackToDestructiveMigration()
                             //.allowMainThreadQueries()
                             .build();
                 }

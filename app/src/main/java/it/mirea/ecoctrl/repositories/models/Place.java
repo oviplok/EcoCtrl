@@ -6,8 +6,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import it.mirea.ecoctrl.domain.models.PlaceF;
-
 @Entity(tableName = "places")
 public class Place {
     @NonNull

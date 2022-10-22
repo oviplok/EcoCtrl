@@ -7,7 +7,7 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.mirea.ecoctrl.domain.models.PlaceF;
+import it.mirea.ecoctrl.repositories.models.PlaceF;
 
 public class PlaceOps {
 

@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import it.mirea.ecoctrl.domain.models.User;
+import it.mirea.ecoctrl.repositories.models.User;
 import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.viewModels.UsrViewModel;
 

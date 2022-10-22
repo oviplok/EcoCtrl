@@ -1,8 +1,8 @@
 package it.mirea.ecoctrl.views.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +15,9 @@ import android.widget.Button;
 import java.util.List;
 
 import it.mirea.ecoctrl.R;
-import it.mirea.ecoctrl.repositories.AppExecutors;
+import it.mirea.ecoctrl.di.ServiceLocator;
+import it.mirea.ecoctrl.di.AppExecutors;
+import it.mirea.ecoctrl.repositories.RepoTasks;
 import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.PlistViewModel;
@@ -23,6 +25,7 @@ import it.mirea.ecoctrl.views.adapters.PlaceListAdapter;
 
 public class PlistActivity extends AppCompatActivity {
     PlistViewModel plistViewModel;
+    RepoTasks repository;
     private PlaceListAdapter listAdapter;
     private MapRoomDatabase mapRoomDatabase;
     Button back_map;
@@ -33,6 +36,8 @@ public class PlistActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initPlistViewModel();
+        ServiceLocator.getInstance().initBase(getApplication());
         setContentView(R.layout.activity_plist);
         email = getIntent().getStringExtra("email").toString();
         lvl = getIntent().getStringExtra("lvl").toString();
@@ -59,16 +64,17 @@ public class PlistActivity extends AppCompatActivity {
                 return false;
             }
 
-            // Called when a user swipes left or right on a ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // Here is where you'll implement swipe to delete
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
                         List<Place> tasks = listAdapter.getData();
-                        mapRoomDatabase.placeDAO().deletePlace(tasks.get(position));
+                        plistViewModel.deletePlace(position,tasks);
+
+                        //repository.deletePlace(tasks.get(position));
+
 
                     }
                 });
@@ -77,17 +83,25 @@ public class PlistActivity extends AppCompatActivity {
         retrievePlaces();
     }
 
+    private void initPlistViewModel() {
+        plistViewModel = new ViewModelProvider(this)
+                .get(PlistViewModel.class);
+    }
+
     private void retrievePlaces() {
-        mapRoomDatabase.placeDAO().getAllPlaces().observe(this, new Observer<List<Place>>() {
+        plistViewModel.getAllPlaces();
+        plistViewModel.AllLiveData.observe(this, new Observer<List<Place>>() {
+            @Override
+            public void onChanged(List<Place> places) {
+                listAdapter.setData(places);
+            }
+        });
+
+        /*repository.getAllPlaces().observe(this, new Observer<List<Place>>() {
             @Override
             public void onChanged(@NonNull List<Place> places) {
                 listAdapter.setData(places);
             }
-        });
+        });*/
     }
-
-    // private void makeList() {
-
-
-       // plistViewModel.getAll().observe();
 }

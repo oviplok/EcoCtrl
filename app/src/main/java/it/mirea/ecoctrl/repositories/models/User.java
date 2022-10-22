@@ -1,4 +1,4 @@
-package it.mirea.ecoctrl.domain.models;
+package it.mirea.ecoctrl.repositories.models;
 
 import com.google.firebase.firestore.Exclude;
 

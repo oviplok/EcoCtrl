@@ -61,6 +61,8 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.AllV
         notifyDataSetChanged();
     }
 
+    //public void deleteData(){}
+
     public List<Place> getData(){ return data; }
 
     public class AllViewHolder extends RecyclerView.ViewHolder {
