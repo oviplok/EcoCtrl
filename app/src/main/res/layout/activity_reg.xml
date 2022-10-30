@@ -19,7 +19,7 @@
         android:drawableLeft="@drawable/ic_action_user"
         android:ems="10"
         android:fontFamily="@font/comfortaa"
-        android:hint="@string/insert_level"
+        android:hint="@string/insert_job"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         tools:ignore="UnknownIdInLayout" />

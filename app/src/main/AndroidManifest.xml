@@ -4,6 +4,12 @@
     package="it.mirea.ecoctrl"
     tools:ignore="CoarseFineLocation">
 
+    <uses-sdk
+        android:minSdkVersion="29"
+        android:targetSdkVersion="30" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
@@ -16,13 +22,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoCtrl">
         <activity
+            android:name=".views.activities.PlistActivity"
+            android:exported="true" />
+        <activity
             android:name=".views.activities.UsrActivity"
             android:exported="true" />
         <activity
             android:name=".views.activities.MapActivity"
-            android:exported="true" />
-        <activity
-            android:name=".cutContent.MapActivityRed"
             android:exported="true" />
         <activity
             android:name=".views.activities.MainActivity"

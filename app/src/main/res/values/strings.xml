@@ -5,17 +5,17 @@
     <string name="registr">Registration</string>
     <string name="insert_pass">Write password</string>
     <string name="insert_email">Write email</string>
-    <string name="insert_level">Write your position</string>
+    <string name="insert_job">Write your position</string>
     <string name="go_back">Go back</string>
-    <string name="places">Search for a business or place</string>
+    <string name="places">Search for a place</string>
     <string name="search">Search</string>
     <string name="maybe">Here will be information… Maybe</string>
     <string name="change_info">Change</string>
     <string name="district">Write location</string>
-    <string name="old_pass">old password</string>
-    <string name="new_pass">new password</string>
+    <string name="old_pass">Old password</string>
+    <string name="new_pass">New password</string>
     <string name="change_pass">Change password</string>
-    <string name="inf_acc">You entered as:</string>
+    <string name="inf_acc">Your information: </string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -25,4 +25,18 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="metan">\"Methane: \"</string>
+    <string name="serd">\"\nSulphur dioxide: \"</string>
+    <string name="azd">\"\nNitrogen dioxide: \"</string>
+    <string name="set_name">search line is empty!</string>
+    <string name="your_email">Your email: </string>
+    <string name="your_lvl">Your lvl: </string>
+    <string name="your_job">Your job: </string>
+    <string name="no_inf">No results…</string>
+    <string name="auth_error">Auth Error</string>
+    <string name="no_internet">No internet connection, you use only local DB</string>
+    <string name="registration">Регистрация</string>
+    <string name="insert_authData">Введите данные регистрации</string>
+    <string name="back_to_map">Snap back to reality</string>
+    <string name="more">Подробнее…</string>
 </resources>

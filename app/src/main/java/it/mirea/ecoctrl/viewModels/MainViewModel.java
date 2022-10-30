@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import it.mirea.ecoctrl.models.User;
-import it.mirea.ecoctrl.repositories.UserFireBaseRepository;
+import it.mirea.ecoctrl.repositories.models.User;
+import it.mirea.ecoctrl.repositories.fireBase.UserFireBaseRepository;
 
 public class MainViewModel extends AndroidViewModel {
     private UserFireBaseRepository userFireBaseRepository;
@@ -21,7 +21,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public void LogInWindow(String email,String password) {
 
-        if(email == "anon"){
+        if(email.equals("anon")){
             userLiveData = userFireBaseRepository.AnonLogIn();
         }
         else {

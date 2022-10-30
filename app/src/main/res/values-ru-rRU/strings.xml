@@ -6,9 +6,9 @@
     <string name="registr">Регитсрация</string>
     <string name="insert_pass">Введите пароль</string>
     <string name="insert_email">Введите почту</string>
-    <string name="insert_level">Введите должность</string>
+    <string name="insert_job">Введите должность</string>
     <string name="go_back">Вернуться</string>
-    <string name="places">Поиск предприятия или места</string>
+    <string name="places">Поиск места</string>
     <string name="search">Поиск</string>
     <string name="maybe">Тут будут данные… Возможно</string>
     <string name="change_info">Изменить</string>
@@ -26,4 +26,18 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="metan">\"Метан: \"</string>
+    <string name="serd">\"\nДиоксид серы: \"</string>
+    <string name="azd">\"\nДиоксид азота: \"</string>
+    <string name="set_name">Введите название в поиск!</string>
+    <string name="your_email">\Ваша почта: \</string>
+    <string name="your_lvl">\Ваш уровень доступа: \</string>
+    <string name="your_job">\Должность: \</string>
+    <string name="no_inf">Ничего не найдено…</string>
+    <string name="auth_error">Ошибка авторизации</string>
+    <string name="no_internet">Нет подключения к сети, доступна только локальная БД</string>
+    <string name="registration">Регистрация</string>
+    <string name="insert_authData">Введите данные регистрации</string>
+    <string name="back_to_map">Snap back to reality</string>
+    <string name="more">Подробнее…</string>
 </resources>
