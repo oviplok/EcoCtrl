@@ -79,7 +79,6 @@ public class MockBase implements RepoTasks {
     public void addPlace(PlaceF placeF) {
         Place place = Place.convertFromFire(placeF);
         list.add(place);
-
         data.setValue(list);
     }
 
@@ -92,9 +91,8 @@ public class MockBase implements RepoTasks {
     }
 
     @Override
-    public void deletePlace(Place place) {
+    public void deletePlace(PlaceF place) {
         list.remove(place);
-
         data.setValue(list);
     }
 

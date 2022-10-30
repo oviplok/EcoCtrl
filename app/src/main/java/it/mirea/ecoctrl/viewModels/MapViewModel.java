@@ -16,15 +16,17 @@ import it.mirea.ecoctrl.repositories.RepoTasks;
 import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.fireBase.MapFireBaseRepository;
 import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.repositories.room.MapRoomRepository;
 
 public class MapViewModel extends AndroidViewModel {
     PlaceOps placeOps =new PlaceOps();
     //private MapRoomRepository mapRoomRepository;
     RepoTasks repository;
     private MapFireBaseRepository mapFireBaseRepository;
+    Place place;
+    PlaceF placeF;
 
-
-
+    public LiveData<Place> shareLiveData;
     public LiveData<Place> placeLiveData;
     public LiveData<PlaceF> placeFireLiveData;
 
@@ -33,20 +35,17 @@ public class MapViewModel extends AndroidViewModel {
         super(application);
         ServiceLocator.getInstance().initBase(application);
         this.repository = ServiceLocator.getInstance().getRepository();
-        //mapRoomRepository = new MapRoomRepository(application);
         mapFireBaseRepository = new MapFireBaseRepository();
     }
 
     public void showPlace(String search, String intern, LifecycleOwner owner) {
 
             if (intern.equals("off")) {
-                placeLiveData = repository.findPlace(search, owner);
-              //  placeLiveData = mapRoomRepository.findPlace(search, owner);
+                placeLiveData = ServiceLocator.getInstance().getRepository().findPlace(search, owner);
 
             } else {
                 placeFireLiveData = mapFireBaseRepository.SearchPlace(search);
-             //   placeLiveData = mapRoomRepository.findPlace(search, owner);
-                placeLiveData = repository.findPlace(search, owner);
+                placeLiveData = ServiceLocator.getInstance().getRepository().findPlace(search, owner);
             }
     }
 
@@ -91,5 +90,14 @@ public class MapViewModel extends AndroidViewModel {
             //mapRoomRepository.addPlace(placeF);
             placeFireLiveData = mapFireBaseRepository.AddPlace(addPlace,InfoChangeMap);
             }
+    }
+
+    public void setPlace(Place place) {
+       // shareLiveData=place;
+        //this.placeF=place;
+    }
+
+    public Place getPlace(){
+        return place;
     }
 }

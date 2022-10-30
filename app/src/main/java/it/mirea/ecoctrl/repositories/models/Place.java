@@ -5,9 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import com.google.gson.Gson;
+import java.util.List;
 
 @Entity(tableName = "places")
-public class Place {
+public class Place extends PlaceF{
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "place")
@@ -28,18 +30,20 @@ public class Place {
     @ColumnInfo(name = "lng")
     public double lng;
 
-  //  @ColumnInfo(name = "fav")
-    //public boolean fav;
+    @ColumnInfo(name = "images")
+    private String images;
 
     public Place(){
     }
 
     public Place(String place_name, String metanInfo,
-                 String serdInfo,String azdInfo){
+                 String serdInfo,String azdInfo,double lat,double lng){
 
         this.place_name=place_name;
         this.metanInfo=metanInfo;
         this.serdInfo=serdInfo;
+        this.lat=lat;
+        this.lng=lng;
         this.azdInfo=azdInfo;
     }
 
@@ -52,14 +56,33 @@ public class Place {
         place.setAzdInfo(placeF.getAzdInfo());
         place.setMetanInfo(placeF.getMetanInfo());
         place.setSerdInfo(placeF.getSerdInfo());
-       // place.setFav(placeF.isFav());
+        place.setImagesF(placeF.getImagesF());
 
         return place;
     }
 
-   // public boolean isFav() { return fav; }
+    public String getImages() {
+        return images;
+    }
 
-    //public void setFav(boolean fav) { this.fav = fav; }
+    public void setImages(String imagesDTO) {
+        this.images = imagesDTO;
+        super.setImagesF(new Gson().fromJson(this.images, List.class));
+    }
+
+    @Override
+    public List<String> getImagesF() {
+        if (super.getImagesF() == null || super.getImagesF().isEmpty()) {
+            super.setImagesF(new Gson().fromJson(this.images, List.class));
+        }
+        return super.getImagesF();
+    }
+
+    @Override
+    public void setImagesF(List<String> images) {
+        super.setImagesF(images);
+        this.images = new Gson().toJson(images);
+    }
 
     public String getPlace_name() {
         return place_name;

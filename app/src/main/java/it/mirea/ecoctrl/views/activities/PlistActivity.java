@@ -19,6 +19,7 @@ import it.mirea.ecoctrl.di.ServiceLocator;
 import it.mirea.ecoctrl.di.AppExecutors;
 import it.mirea.ecoctrl.repositories.RepoTasks;
 import it.mirea.ecoctrl.repositories.models.Place;
+import it.mirea.ecoctrl.repositories.models.PlaceF;
 import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.PlistViewModel;
 import it.mirea.ecoctrl.views.adapters.PlaceListAdapter;
@@ -32,7 +33,7 @@ public class PlistActivity extends AppCompatActivity {
     RecyclerView all_plcs;
     String email;
     String lvl;
-    List<Place> placess;
+    List<PlaceF> placess;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class PlistActivity extends AppCompatActivity {
             }
         });
 
-        listAdapter= new PlaceListAdapter(placess,this);
+        listAdapter= new PlaceListAdapter(placess,this,null);
         all_plcs.setAdapter(listAdapter);
         mapRoomDatabase = MapRoomDatabase.getInstance(getApplicationContext());
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -70,11 +71,8 @@ public class PlistActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
-                        List<Place> tasks = listAdapter.getData();
+                        List<PlaceF> tasks = listAdapter.getData();
                         plistViewModel.deletePlace(position,tasks);
-
-                        //repository.deletePlace(tasks.get(position));
-
 
                     }
                 });
@@ -90,9 +88,9 @@ public class PlistActivity extends AppCompatActivity {
 
     private void retrievePlaces() {
         plistViewModel.getAllPlaces();
-        plistViewModel.AllLiveData.observe(this, new Observer<List<Place>>() {
+        plistViewModel.AllLiveData.observe(this, new Observer<List<PlaceF>>() {
             @Override
-            public void onChanged(List<Place> places) {
+            public void onChanged(List<PlaceF> places) {
                 listAdapter.setData(places);
             }
         });

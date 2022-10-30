@@ -11,8 +11,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ import android.widget.RelativeLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.mirea.ecoctrl.R;
+import it.mirea.ecoctrl.di.ServiceLocator;
+import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.models.User;
 import it.mirea.ecoctrl.viewModels.MainViewModel;
 
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String LVL = "lvl";
     private MainViewModel mainViewModel;
 
-
+    String income_place;
     Button to_reg, to_login;
     boolean connected = false;
     RelativeLayout root;
@@ -54,25 +58,37 @@ public class MainActivity extends AppCompatActivity {
         to_login = findViewById(R.id.to_login);
         root = findViewById(R.id.root_action);
 
+        Uri income = getIntent().getData();
+
+        if (income != null) {
+            String[] parts = income.toString().split("/");
+            income_place = parts[parts.length - 1];
+            Log.e("Map_app", income_place);
+        }
+       // Log.e("Place_app", "ServiceLocator.getInstance().getGson().toJson(income)");
+       // Log.e("Place_app", ServiceLocator.getInstance().getGson().toJson(income));
+
         //CONNECTION *****WIP*****
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
             //we are connected to a network
             connected = true;
-
+            if (income_place==null){
+                income_place="";
+            }
             if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
                 mainViewModel.LogInWindow(Email,Password);
-                mapAct(Email,LEVEL);
+                mapAct(Email,LEVEL,income_place);
             }
         }
         else {
             connected = false;
             if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
-                mapAct(Email,LEVEL);
+                mapAct(Email,LEVEL,income_place);
             }
             else{
-                mapAct("anon","red");
+                mapAct("anon","red",income_place);
             }
         }
 
@@ -96,10 +112,11 @@ public class MainActivity extends AppCompatActivity {
                 .get(MainViewModel.class);
     }
 
-    private void mapAct(String email,String lvl){
+    private void mapAct(String email,String lvl,String income_place){
         Intent intent = new Intent(MainActivity.this, MapActivity.class);
         intent.putExtra("email", email);
         intent.putExtra("lvl", lvl);
+        intent.putExtra("income_place",income_place);
         startActivity(intent);
     }
 
@@ -169,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                             editor.putString(PASSWORD, user.getPassword());
                             editor.putString(LVL, user.getLvl());
                             editor.apply();
-                            mapAct(EMAIL,LVL);
+                            mapAct(EMAIL,LVL,"");
                         }
                         else {
                             Snackbar.make(root,"Ошибка регистрации.",Snackbar.LENGTH_SHORT).show();
@@ -211,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onChanged(User user) {
                         if (user.isUsrResult()){
-                            mapAct("anon","red");
+                            mapAct("anon","red","");
 
                         }
                     }
@@ -252,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                             editor.putString(PASSWORD, user.getPassword());
                             editor.putString(LVL, user.getLvl());
                             editor.apply();
-                            mapAct(user.getEmail(), user.getLvl());
+                            mapAct(user.getEmail(), user.getLvl(),"");
                         }
                         else{
                             Snackbar.make(root,getString(R.string.auth_error)+user.getEmail()+" "+user.getLvl(),Snackbar.LENGTH_SHORT).show();

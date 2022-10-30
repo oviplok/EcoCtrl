@@ -9,6 +9,16 @@
     app:cardElevation="10dp">
 
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/normalMargin">
+
     <EditText
         android:id="@+id/place_for_change"
         android:layout_width="match_parent"
@@ -32,11 +42,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="63dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
         android:drawableLeft="@drawable/ic_action_inform"
         android:ems="10"
         android:fontFamily="@font/comfortaa" />
+
     <EditText
         android:id="@+id/serd_for_change"
         android:hint="Измерения диокс. серы"
@@ -46,11 +57,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="123dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
         android:drawableLeft="@drawable/ic_action_inform"
         android:ems="10"
         android:fontFamily="@font/comfortaa" />
+
     <EditText
         android:id="@+id/azd_for_change"
         android:hint="Измерения диокс. азота"
@@ -60,9 +72,52 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="189dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
         android:drawableLeft="@drawable/ic_action_inform"
         android:ems="10"
         android:fontFamily="@font/comfortaa" />
+
+        <RelativeLayout
+            android:id="@+id/imagesLayout"
+            android:layout_width="match_parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:layout_height="40dp"
+            android:background="@color/light_green">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/comfortaa"
+                android:layout_marginStart="@dimen/normalMargin"
+                android:layout_marginTop="@dimen/normalMargin"
+                android:layout_marginEnd="@dimen/normalMargin"
+                android:layout_marginBottom="@dimen/normalMargin"
+                android:text="Фотографии места" />
+
+            <ImageButton
+                android:id="@+id/imageArrow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:background="#00FFFFFF"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="@dimen/halfMargin"
+                android:src="@drawable/arrow_down" />
+        </RelativeLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/chImageSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginHorizontal="@dimen/halfMargin"
+            android:layout_marginBottom="@dimen/normalMargin"
+            android:background="@color/light_green"
+            android:visibility="gone"/>
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.cardview.widget.CardView>
