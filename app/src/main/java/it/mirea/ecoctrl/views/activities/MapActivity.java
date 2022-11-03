@@ -2,6 +2,7 @@ package it.mirea.ecoctrl.views.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -46,20 +47,16 @@ import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.models.PlaceF;
 import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.MapViewModel;
-import it.mirea.ecoctrl.views.adapters.AddImageSliderAdapter;
+import it.mirea.ecoctrl.views.adapters.MapImageSliderAdapter;
 
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private MapViewModel mapViewModel;
     private MapRoomDatabase mapRoomDatabase;
-    RelativeLayout green;
+    CoordinatorLayout green;
 
 
     Button show;
-    //ImageButton chImage_button;
-  //  ImageButton addImage_button;
-    ///ViewPager2 addImageSlider;
-    //ViewPager2 chImageSlider;
     List<String> images = new ArrayList<>();
     ImageButton list;
     ImageButton change;
@@ -111,7 +108,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         //chImage_button =findViewById(R.id.chImageArrow);
         list = findViewById(R.id.listButton);
         share =findViewById(R.id.shareButton);
-       // addImageSlider =findViewById(R.id.addImageSlider);
+
        // chImageSlider=findViewById(R.id.chImageSlider);
        // usr = findViewById(R.id.userButton);
         infoPlace = findViewById(R.id.infoPlaces);
@@ -122,7 +119,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         email = getIntent().getStringExtra("email").toString();
         lvl = getIntent().getStringExtra("lvl").toString();
         income_place = getIntent().getStringExtra("income_place").toString();
-       // income=getIntent().getData();
 
 
         mapRoomDatabase= MapRoomDatabase.getInstance(getApplicationContext());
@@ -170,7 +166,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         sendIntent.setAction(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_TEXT, "http://rf.ecoctrl_app/" + place.getPlace_name());
                         sendIntent.setType("text/plain");
-
                         Intent shareIntent = Intent.createChooser(sendIntent, null);
                         startActivity(shareIntent);
                 }
@@ -188,6 +183,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 .get(MapViewModel.class);
 
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -202,9 +198,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             ServiceLocator.getInstance().getRepository().findPlace(income_place, this).observe(this, (Place place) -> {
                 if (place != null) {
                     find.setText(place.getPlace_name());
-                    showPoint();
                 }
             });
+            showPoint();
         }
         show.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,10 +218,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             @Override
             public void onClick(View v) {
                  showAddInfo();
-              //  Intent intent = new Intent(MapActivity.this, AddActivity.class);
-              //  intent.putExtra("email", email);
-              //  intent.putExtra("lvl", lvl);
-              //  startActivity(intent);
             }
         });
         list.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +233,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     //Работа поиска
     private void showPoint() {
+        ViewPager2 searchImageSlider;
+        searchImageSlider =findViewById(R.id.searchImageSlider);
         infoPlace.setText("");
         searchRes = false;
         Log.e("SearchPart","searching...");
@@ -266,10 +260,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             float zoomLevel = 16.0f;
                             mMap.addMarker(new MarkerOptions().position(getPointSee).title(place.getPlace_name()));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
+                            if(place.getImages()!=null){
+                                List<String> image = new ArrayList<String>();
+                                image.add(place.getImages());
+                                searchImageSlider.setAdapter(new MapImageSliderAdapter(image, false,MapActivity.this ));
+                                searchImageSlider.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                            }
                             searchRes = true;
-
-
-
                             mapViewModel.setPlace(place);
                             Log.e("SHARE",mapViewModel.getPlace().getPlace_name());
                         } else {
@@ -297,21 +294,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             float zoomLevel = 16.0f;
                             mMap.addMarker(new MarkerOptions().position(getPointSee).title(place.getPlace_name()));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
-
-
+                            if(place.getImages()!=null){
+                                searchImageSlider.setVisibility(View.VISIBLE);
+                                searchImageSlider.setAdapter(new MapImageSliderAdapter(place.getImagesF(), false,MapActivity.this ));
+                                searchImageSlider.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                            }
+                            else{
+                                searchImageSlider.setVisibility(View.GONE);
+                            }
                             mapViewModel.setPlace(place);
-                           /* if (place.getImages) {
-                                try {
-                                    holder.mBinding.imageContent.setImageBitmap(
-                                            BitmapFactory.decodeFileDescriptor(
-                                                    mActivity.getApplicationContext().getContentResolver().openFileDescriptor(
-                                                            Uri.parse(images.get(position)), "r").getFileDescriptor()
-                                            )
-                                    );
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }*/
                             searchRes = true;
                             searchdone=true;
                         }
@@ -343,7 +334,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 infoPlace.setTextColor(Color.parseColor("#CC0000"));
                                 infoPlace.setTextSize(30);
                                 infoPlace.setText(R.string.no_inf);
-                                //fav=false;
                                 searchRes = false;
                             }
                         }
@@ -376,16 +366,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 if (chImageSlider.getVisibility() == View.GONE) {
                     chImageSlider.setVisibility(View.VISIBLE);
                     chImage_button.setImageResource(R.drawable.arrow_up);
-                    // placeHolder.setVisibility(View.VISIBLE);
-                    //binding.
                 } else {
-                    // placeHolder.setVisibility(View.GONE);
                     chImageSlider.setVisibility(View.GONE);
                     chImage_button.setImageResource(R.drawable.arrow_down);
                 }
             }
         });
-        chImageSlider.setAdapter(new AddImageSliderAdapter(images, true,MapActivity.this ));
+        chImageSlider.setAdapter(new MapImageSliderAdapter(images, true,MapActivity.this ));
         chImageSlider.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
         ch_wind.setNegativeButton("Вернуться", new DialogInterface.OnClickListener() {
@@ -501,14 +488,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         ch_wind.show();
     }
     private void showAddInfo() {
-        AlertDialog.Builder ch_wind = new AlertDialog.Builder(this);
-        ch_wind.setTitle("Добавление данных");
-        ch_wind.setMessage("Введите данные");
+        AlertDialog.Builder add_wind = new AlertDialog.Builder(this);
+        add_wind.setTitle("Добавление данных");
+        add_wind.setMessage("Введите данные");
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View add_Window = inflater.inflate(R.layout.activity_add,null);
 
-        ch_wind.setView(add_Window);
+        add_wind.setView(add_Window);
 
         final EditText AddPlace = add_Window.findViewById(R.id.place_for_add);
         final EditText AddMetan = add_Window.findViewById(R.id.metan_for_add);
@@ -518,45 +505,29 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         final EditText AddLng = add_Window.findViewById(R.id.lng_for_add);
         final ViewPager2 addImageSlider = add_Window.findViewById(R.id.addImageSlider);
         final ImageButton addImmage_button = add_Window.findViewById(R.id.addImageArrow);
-        //final RelativeLayout placeHolder = add_Window.findViewById(R.id.placeHolder);
 
-
-
-////////////////////////////////////////////////////////////////////////////////////////
         addImmage_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (addImageSlider.getVisibility() == View.GONE) {
                     addImageSlider.setVisibility(View.VISIBLE);
                     addImmage_button.setImageResource(R.drawable.arrow_up);
-                   // placeHolder.setVisibility(View.VISIBLE);
-                    //binding.
                 } else {
-                   // placeHolder.setVisibility(View.GONE);
                     addImageSlider.setVisibility(View.GONE);
                     addImmage_button.setImageResource(R.drawable.arrow_down);
                 }
             }
         });
-        addImageSlider.setAdapter(new AddImageSliderAdapter(images, true,MapActivity.this ));
+        addImageSlider.setAdapter(new MapImageSliderAdapter(images, true,MapActivity.this ));
         addImageSlider.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
-//////////////////////////////////////////////////////////////////////////////////////////
-        ch_wind.setNegativeButton("Вернуться", new DialogInterface.OnClickListener() {
+        add_wind.setNegativeButton("Вернуться", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 dialogInterface.dismiss();
             }
         });
-        //Button back;
-        //back=findViewById(R.id.back_button);
-      //  back.setOnClickListener(new DialogInterface() {
-      //      @Override
-      //      public void onClick(DialogInterface dialogInterface, int which) {
-      //          dialogInterface.dismiss();
-       //     }
-       // });
-        ch_wind.setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
+        add_wind.setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 //возможные ошибки (переделать в свитч)
@@ -642,6 +613,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 }
             }
         });
-        ch_wind.show();
+        add_wind.show();
     }
 }

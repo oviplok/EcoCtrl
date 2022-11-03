@@ -40,4 +40,5 @@
     <string name="insert_authData">Введите данные регистрации</string>
     <string name="back_to_map">Snap back to reality</string>
     <string name="more">Подробнее…</string>
+    <string name="image_resource">Фотографии места</string>
 </resources>

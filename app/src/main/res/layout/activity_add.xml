@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:id="@+id/add_action"
     android:layout_height="match_parent"
-    tools:context=".views.activities.AddActivity"
+    tools:context=".views.activities.MapActivity"
     app:cardElevation="10dp">
 
     <ScrollView
@@ -126,8 +126,8 @@
                     android:layout_marginEnd="@dimen/normalMargin"
                     android:layout_marginBottom="@dimen/normalMargin"
                     android:fontFamily="@font/comfortaa"
-                    android:text="Фотографии места"
-                    android:textColor="@color/white"/>
+                    android:text="@string/image_resource"
+                    android:textColor="@color/white" />
 
                 <ImageButton
                     android:id="@+id/addImageArrow"
