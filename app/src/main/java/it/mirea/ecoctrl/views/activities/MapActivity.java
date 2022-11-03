@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,9 +36,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 //import it.mirea.ecoctrl.databinding.ActivityMapGreenBinding;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +46,7 @@ import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.models.PlaceF;
 import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.MapViewModel;
-import it.mirea.ecoctrl.views.adapters.ImageSliderAdapter;
+import it.mirea.ecoctrl.views.adapters.AddImageSliderAdapter;
 
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -58,9 +56,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
 
     Button show;
-    ImageButton addImmage_button;
-    ViewPager2 addImageSlider;
-    ViewPager2 chImageSlider;
+    //ImageButton chImage_button;
+  //  ImageButton addImage_button;
+    ///ViewPager2 addImageSlider;
+    //ViewPager2 chImageSlider;
     List<String> images = new ArrayList<>();
     ImageButton list;
     ImageButton change;
@@ -84,10 +83,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private GoogleMap mMap;
     private ActivityMapBinding binding;
 
+    private static final String SHARED_PREF = "sharedPrefs";
+    private static final String EMAIL = "email";
+    private static final String LVL = "lvl";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initMapViewModel();
+
+        SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
+        String Email =sharedPreferences.getString(EMAIL,"");
+        String LEVEL=sharedPreferences.getString(LVL,"");
 
         ServiceLocator.getInstance().initBase(getApplication());
 
@@ -100,11 +107,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mapFragment.getMapAsync(this);
        // images=findViewById(R.id.images);
        // images.setVisibility(View.GONE);
-        addImmage_button =findViewById(R.id.imageArrow);
+        //addImage_button =findViewById(R.id.addImageArrow);
+        //chImage_button =findViewById(R.id.chImageArrow);
         list = findViewById(R.id.listButton);
         share =findViewById(R.id.shareButton);
-        addImageSlider =findViewById(R.id.addImageSlider);
-        chImageSlider=findViewById(R.id.chImageSlider);
+       // addImageSlider =findViewById(R.id.addImageSlider);
+       // chImageSlider=findViewById(R.id.chImageSlider);
        // usr = findViewById(R.id.userButton);
         infoPlace = findViewById(R.id.infoPlaces);
         show = findViewById(R.id.showPoint);
@@ -129,11 +137,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             Snackbar.make(green, R.string.no_internet, Snackbar.LENGTH_SHORT).show();
         }
 
-       // if (email.equals("anon") || email.isEmpty()){
+      /* // if (email.equals("anon") || email.isEmpty()){
         //    usr.setVisibility(View.GONE);
        // }
 
-       /* usr.setOnClickListener(new View.OnClickListener() {
+        usr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     Intent intent = new Intent(MapActivity.this, UsrActivity.class);
@@ -141,6 +149,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     startActivity(intent);
             }
         });*/
+        
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,7 +221,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddInfo();
+                 showAddInfo();
+              //  Intent intent = new Intent(MapActivity.this, AddActivity.class);
+              //  intent.putExtra("email", email);
+              //  intent.putExtra("lvl", lvl);
+              //  startActivity(intent);
             }
         });
         list.setOnClickListener(new View.OnClickListener() {
@@ -354,6 +367,26 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         final EditText chMetan = Ch_Window.findViewById(R.id.metan_for_change);
         final EditText chSerd = Ch_Window.findViewById(R.id.serd_for_change);
         final EditText chAzd = Ch_Window.findViewById(R.id.azd_for_change);
+        final ImageButton chImage_button =Ch_Window.findViewById(R.id.chImageArrow);
+        final ViewPager2 chImageSlider = Ch_Window.findViewById(R.id.chImageSlider);
+
+        chImage_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (chImageSlider.getVisibility() == View.GONE) {
+                    chImageSlider.setVisibility(View.VISIBLE);
+                    chImage_button.setImageResource(R.drawable.arrow_up);
+                    // placeHolder.setVisibility(View.VISIBLE);
+                    //binding.
+                } else {
+                    // placeHolder.setVisibility(View.GONE);
+                    chImageSlider.setVisibility(View.GONE);
+                    chImage_button.setImageResource(R.drawable.arrow_down);
+                }
+            }
+        });
+        chImageSlider.setAdapter(new AddImageSliderAdapter(images, true,MapActivity.this ));
+        chImageSlider.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
         ch_wind.setNegativeButton("Вернуться", new DialogInterface.OnClickListener() {
             @Override
@@ -411,9 +444,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
                         @Override
                         public void onChanged(Place place) {
+                            List<String> image = new ArrayList<String>();
+                            if(images==null){
+                                image.add(place.getImages());
+                            }
+                            else{
+                                image=images;
+                            }
                             mapViewModel.changePlace(chPlace.getText().toString(),
                                     chMetan.getText().toString(), chSerd.getText().toString(),
-                                    chAzd.getText().toString(),"off",place.getLng(),place.getLat());
+                                    chAzd.getText().toString(),"off",place.getLng(),place.getLat(),image);
                         }
                     });
 
@@ -424,9 +464,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     mapViewModel.placeLiveData.observe(MapActivity.this, new Observer<Place>() {
                         @Override
                         public void onChanged(Place place) {
+                            List<String> image = new ArrayList<String>();
+                            if(images==null){
+                                image.add(place.getImages());
+                            }
+                            else{
+                                image=images;
+                            }
+                           // List<String> image = new ArrayList<String>();
+                           // image.add(place.getImages());
+
                             mapViewModel.changePlace(chPlace.getText().toString(),
                                     chMetan.getText().toString(), chSerd.getText().toString(),
-                                    chAzd.getText().toString(),"on",place.getLng(),place.getLat());
+                                    chAzd.getText().toString(),"on",place.getLng(),place.getLat(),image);
                         }
                     });
                     mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
@@ -456,18 +506,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         ch_wind.setMessage("Введите данные");
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        View Ch_Window = inflater.inflate(R.layout.activity_add,null);
+        View add_Window = inflater.inflate(R.layout.activity_add,null);
 
-        ch_wind.setView(Ch_Window);
+        ch_wind.setView(add_Window);
 
-        final EditText AddPlace = Ch_Window.findViewById(R.id.place_for_add);
-        final EditText AddMetan = Ch_Window.findViewById(R.id.metan_for_add);
-        final EditText AddSerd = Ch_Window.findViewById(R.id.serd_for_add);
-        final EditText AddAzd = Ch_Window.findViewById(R.id.azd_for_add);
-        final EditText AddLat = Ch_Window.findViewById(R.id.lat_for_add);
-        final EditText AddLng = Ch_Window.findViewById(R.id.lng_for_add);
-        final ViewPager2 addImageSlider = Ch_Window.findViewById(R.id.addImageSlider);
-        final ImageButton addImmage_button = Ch_Window.findViewById(R.id.imageArrow);
+        final EditText AddPlace = add_Window.findViewById(R.id.place_for_add);
+        final EditText AddMetan = add_Window.findViewById(R.id.metan_for_add);
+        final EditText AddSerd = add_Window.findViewById(R.id.serd_for_add);
+        final EditText AddAzd = add_Window.findViewById(R.id.azd_for_add);
+        final EditText AddLat = add_Window.findViewById(R.id.lat_for_add);
+        final EditText AddLng = add_Window.findViewById(R.id.lng_for_add);
+        final ViewPager2 addImageSlider = add_Window.findViewById(R.id.addImageSlider);
+        final ImageButton addImmage_button = add_Window.findViewById(R.id.addImageArrow);
+        //final RelativeLayout placeHolder = add_Window.findViewById(R.id.placeHolder);
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -477,13 +529,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 if (addImageSlider.getVisibility() == View.GONE) {
                     addImageSlider.setVisibility(View.VISIBLE);
                     addImmage_button.setImageResource(R.drawable.arrow_up);
+                   // placeHolder.setVisibility(View.VISIBLE);
+                    //binding.
                 } else {
+                   // placeHolder.setVisibility(View.GONE);
                     addImageSlider.setVisibility(View.GONE);
                     addImmage_button.setImageResource(R.drawable.arrow_down);
                 }
             }
         });
-        addImageSlider.setAdapter(new ImageSliderAdapter(images, true,null,MapActivity.this ));
+        addImageSlider.setAdapter(new AddImageSliderAdapter(images, true,MapActivity.this ));
         addImageSlider.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -560,13 +615,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     Log.e("MapAct","not connected");
                     mapViewModel.AddPlace(AddPlace.getText().toString(),
                             AddMetan.getText().toString(), AddSerd.getText().toString(), AddAzd.getText().toString(),
-                            AddLng.getText().toString(), AddLat.getText().toString(),false,"off");
+                            AddLng.getText().toString(), AddLat.getText().toString(),images,false,"off");
                 }
                 else {
                     Log.e("MapAct","connected");
                     mapViewModel.AddPlace(AddPlace.getText().toString(),
                             AddMetan.getText().toString(), AddSerd.getText().toString(), AddAzd.getText().toString(),
-                            AddLng.getText().toString(), AddLat.getText().toString(),false,"on");
+                            AddLng.getText().toString(), AddLat.getText().toString(),images,false,"on");
                     mapViewModel.placeFireLiveData.observe(MapActivity.this, new Observer<PlaceF>() {
                         @Override
                         public void onChanged(PlaceF place) {

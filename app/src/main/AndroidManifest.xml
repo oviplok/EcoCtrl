@@ -6,8 +6,9 @@
 
     <uses-sdk
         android:minSdkVersion="29"
-        android:targetSdkVersion="30" />
+        android:targetSdkVersion="31" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
@@ -22,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoCtrl">
         <activity
+            android:name=".views.activities.AddActivity"
+            android:exported="true" />
+        <activity
             android:name=".views.activities.PlistActivity"
             android:exported="true" />
         <activity
@@ -35,7 +39,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>

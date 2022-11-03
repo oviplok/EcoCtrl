@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:id="@+id/map_action"
     android:layout_width="match_parent"
@@ -132,6 +133,19 @@
             android:background="#00FFFFFF"
             android:foreground="?android:attr/selectableItemBackground"
             android:src="@drawable/share" />
+
+        <ImageButton
+            android:id="@+id/userButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="3dp"
+            android:background="#00FFFFFF"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_action_user"
+            android:visibility="gone"
+            />
 
         <ImageButton
             android:id="@+id/addInfo"

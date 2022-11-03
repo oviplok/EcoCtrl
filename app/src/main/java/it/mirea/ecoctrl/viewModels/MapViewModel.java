@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
+import java.util.List;
 import java.util.Map;
 
 import it.mirea.ecoctrl.di.ServiceLocator;
@@ -26,7 +27,7 @@ public class MapViewModel extends AndroidViewModel {
     Place place;
     PlaceF placeF;
 
-    public LiveData<Place> shareLiveData;
+   // public LiveData<Place> shareLiveData;
     public LiveData<Place> placeLiveData;
     public LiveData<PlaceF> placeFireLiveData;
 
@@ -51,10 +52,10 @@ public class MapViewModel extends AndroidViewModel {
 
 
     public void changePlace(String chPlace, String chMetan,
-                            String chSerd, String chAzd,String intern,double chLng,double chLat) {
+                            String chSerd, String chAzd,String intern,double chLng,double chLat,List<String> chImage) {
         String Lng=""+chLng;
         String Lat=""+chLat;
-        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,Lng,Lat);
+        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,Lng,Lat,chImage);
         if(intern.equals("off"))
         {
             ServiceLocator.getInstance().getRepository().changePlace(placeF);
@@ -71,9 +72,9 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     public void AddPlace(String addPlace, String addMetan,
-                         String addSerd, String addAzd, String addLng, String addLat,boolean fav, String intern) {
+                         String addSerd, String addAzd, String addLng, String addLat, List<String> addImage, boolean fav, String intern) {
         Log.e("AddPlace",addPlace);
-        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat);
+        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat,addImage);
 
         if(intern.equals("off"))
         {

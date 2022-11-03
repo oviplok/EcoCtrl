@@ -4,17 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/add_action"
     android:layout_height="match_parent"
-    tools:context=".views.activities.MapActivity"
+    tools:context=".views.activities.AddActivity"
     app:cardElevation="10dp">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="@dimen/normalMargin">
 
@@ -125,10 +126,11 @@
                     android:layout_marginEnd="@dimen/normalMargin"
                     android:layout_marginBottom="@dimen/normalMargin"
                     android:fontFamily="@font/comfortaa"
-                    android:text="Фотографии места" />
+                    android:text="Фотографии места"
+                    android:textColor="@color/white"/>
 
                 <ImageButton
-                    android:id="@+id/imageArrow"
+                    android:id="@+id/addImageArrow"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
@@ -138,7 +140,6 @@
                     android:src="@drawable/arrow_down" />
 
             </RelativeLayout>
-
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/addImageSlider"
                 android:layout_width="match_parent"
@@ -148,10 +149,43 @@
 
                 android:layout_marginHorizontal="@dimen/halfMargin"
                 android:layout_marginBottom="@dimen/normalMargin"
-                android:background="@color/light_green"
+                android:background="#9A27B11E"
                 android:visibility="gone"
+
                 />
+            <RelativeLayout
+                android:id="@+id/placeHolder"
+                android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_height="40dp"
+                android:visibility="gone"
+                >
+
+                <Button
+                    android:id="@+id/addPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="0dp"
+                    android:fontFamily="@font/comfortaa"
+                    android:text="add"
+                    tools:ignore="TextContrastCheck" />
+
+                <Button
+                    android:id="@+id/exit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="0dp"
+                    android:fontFamily="@font/comfortaa"
+                    android:text="Exit"
+                    tools:ignore="TextContrastCheck" />
+            </RelativeLayout>
+
+
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

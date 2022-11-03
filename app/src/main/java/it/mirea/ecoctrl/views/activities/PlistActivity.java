@@ -52,11 +52,12 @@ public class PlistActivity extends AppCompatActivity {
                 Intent intent = new Intent(PlistActivity.this, MapActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("lvl", lvl);
+                intent.putExtra("income_place","");
                 startActivity(intent);
             }
         });
 
-        listAdapter= new PlaceListAdapter(placess,this,null);
+        listAdapter= new PlaceListAdapter(placess,this);
         all_plcs.setAdapter(listAdapter);
         mapRoomDatabase = MapRoomDatabase.getInstance(getApplicationContext());
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -64,6 +65,7 @@ public class PlistActivity extends AppCompatActivity {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
+
 
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
@@ -95,11 +97,5 @@ public class PlistActivity extends AppCompatActivity {
             }
         });
 
-        /*repository.getAllPlaces().observe(this, new Observer<List<Place>>() {
-            @Override
-            public void onChanged(@NonNull List<Place> places) {
-                listAdapter.setData(places);
-            }
-        });*/
     }
 }
