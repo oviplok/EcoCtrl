@@ -41,7 +41,7 @@ public class MapFireBaseRepository {
                     place.setLat(geo.getLatitude());
                     place.setLng(geo.getLongitude());
                     LatLng pointSee=new LatLng(place.getLat(),place.getLng());
-                    place.setPointSee(pointSee);
+                   // place.setPointSee(pointSee);
 
                     place.setMapResult(true);
                     mapLiveData.setValue(place);

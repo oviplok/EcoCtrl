@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.mirea.ecoctrl.repositories.models.PlaceF;
@@ -36,13 +37,14 @@ public class PlaceOps {
     }
 
     public static PlaceF insertInfo(String addPlace, String addMetan,
-                                    String addSerd, String addAzd, String addLng, String addLat){
+                                    String addSerd, String addAzd, String addLng, String addLat, List<String> addImage){
 
         PlaceF placeF = new PlaceF();
         placeF.setPlace_name(addPlace);
         placeF.setAzdInfo(addAzd);
         placeF.setMetanInfo(addMetan);
         placeF.setSerdInfo(addSerd);
+        placeF.setImagesF(addImage);
        // placeF.setFav(fav);
        // if((addLat.equals("") || addLng.equals(""))){
 

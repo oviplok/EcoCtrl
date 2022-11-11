@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:id="@+id/map_action"
     android:layout_width="match_parent"
@@ -8,119 +10,156 @@
     tools:context=".views.activities.MapActivity">
     <!--android:background="@drawable/eco_background"-->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/nestedScrollView2"
-        android:layout_width="19dp"
-        android:layout_height="wrap_content"
-        map:layout_anchor="@+id/nestedScrollView2"
-        map:layout_anchorGravity="center"
-        map:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        tools:ignore="NotSibling">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <Button
-        android:id="@+id/showPoint"
-        android:layout_width="157dp"
-        android:layout_height="48dp"
-        android:layout_below="@+id/finder"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="124dp"
-        android:fontFamily="@font/comfortaa"
-        android:text="@string/search"
-        map:layout_anchorGravity="center"
-        tools:ignore="TextContrastCheck" />
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="224dp"
-        android:layout_below="@+id/showPoint"
-        android:layout_marginTop="13dp"
-        tools:context=".cutContent.MapActivityRed" />
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/finder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="32dp"
-        android:layout_toStartOf="@+id/listButton"
-        android:drawableLeft="@drawable/ic_action_loopa"
-        android:ems="10"
-        android:fontFamily="@font/comfortaa"
-        android:hint="@string/places"
-        android:inputType="textPersonName" />
+            <Button
+                android:id="@+id/showPoint"
+                android:layout_width="157dp"
+                android:layout_height="48dp"
+                android:layout_below="@+id/finder"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="124dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="124dp"
+                android:fontFamily="@font/comfortaa"
+                android:text="@string/search"
+                map:layout_anchorGravity="center"
+                tools:ignore="TextContrastCheck" />
 
-    <TextView
-        android:id="@+id/infoPlaces"
-        android:layout_width="362dp"
-        android:layout_height="211dp"
-        android:layout_below="@+id/map"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="21dp"
-        android:fontFamily="@font/comfortaa"
-        android:text="@string/maybe"
-        android:textColor="@color/black" />
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="224dp"
+                android:layout_below="@+id/showPoint"
+                android:layout_marginTop="13dp"
+                tools:context=".cutContent.MapActivityRed" />
 
-    <ImageButton
-        android:id="@+id/changeInfo"
-        android:layout_width="51dp"
-        android:layout_height="44dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="70dp"
-        android:layout_marginBottom="3dp"
-        android:background="#00FFFFFF"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_action_changeinf" />
+            <EditText
+                android:id="@+id/finder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="32dp"
+                android:layout_toStartOf="@+id/listButton"
+                android:drawableLeft="@drawable/ic_action_loopa"
+                android:ems="10"
+                android:fontFamily="@font/comfortaa"
+                android:hint="@string/places"
+                android:inputType="textPersonName" />
 
-    <ImageButton
-        android:id="@+id/userButton"
-        android:layout_width="53dp"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="3dp"
-        android:background="#00FFFFFF"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_action_user" />
+            <TextView
+                android:id="@+id/infoPlaces"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/map"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="21dp"
+                android:fontFamily="@font/comfortaa"
+                android:text="@string/maybe"
+                android:textColor="@color/black" />
 
-    <ImageButton
-        android:id="@+id/addInfo"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignTop="@+id/changeInfo"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginBottom="3dp"
-        android:background="#00FFFFFF"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_action_add" />
-
-    <ImageButton
-        android:id="@+id/listButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="21dp"
-        android:background="#00FFFFFF"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_action_list" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/searchImageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/infoPlaces"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginHorizontal="@dimen/halfMargin"
+                android:layout_marginBottom="@dimen/normalMargin"
+                android:visibility="gone"
+                />
 
 
-</RelativeLayout>
+            <ImageButton
+                android:id="@+id/listButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="21dp"
+                android:background="#00FFFFFF"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_action_list" />
+
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="@+id/infoPlaces"
+                android:layout_alignParentEnd="true"
+                android:background="#6A132E11"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/changeInfo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="left"
+            android:layout_marginStart="70dp"
+            android:layout_marginBottom="3dp"
+            android:background="#00FFFFFF"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_action_changeinf" />
+
+        <ImageButton
+            android:id="@+id/shareButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="3dp"
+            android:background="#00FFFFFF"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/share" />
+
+        <ImageButton
+            android:id="@+id/userButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="3dp"
+            android:background="#00FFFFFF"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_action_user"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/addInfo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+           android:layout_gravity="right"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="3dp"
+            android:background="#00FFFFFF"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_action_add" />
+    </com.google.android.material.bottomappbar.BottomAppBar>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

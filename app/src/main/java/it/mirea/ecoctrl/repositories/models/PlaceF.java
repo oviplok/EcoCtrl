@@ -8,6 +8,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class PlaceF implements Serializable {
 
@@ -24,11 +27,15 @@ public class PlaceF implements Serializable {
     private String serdInfo;
     private double lat;
     private double lng;
-    private LatLng pointSee;
+    //private LatLng pointSee;
+    private List<String> images;
 
-    //public boolean fav=false;
 
-    public PlaceF(){ }
+    public PlaceF(){
+        //id = UUID.randomUUID().toString();
+       // placeList = new ArrayList<>();
+        images = new ArrayList<>();
+    }
 
     public PlaceF(String place_name, String metanInfo,
                   String serdInfo, String azdInfo, LatLng pointSee, boolean mapResult){
@@ -37,13 +44,17 @@ public class PlaceF implements Serializable {
         this.metanInfo=metanInfo;
         this.serdInfo=serdInfo;
         this.azdInfo=azdInfo;
-        this.pointSee=pointSee;
+        //this.pointSee=pointSee;
         this.mapResult=mapResult;
     }
 
-    //public boolean isFav() { return fav; }
+    public List<String> getImagesF() {
+        return images;
+    }
 
-   // public void setFav(boolean fav) { this.fav = fav; }
+    public void setImagesF(List<String> images) {
+        this.images = images;
+    }
 
     public String getPlace_name() {
         return place_name;
@@ -105,12 +116,12 @@ public class PlaceF implements Serializable {
         this.mapResult = mapResult;
     }
 
-    public LatLng getPointSee() {
-        return pointSee;
-    }
+    //public LatLng getPointSee() {
+      //  return pointSee;
+    //}
 
-    public void setPointSee(LatLng pointSee) {
-        this.pointSee = pointSee;
-    }
+    //public void setPointSee(LatLng pointSee) {
+      //  this.pointSee = pointSee;
+    //}
 }
 

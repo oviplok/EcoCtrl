@@ -20,7 +20,7 @@ public class MapRoomRepository implements RepoTasks {
 
     public MapRoomRepository(Application application){
         MapRoomDatabase db = MapRoomDatabase.getInstance(application);
-        placeDAO=db.placeDAO();
+        placeDAO= db.placeDAO();
         allPlaces = placeDAO.getAllPlaces();
     }
     public LiveData<List<Place>> getAllPlaces(){ return allPlaces; }
@@ -39,8 +39,8 @@ public class MapRoomRepository implements RepoTasks {
        // Log.e("AddPlaceRepo",place.getPlace_name());
     }
 
-    public  void deletePlace(Place place){
-       // Place place = Place.convertFromFire(place);
+    public  void deletePlace(PlaceF placeF){
+        Place place = Place.convertFromFire(placeF);
         MapRoomDatabase.databaseWriteExecutor.execute(()->{
             placeDAO.deletePlace(place);
         });

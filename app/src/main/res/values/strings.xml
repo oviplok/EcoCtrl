@@ -25,8 +25,8 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="metan">\"Methane: \"</string>
-    <string name="serd">\"\nSulphur dioxide: \"</string>
+    <string name="metan">\"Methane: \</string>
+    <string name="serd">\"\nSulphur dioxide: "\</string>
     <string name="azd">\"\nNitrogen dioxide: \"</string>
     <string name="set_name">search line is empty!</string>
     <string name="your_email">Your email: </string>
@@ -39,4 +39,5 @@
     <string name="insert_authData">Введите данные регистрации</string>
     <string name="back_to_map">Snap back to reality</string>
     <string name="more">Подробнее…</string>
+    <string name="image_resource">Set images</string>
 </resources>

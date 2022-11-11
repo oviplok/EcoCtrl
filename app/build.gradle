@@ -12,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId "it.mirea.ecoctrl"
-        minSdk 21
+        minSdk 29
         targetSdk 31
-        versionCode 1
-        versionName "1.1"
+        versionCode 2
+        versionName "strawberry cake"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,6 +37,8 @@ android {
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     def lifecycle_version = "2.2.0"
     def room_version ="2.2.0"
 
@@ -51,11 +53,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:24.1.1'
     implementation 'com.google.android.material:material:1.2.0-alpha04'
 
-    //implementation"android.arch.lifecycle:extentions:$lifecycle_version"
-    //annotationProcessor"android.arch.lifecycle:compiler:$lifecycle_version"
+    //fragment navigation
+    implementation "androidx.navigation:navigation-fragment:2.3.5"
+    implementation "androidx.navigation:navigation-ui:2.3.5"
 
-   //  implementation"android.arch.persistence.room:runtime:$room_version"
-   //  annotationProcessor"android.arch.persistence.room:compiler:$room_version"
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.8'
 
     // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
@@ -71,6 +74,17 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
 
+    //viewPager2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+   // testImplementation 'junit:junit:4.13.2'
+    //androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    //androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
     // Testing
     testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
@@ -78,17 +92,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation "androidx.test.ext:junit:$rootProject.androidxJunitVersion"
-    //implementation 'com.google.android.material:material:1.6.0'
- //   testImplementation 'junit:junit:'
-   // androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    //androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 
-
-    //implementation platform('com.google.firebase:firebase-auth:29.3.0')
-    //implementation platform('com.google.firebase:firebase-database:29.3.0')
-   // implementation ('android.support:design')
-    //implementation 'com.intellij:annotations:12.0'
 }
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'

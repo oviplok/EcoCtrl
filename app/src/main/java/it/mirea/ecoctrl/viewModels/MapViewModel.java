@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
+import java.util.List;
 import java.util.Map;
 
 import it.mirea.ecoctrl.di.ServiceLocator;
@@ -16,15 +17,17 @@ import it.mirea.ecoctrl.repositories.RepoTasks;
 import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.fireBase.MapFireBaseRepository;
 import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.repositories.room.MapRoomRepository;
 
 public class MapViewModel extends AndroidViewModel {
     PlaceOps placeOps =new PlaceOps();
     //private MapRoomRepository mapRoomRepository;
     RepoTasks repository;
     private MapFireBaseRepository mapFireBaseRepository;
+    Place place;
+    PlaceF placeF;
 
-
-
+   // public LiveData<Place> shareLiveData;
     public LiveData<Place> placeLiveData;
     public LiveData<PlaceF> placeFireLiveData;
 
@@ -33,29 +36,26 @@ public class MapViewModel extends AndroidViewModel {
         super(application);
         ServiceLocator.getInstance().initBase(application);
         this.repository = ServiceLocator.getInstance().getRepository();
-        //mapRoomRepository = new MapRoomRepository(application);
         mapFireBaseRepository = new MapFireBaseRepository();
     }
 
     public void showPlace(String search, String intern, LifecycleOwner owner) {
 
             if (intern.equals("off")) {
-                placeLiveData = repository.findPlace(search, owner);
-              //  placeLiveData = mapRoomRepository.findPlace(search, owner);
+                placeLiveData = ServiceLocator.getInstance().getRepository().findPlace(search, owner);
 
             } else {
                 placeFireLiveData = mapFireBaseRepository.SearchPlace(search);
-             //   placeLiveData = mapRoomRepository.findPlace(search, owner);
-                placeLiveData = repository.findPlace(search, owner);
+                placeLiveData = ServiceLocator.getInstance().getRepository().findPlace(search, owner);
             }
     }
 
 
     public void changePlace(String chPlace, String chMetan,
-                            String chSerd, String chAzd,String intern,double chLng,double chLat) {
+                            String chSerd, String chAzd,String intern,double chLng,double chLat,List<String> chImage) {
         String Lng=""+chLng;
         String Lat=""+chLat;
-        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,Lng,Lat);
+        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,Lng,Lat,chImage);
         if(intern.equals("off"))
         {
             ServiceLocator.getInstance().getRepository().changePlace(placeF);
@@ -72,9 +72,9 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     public void AddPlace(String addPlace, String addMetan,
-                         String addSerd, String addAzd, String addLng, String addLat,boolean fav, String intern) {
+                         String addSerd, String addAzd, String addLng, String addLat, List<String> addImage, boolean fav, String intern) {
         Log.e("AddPlace",addPlace);
-        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat);
+        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat,addImage);
 
         if(intern.equals("off"))
         {
@@ -91,5 +91,14 @@ public class MapViewModel extends AndroidViewModel {
             //mapRoomRepository.addPlace(placeF);
             placeFireLiveData = mapFireBaseRepository.AddPlace(addPlace,InfoChangeMap);
             }
+    }
+
+    public void setPlace(Place place) {
+       // shareLiveData=place;
+        //this.placeF=place;
+    }
+
+    public Place getPlace(){
+        return place;
     }
 }
