@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,13 +21,13 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,10 +42,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.mirea.ecoctrl.R;
+import it.mirea.ecoctrl.databinding.ActivityAddBinding;
 import it.mirea.ecoctrl.databinding.ActivityMapBinding;
 import it.mirea.ecoctrl.di.ServiceLocator;
+import it.mirea.ecoctrl.repositories.models.GeoResponse;
 import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.cutContent.IPtoLocation;
 import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.MapViewModel;
 import it.mirea.ecoctrl.views.adapters.MapImageSliderAdapter;
@@ -67,50 +71,51 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     TextView infoPlace;
 
 
+    String LNG;
+    String PLACE;
+    String LAT;
+    String fev;
+
+
     String income_place;
     Uri income;
     String email;
     String lvl;
     String place;
-
+    String ip;
     boolean connected = false;
     boolean searchRes;
     boolean searchdone;
 
     private GoogleMap mMap;
-    private ActivityMapBinding binding;
+    private ActivityMapBinding map_binding;
+    private ActivityAddBinding add_binding;
 
-    private static final String SHARED_PREF = "sharedPrefs";
-    private static final String EMAIL = "email";
-    private static final String LVL = "lvl";
+   // private static final String SHARED_PREF = "sharedPrefs";
+  //  private static final String EMAIL = "email";
+   // private static final String LVL = "lvl";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initMapViewModel();
 
-        SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
-        String Email =sharedPreferences.getString(EMAIL,"");
-        String LEVEL=sharedPreferences.getString(LVL,"");
+       // SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
+       // String Email =sharedPreferences.getString(EMAIL,"");
+       // String LEVEL=sharedPreferences.getString(LVL,"");
 
         ServiceLocator.getInstance().initBase(getApplication());
 
-        binding = ActivityMapBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        map_binding = ActivityMapBinding.inflate(getLayoutInflater());
+        setContentView(map_binding.getRoot());
         green = findViewById(R.id.map_action);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-       // images=findViewById(R.id.images);
-       // images.setVisibility(View.GONE);
-        //addImage_button =findViewById(R.id.addImageArrow);
-        //chImage_button =findViewById(R.id.chImageArrow);
         list = findViewById(R.id.listButton);
         share =findViewById(R.id.shareButton);
 
-       // chImageSlider=findViewById(R.id.chImageSlider);
-       // usr = findViewById(R.id.userButton);
         infoPlace = findViewById(R.id.infoPlaces);
         show = findViewById(R.id.showPoint);
         change = findViewById(R.id.changeInfo);
@@ -127,6 +132,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
             //we are connected to a network
             connected = true;
+            Context context = getApplicationContext().getApplicationContext();
+            WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+            IPtoLocation IPtoLocation = new IPtoLocation();
+            IPtoLocation.setIp(ip);
+            Log.e("IP","IP EXIST");
+            //Snackbar.make(green, IPtoLocation.getIp(), Snackbar.LENGTH_SHORT).show();
         }
         else{
             connected = false;
@@ -193,14 +205,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         change = findViewById(R.id.changeInfo);
         add = findViewById(R.id.addInfo);
         find = findViewById(R.id.finder);
-        Log.e("Map_app",ServiceLocator.getInstance().getGson().toJson(income));
+        //Log.e("Map_app",ServiceLocator.getInstance().getGson().toJson(income));
         if (!income_place.equals("")) {
             ServiceLocator.getInstance().getRepository().findPlace(income_place, this).observe(this, (Place place) -> {
                 if (place != null) {
                     find.setText(place.getPlace_name());
+                    showPoint();
                 }
             });
-            showPoint();
         }
         show.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -505,7 +517,33 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         final EditText AddLng = add_Window.findViewById(R.id.lng_for_add);
         final ViewPager2 addImageSlider = add_Window.findViewById(R.id.addImageSlider);
         final ImageButton addImmage_button = add_Window.findViewById(R.id.addImageArrow);
+////////////////////////////////////////////////////////////////////////////
 
+
+
+        if(connected){
+            Log.e("IP","IP NOT NULL");
+            mapViewModel.getAddressFromIp().observe(MapActivity.this, new Observer<GeoResponse>() {
+                @Override
+                public void onChanged(GeoResponse geoResponse) {
+                    Log.e("IP","ON CHANGED");
+                    Snackbar.make(green, geoResponse.getCity(), Snackbar.LENGTH_SHORT).show();
+                    PLACE = geoResponse.getCity();
+                    LAT = ""+geoResponse.getLatitude();
+                    LNG = ""+geoResponse.getLongitude();
+
+                }
+            });
+            Log.e("IP","TO TEXT");
+            AddLat.setText(LAT);
+            AddLng.setText(LNG);
+            AddPlace.setText(PLACE);
+
+
+        }
+        //46.138.164.145
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
         addImmage_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -527,10 +565,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 dialogInterface.dismiss();
             }
         });
+
         add_wind.setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                //возможные ошибки (переделать в свитч)
                 if (TextUtils.isEmpty(AddPlace.getText().toString())) {
                     Snackbar.make(green, "Введите место", Snackbar.LENGTH_SHORT).show();
                     showAddInfo();

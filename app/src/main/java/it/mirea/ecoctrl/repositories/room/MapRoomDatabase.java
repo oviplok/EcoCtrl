@@ -28,7 +28,7 @@ public abstract class MapRoomDatabase extends RoomDatabase {
                 if (instance == null) {
                     instance = Room.databaseBuilder(context.getApplicationContext(),
                             MapRoomDatabase.class, "place_database")
-                            //.fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration()
                             //.allowMainThreadQueries()
                             .build();
                 }

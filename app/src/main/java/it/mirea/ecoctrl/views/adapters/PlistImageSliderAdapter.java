@@ -16,7 +16,6 @@ import com.google.firebase.database.annotations.NotNull;
 import java.util.List;
 
 import it.mirea.ecoctrl.databinding.ImageElementBinding;
-//import it.mirea.ecoctrl.views.activities.AddActivity;
 import it.mirea.ecoctrl.views.activities.PlistActivity;
 
 public class PlistImageSliderAdapter extends RecyclerView.Adapter<PlistImageSliderAdapter.ImageSliderViewHolder> {

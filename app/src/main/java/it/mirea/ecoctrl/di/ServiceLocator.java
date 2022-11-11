@@ -1,21 +1,12 @@
 package it.mirea.ecoctrl.di;
 
 import android.app.Application;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import android.util.Log;
 
 import it.mirea.ecoctrl.repositories.RepoTasks;
 import it.mirea.ecoctrl.repositories.mock.MockBase;
+import it.mirea.ecoctrl.cutContent.IPtoLocation;
+import it.mirea.ecoctrl.repositories.network.adressLogic.GeoApiService;
 import it.mirea.ecoctrl.repositories.room.MapRoomRepository;
 
 public class ServiceLocator {
@@ -43,7 +34,22 @@ public class ServiceLocator {
         }
         return repoTasks;
     }
-    private Gson mGson;
+    private GeoApiService mApiService;
+    public GeoApiService getApiService() {
+        Log.e("IP","GET API SERVICE");
+        if (mApiService== null) {
+            mApiService = new GeoApiService();
+        }
+        return mApiService;
+    }
+    private IPtoLocation mAnalysis;
+    public IPtoLocation getAnalysis() {
+        if (mAnalysis == null) {
+            mAnalysis = new IPtoLocation();
+        }
+        return mAnalysis;
+    }
+    /*private Gson mGson;
     public Gson getGson() {
         if (mGson == null) {
             mGson = new GsonBuilder()
@@ -61,7 +67,7 @@ public class ServiceLocator {
                     .create();
         }
         return mGson;
-    }
+    }*/
 
 
 }

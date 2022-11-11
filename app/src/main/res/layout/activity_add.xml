@@ -20,7 +20,7 @@
             android:padding="@dimen/normalMargin">
 
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/place_for_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -14,10 +14,10 @@ import java.util.Map;
 import it.mirea.ecoctrl.di.ServiceLocator;
 import it.mirea.ecoctrl.domain.operations.PlaceOps;
 import it.mirea.ecoctrl.repositories.RepoTasks;
+import it.mirea.ecoctrl.repositories.models.GeoResponse;
 import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.fireBase.MapFireBaseRepository;
 import it.mirea.ecoctrl.repositories.models.PlaceF;
-import it.mirea.ecoctrl.repositories.room.MapRoomRepository;
 
 public class MapViewModel extends AndroidViewModel {
     PlaceOps placeOps =new PlaceOps();
@@ -93,6 +93,10 @@ public class MapViewModel extends AndroidViewModel {
             }
     }
 
+    //public LiveData<List<String>> getAddress(String address_prototype) {
+        //return ServiceLocator.getInstance().getAnalysis().getAddressesFromPattern(address_prototype);
+   // }
+
     public void setPlace(Place place) {
        // shareLiveData=place;
         //this.placeF=place;
@@ -101,4 +105,14 @@ public class MapViewModel extends AndroidViewModel {
     public Place getPlace(){
         return place;
     }
+
+    public LiveData<GeoResponse> getAddressFromIp() {
+        Log.e("IP","VM WORK");
+        return ServiceLocator.getInstance().getApiService().getAddressesFromIP();
+    }
+
+    public LiveData<List<String>> getAddress(String ip) {
+        return ServiceLocator.getInstance().getAnalysis().getAddressesFromIP(ip);
+    }
+
 }
