@@ -1,5 +1,9 @@
 package it.mirea.ecoctrl.repositories.network.adressLogic;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
+import android.text.format.Formatter;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -16,70 +20,96 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class GeoApiService {
     public boolean done;
     GeoResponse geoResponse =new GeoResponse();
-  //  LocationApiService apiService = new getGeoApiService();
-    private IPtoLoc api;
-
+    private LocationApiService api;
     public String getIp() {
+        Log.i("IP","IP: "+ip);
         return ip;
+
     }
 
     public void setIp(String ip) {
         this.ip = ip;
+        Log.e("IP",this.ip);
     }
 
-    public String ip= "46.138.164.145" ;
+    public String ip;//= "46.138.164.145" ;
     public String getApi(){
         return "https://api.apilayer.com/ip_to_location/";
-        //return "http://ip-api.com/";
+        //return "http://api.ipstack.com/";
     }
 
 
-    public LocationApiService getGeoApiService() {
-        Log.e("IP","GEO BUILDER");
-        return new Retrofit.Builder()
+    public GeoApiService() {
+        Log.i("IP","GEO BUILDER");
+
+         Retrofit retrofit= new Retrofit.Builder()
                 .baseUrl(getApi())
                 .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(LocationApiService.class);
+                .build();
+           api = retrofit.create(LocationApiService.class);
+        //return
     }
 
-    public MutableLiveData<GeoResponse> getAddressesFromIP() {
-
+    public MutableLiveData<GeoResponse> getAddressesFromIP(String ip) {
+        setIp("46.138.164.145");
         MutableLiveData<GeoResponse> address = new MutableLiveData<>();
         Log.e("IP","GET ADDRESSES FROM IP");
-        LocationApiService apiService = getGeoApiService();
-        apiService.getLocation("apikey:".concat(BuildConfig.IP_TO_LOCATION_API_KEY)).enqueue(new Callback<GeoResponse>() {
-            @Override
-            public void onResponse(Call<GeoResponse> call, Response<GeoResponse> response) {
-              //  address.setValue();
-                Log.e("IP","ON RESPONSE");
-                Log.e("IP",response.toString());
-                if (response.isSuccessful() && response.body() != null) {
-                   // GeoResponse geoResponse =new GeoResponse();
-                    //Log.e("IP",response.toString());
-                    geoResponse.setCity(response.body().getCity());
-                    geoResponse.setLatitude(response.body().getLatitude());
-                    geoResponse.setLongitude(response.body().getLongitude());
-                    //geoResponse.setCountry(ip);
-                    address.setValue(geoResponse);
-                    done=true;
-                   // return address;
-                    // address.setValue(response.body().);
-                    //address.setValue(response.body().suggestions.stream().map(address -> address.value).collect(Collectors.toList()));
+        api.getNewLocation(getIp(), BuildConfig.IP_TO_LOCATION_API_KEY).enqueue(
+                new Callback<GeoResponse>() {
+                    @Override
+                    public void onResponse(Call<GeoResponse> call, Response<GeoResponse> response) {
+                        //  address.setValue();
+                        Log.i("IP","ON RESPONSE");
+                        Log.i("IP",response.toString());
+                        if (response.isSuccessful() && response.body() != null) {
+                            // GeoResponse geoResponse =new GeoResponse();
+                            Log.e("IP",response.body().toString());
+                            geoResponse.setCity(response.body().getCity());
+                            geoResponse.setLatitude(response.body().getLatitude());
+                            geoResponse.setLongitude(response.body().getLongitude());
+                            //geoResponse.setCountry(ip);
+                            address.setValue(geoResponse);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GeoResponse> call, Throwable t) {
+                        t.getMessage();
+                        Log.e("IP","ON FAILURE");
+                        done=true;
+                    }
+
                 }
-                //response.body().getLatitude();
-                //response.body().getLongitude();
-            }
+        );
 
-            @Override
-            public void onFailure(Call<GeoResponse> call, Throwable t) {
-                t.getMessage();
-                Log.e("IP","ON FAILURE");
-                done=true;
-            }
-
-        });
-        Log.e("IP","RETURN");
+//        api.getLocation("apikey=".concat(BuildConfig.IP_TO_LOCATION_API_KEY),getIp()+"?apikey="+BuildConfig.IP_TO_LOCATION_API_KEY).enqueue(new Callback<GeoResponse>() {
+//            @Override
+//            public void onResponse(Call<GeoResponse> call, Response<GeoResponse> response) {
+//              //  address.setValue();
+//                Log.e("IP","ON RESPONSE");
+//                Log.e("IP",response.toString());
+//                if (response.isSuccessful() && response.body() != null) {
+//                   // GeoResponse geoResponse =new GeoResponse();
+//                    Log.e("IP",response.body().toString());
+//                    geoResponse.setCity(response.body().getCity());
+//                    geoResponse.setLatitude(response.body().getLatitude());
+//                    geoResponse.setLongitude(response.body().getLongitude());
+//                    //geoResponse.setCountry(ip);
+//                    address.setValue(geoResponse);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GeoResponse> call, Throwable t) {
+//                t.getMessage();
+//                Log.e("IP","ON FAILURE");
+//                done=true;
+//            }
+//
+//        });
+        Log.i("IP","RETURN");
        // address.setValue(geoResponse);
         return address;
     }

@@ -21,13 +21,11 @@ import it.mirea.ecoctrl.repositories.models.PlaceF;
 
 public class MapViewModel extends AndroidViewModel {
     PlaceOps placeOps =new PlaceOps();
-    //private MapRoomRepository mapRoomRepository;
     RepoTasks repository;
     private MapFireBaseRepository mapFireBaseRepository;
     Place place;
     PlaceF placeF;
 
-   // public LiveData<Place> shareLiveData;
     public LiveData<Place> placeLiveData;
     public LiveData<PlaceF> placeFireLiveData;
 
@@ -93,10 +91,6 @@ public class MapViewModel extends AndroidViewModel {
             }
     }
 
-    //public LiveData<List<String>> getAddress(String address_prototype) {
-        //return ServiceLocator.getInstance().getAnalysis().getAddressesFromPattern(address_prototype);
-   // }
-
     public void setPlace(Place place) {
        // shareLiveData=place;
         //this.placeF=place;
@@ -106,13 +100,13 @@ public class MapViewModel extends AndroidViewModel {
         return place;
     }
 
-    public LiveData<GeoResponse> getAddressFromIp() {
-        Log.e("IP","VM WORK");
-        return ServiceLocator.getInstance().getApiService().getAddressesFromIP();
+    public LiveData<GeoResponse> getAddressFromIp(String ip) {
+        Log.i("IP","VM WORK");
+        return ServiceLocator.getInstance().getApiService().getAddressesFromIP(ip);
     }
 
-    public LiveData<List<String>> getAddress(String ip) {
+/*    public LiveData<List<String>> getAddress(String ip) {
         return ServiceLocator.getInstance().getAnalysis().getAddressesFromIP(ip);
-    }
+    }*/
 
 }

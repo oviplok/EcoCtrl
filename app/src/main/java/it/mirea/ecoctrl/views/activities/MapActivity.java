@@ -49,6 +49,7 @@ import it.mirea.ecoctrl.repositories.models.GeoResponse;
 import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.models.PlaceF;
 import it.mirea.ecoctrl.cutContent.IPtoLocation;
+import it.mirea.ecoctrl.repositories.network.adressLogic.GeoApiService;
 import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.MapViewModel;
 import it.mirea.ecoctrl.views.adapters.MapImageSliderAdapter;
@@ -91,8 +92,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private ActivityMapBinding map_binding;
     private ActivityAddBinding add_binding;
 
-   // private static final String SHARED_PREF = "sharedPrefs";
-  //  private static final String EMAIL = "email";
+    private static final String SHARED_PREF = "sharedPrefs";
+    private static final String IP = "IP";
    // private static final String LVL = "lvl";
 
     @Override
@@ -100,9 +101,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         super.onCreate(savedInstanceState);
         initMapViewModel();
 
-       // SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
-       // String Email =sharedPreferences.getString(EMAIL,"");
-       // String LEVEL=sharedPreferences.getString(LVL,"");
+       //String LEVEL=sharedPreferences.getString(LVL,"");
 
         ServiceLocator.getInstance().initBase(getApplication());
 
@@ -135,9 +134,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             Context context = getApplicationContext().getApplicationContext();
             WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-            IPtoLocation IPtoLocation = new IPtoLocation();
-            IPtoLocation.setIp(ip);
-            Log.e("IP","IP EXIST");
+           /* SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(IP, ip);
+            editor.apply();*/
+           // IPtoLocation IPtoLocation = new IPtoLocation();
+           // IPtoLocation.setIp(ip);
+            //GeoApiService geoApiService = new GeoApiService();
+            //geoApiService.setIp(ip);
+            Log.i("IP","IP EXIST");
             //Snackbar.make(green, IPtoLocation.getIp(), Snackbar.LENGTH_SHORT).show();
         }
         else{
@@ -371,6 +376,26 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         final EditText chAzd = Ch_Window.findViewById(R.id.azd_for_change);
         final ImageButton chImage_button =Ch_Window.findViewById(R.id.chImageArrow);
         final ViewPager2 chImageSlider = Ch_Window.findViewById(R.id.chImageSlider);
+        if(find.getText().toString().isEmpty() || find.getText().toString().equals("")){
+            ch_wind.show();
+        }
+        else if(connected){
+            Log.i("IP","IP NOT NULL");
+            mapViewModel.getAddressFromIp(ip).observe(MapActivity.this, new Observer<GeoResponse>() {
+                @Override
+                public void onChanged(GeoResponse geoResponse) {
+                    Log.i("IP","ON CHANGED");
+                    Log.e("City",geoResponse.getCity());
+                    PLACE = geoResponse.getCity();
+                    chPlace.setText(PLACE);
+                    ch_wind.show();
+                }
+            });
+            Log.i("IP","TO TEXT");
+        }
+        else{
+            chPlace.setText(find.getText());
+        }
 
         chImage_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -497,7 +522,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 }
             }
         });
-        ch_wind.show();
     }
     private void showAddInfo() {
         AlertDialog.Builder add_wind = new AlertDialog.Builder(this);
@@ -517,31 +541,29 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         final EditText AddLng = add_Window.findViewById(R.id.lng_for_add);
         final ViewPager2 addImageSlider = add_Window.findViewById(R.id.addImageSlider);
         final ImageButton addImmage_button = add_Window.findViewById(R.id.addImageArrow);
-////////////////////////////////////////////////////////////////////////////
-
-
+        ////////////////////////////////////////////////////////////////////////////
 
         if(connected){
-            Log.e("IP","IP NOT NULL");
-            mapViewModel.getAddressFromIp().observe(MapActivity.this, new Observer<GeoResponse>() {
+            Log.i("IP","IP NOT NULL");
+            mapViewModel.getAddressFromIp(ip).observe(MapActivity.this, new Observer<GeoResponse>() {
                 @Override
                 public void onChanged(GeoResponse geoResponse) {
-                    Log.e("IP","ON CHANGED");
-                    Snackbar.make(green, geoResponse.getCity(), Snackbar.LENGTH_SHORT).show();
+                    Log.i("IP","ON CHANGED");
+                    Log.e("City",geoResponse.getCity());
                     PLACE = geoResponse.getCity();
                     LAT = ""+geoResponse.getLatitude();
                     LNG = ""+geoResponse.getLongitude();
-
+                    Log.e("Lat",LAT);
+                    Log.e("Lat",LNG);
+                    //SetIPplace(PLACE,LAT,LNG);
+                    AddLat.setText(LAT);
+                    AddLng.setText(LNG);
+                    AddPlace.setText(PLACE);
+                    add_wind.show();
                 }
             });
-            Log.e("IP","TO TEXT");
-            AddLat.setText(LAT);
-            AddLng.setText(LNG);
-            AddPlace.setText(PLACE);
-
-
+            Log.i("IP","TO TEXT");
         }
-        //46.138.164.145
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         addImmage_button.setOnClickListener(new View.OnClickListener() {
@@ -651,6 +673,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 }
             }
         });
-        add_wind.show();
+
     }
+
 }
