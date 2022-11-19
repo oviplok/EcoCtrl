@@ -1,30 +1,30 @@
 package it.mirea.ecoctrl.repositories.models;
 
-import com.google.gson.annotations.SerializedName;
+//import com.google.gson.annotations.SerializedName;
 
 public class GeoResponse {
 
-    private String as;
+   // private String as;
     private String city;
-    private String country;
+  /*  private String country;
     private String countryCode;
-    private String isp;
+    private String isp;*/
     //@SerializedName("lat")
     private double latitude;
   //  @SerializedName("lon")
     private double longitude;
-    private String org;
+   /* private String org;
     private String query;
     private String region;
     private String regionName;
-    private String timezone;
+    private String timezone;*/
 
-    @Override
+/*    @Override
     public String toString() {
         return "countryCode: " + countryCode + ", isp: " + isp + ", city: " + city;
-    }
+    }*/
 
-    static class AddressRequest{
+   /* static class AddressRequest{
         int count;
         String query;
 
@@ -40,7 +40,7 @@ public class GeoResponse {
 
     public void setAs(String as) {
         this.as = as;
-    }
+    }*/
 
     public String getCity() {
         return city;
@@ -50,7 +50,7 @@ public class GeoResponse {
         this.city = city;
     }
 
-    public String getCountry() {
+   /* public String getCountry() {
         return country;
     }
 
@@ -72,7 +72,7 @@ public class GeoResponse {
 
     public void setIsp(String isp) {
         this.isp = isp;
-    }
+    }*/
 
     public double getLatitude() {
         return latitude;
@@ -90,7 +90,7 @@ public class GeoResponse {
         this.longitude = longitude;
     }
 
-    public String getOrg() {
+  /*  public String getOrg() {
         return org;
     }
 
@@ -129,5 +129,5 @@ public class GeoResponse {
 
     public void setTimezone(String timezone) {
         this.timezone = timezone;
-    }
+    }*/
 }

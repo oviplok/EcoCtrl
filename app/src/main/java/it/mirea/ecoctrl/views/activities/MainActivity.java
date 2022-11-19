@@ -25,8 +25,6 @@ import android.widget.RelativeLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.mirea.ecoctrl.R;
-import it.mirea.ecoctrl.di.ServiceLocator;
-import it.mirea.ecoctrl.repositories.models.Place;
 import it.mirea.ecoctrl.repositories.models.User;
 import it.mirea.ecoctrl.viewModels.MainViewModel;
 
@@ -65,10 +63,8 @@ public class MainActivity extends AppCompatActivity {
             income_place = parts[parts.length - 1];
             Log.e("Map_app", income_place);
         }
-       // Log.e("Place_app", "ServiceLocator.getInstance().getGson().toJson(income)");
-       // Log.e("Place_app", ServiceLocator.getInstance().getGson().toJson(income));
 
-        //CONNECTION *****WIP*****
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
@@ -84,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             connected = false;
+            if (income_place==null){
+                income_place="";
+            }
             if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
                 mapAct(Email,LEVEL,income_place);
             }

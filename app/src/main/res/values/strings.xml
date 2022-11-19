@@ -40,4 +40,6 @@
     <string name="back_to_map">Snap back to reality</string>
     <string name="more">Подробнее…</string>
     <string name="image_resource">Set images</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

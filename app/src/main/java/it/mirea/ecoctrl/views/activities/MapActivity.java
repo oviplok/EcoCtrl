@@ -1,6 +1,6 @@
 package it.mirea.ecoctrl.views.activities;
 
-import androidx.annotation.Nullable;
+//import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentActivity;
@@ -40,6 +40,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.databinding.ActivityAddBinding;
@@ -555,7 +557,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     LNG = ""+geoResponse.getLongitude();
                     Log.e("Lat",LAT);
                     Log.e("Lat",LNG);
-                    //SetIPplace(PLACE,LAT,LNG);
                     AddLat.setText(LAT);
                     AddLng.setText(LNG);
                     AddPlace.setText(PLACE);
@@ -563,6 +564,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 }
             });
             Log.i("IP","TO TEXT");
+        }else{
+            add_wind.show();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////

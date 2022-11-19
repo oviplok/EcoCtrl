@@ -1,8 +1,8 @@
-package it.mirea.ecoctrl.repositories.fireBase;
+package it.mirea.ecoctrl.cutContent;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
+//import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -11,12 +11,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nonnull;
 
 import it.mirea.ecoctrl.repositories.models.User;
 
@@ -62,7 +65,7 @@ public class UserFireBaseRepository {
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onFailure(@Nonnull Exception e) {
                 user.setUsrResult(false);
                 Log.e("AUTH", "auth Error");
                 isUserAuthLiveData.setValue(user);
@@ -103,7 +106,7 @@ public class UserFireBaseRepository {
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
+                                public void onFailure(@NotNull Exception e) {
                                     user.setUsrResult(false);
                                     isUserAuthLiveData.setValue(user);
                                     Log.e("FireBase", "pass Error");
@@ -120,7 +123,7 @@ public class UserFireBaseRepository {
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
+                                public void onFailure(@NotNull Exception e) {
                                     user.setUsrResult(false);
                                     isUserAuthLiveData.setValue(user);
                                     Log.e("FireBase", "child Error");

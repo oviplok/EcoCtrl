@@ -3,18 +3,20 @@ package it.mirea.ecoctrl.viewModels;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
+//import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import javax.annotation.Nonnull;
+
 import it.mirea.ecoctrl.repositories.models.User;
-import it.mirea.ecoctrl.repositories.fireBase.UserFireBaseRepository;
+import it.mirea.ecoctrl.cutContent.UserFireBaseRepository;
 
 public class MainViewModel extends AndroidViewModel {
     private UserFireBaseRepository userFireBaseRepository;
     public LiveData<User> userLiveData;
 
-    public MainViewModel(@NonNull Application application) {
+    public MainViewModel(@Nonnull Application application) {
         super(application);
         userFireBaseRepository = new UserFireBaseRepository();
     }

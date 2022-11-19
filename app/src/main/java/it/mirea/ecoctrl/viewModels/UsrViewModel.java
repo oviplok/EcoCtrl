@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import it.mirea.ecoctrl.repositories.models.User;
-import it.mirea.ecoctrl.repositories.fireBase.UserFireBaseRepository;
+import it.mirea.ecoctrl.cutContent.UserFireBaseRepository;
 
 public class UsrViewModel extends AndroidViewModel {
 

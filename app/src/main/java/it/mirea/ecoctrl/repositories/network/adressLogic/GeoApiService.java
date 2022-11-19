@@ -35,7 +35,6 @@ public class GeoApiService {
     public String ip;//= "46.138.164.145" ;
     public String getApi(){
         return "https://api.apilayer.com/ip_to_location/";
-        //return "http://api.ipstack.com/";
     }
 
 
@@ -47,7 +46,6 @@ public class GeoApiService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
            api = retrofit.create(LocationApiService.class);
-        //return
     }
 
     public MutableLiveData<GeoResponse> getAddressesFromIP(String ip) {
@@ -62,12 +60,12 @@ public class GeoApiService {
                         Log.i("IP","ON RESPONSE");
                         Log.i("IP",response.toString());
                         if (response.isSuccessful() && response.body() != null) {
-                            // GeoResponse geoResponse =new GeoResponse();
+
                             Log.e("IP",response.body().toString());
                             geoResponse.setCity(response.body().getCity());
                             geoResponse.setLatitude(response.body().getLatitude());
                             geoResponse.setLongitude(response.body().getLongitude());
-                            //geoResponse.setCountry(ip);
+
                             address.setValue(geoResponse);
 
                         }
@@ -83,34 +81,7 @@ public class GeoApiService {
                 }
         );
 
-//        api.getLocation("apikey=".concat(BuildConfig.IP_TO_LOCATION_API_KEY),getIp()+"?apikey="+BuildConfig.IP_TO_LOCATION_API_KEY).enqueue(new Callback<GeoResponse>() {
-//            @Override
-//            public void onResponse(Call<GeoResponse> call, Response<GeoResponse> response) {
-//              //  address.setValue();
-//                Log.e("IP","ON RESPONSE");
-//                Log.e("IP",response.toString());
-//                if (response.isSuccessful() && response.body() != null) {
-//                   // GeoResponse geoResponse =new GeoResponse();
-//                    Log.e("IP",response.body().toString());
-//                    geoResponse.setCity(response.body().getCity());
-//                    geoResponse.setLatitude(response.body().getLatitude());
-//                    geoResponse.setLongitude(response.body().getLongitude());
-//                    //geoResponse.setCountry(ip);
-//                    address.setValue(geoResponse);
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GeoResponse> call, Throwable t) {
-//                t.getMessage();
-//                Log.e("IP","ON FAILURE");
-//                done=true;
-//            }
-//
-//        });
         Log.i("IP","RETURN");
-       // address.setValue(geoResponse);
         return address;
     }
 

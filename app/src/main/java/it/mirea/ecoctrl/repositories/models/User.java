@@ -5,7 +5,7 @@ import com.google.firebase.firestore.Exclude;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String job, email, password, lvl;
+    private String job, email, password, lvl,token;
     private static String callPath = "Users";
 
     @Exclude

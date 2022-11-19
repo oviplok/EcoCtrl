@@ -16,13 +16,6 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface LocationApiService {
-    /*@Headers({
-            "Content-Type: application/json",
-            "Accept: application/json"
-    })*/
-    //@Header("apikey") String key
-    @GET
-    Call<GeoResponse> getLocation(@Header("apikey=") String key,@Url String ip);
 
     @GET("{ip}")
     Call<GeoResponse> getNewLocation(@Path("ip") String ip, @Query("apikey") String apiKey);
