@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.domain.models.Place;
 
 public class PlaceOps {
 
@@ -36,15 +36,15 @@ public class PlaceOps {
         return InfoChangeMap;
     }
 
-    public static PlaceF insertInfo(String addPlace, String addMetan,
-                                    String addSerd, String addAzd, String addLng, String addLat, List<String> addImage){
+    public static Place insertInfo(String addPlace, String addMetan,
+                                   String addSerd, String addAzd, String addLng, String addLat, List<String> addImage){
 
-        PlaceF placeF = new PlaceF();
-        placeF.setPlace_name(addPlace);
-        placeF.setAzdInfo(addAzd);
-        placeF.setMetanInfo(addMetan);
-        placeF.setSerdInfo(addSerd);
-        placeF.setImagesF(addImage);
+        Place place = new Place();
+        place.setPlace_name(addPlace);
+        place.setAzdInfo(addAzd);
+        place.setMetanInfo(addMetan);
+        place.setSerdInfo(addSerd);
+        place.setImagesF(addImage);
        // placeF.setFav(fav);
        // if((addLat.equals("") || addLng.equals(""))){
 
@@ -52,11 +52,11 @@ public class PlaceOps {
        // else{
             double Lng = Double.parseDouble(addLng);
             double Lat = Double.parseDouble(addLat);
-            placeF.setLat(Lat);
-            placeF.setLng(Lng);
+            place.setLat(Lat);
+            place.setLng(Lng);
         //}
-        Log.e("AddOper", placeF.getPlace_name());
-        return placeF;
+        Log.e("AddOper", place.getPlace_name());
+        return place;
 
     }
 

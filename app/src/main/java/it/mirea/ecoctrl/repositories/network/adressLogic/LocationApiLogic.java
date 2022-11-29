@@ -1,15 +1,10 @@
 package it.mirea.ecoctrl.repositories.network.adressLogic;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
-import android.text.format.Formatter;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import it.mirea.ecoctrl.BuildConfig;
-import it.mirea.ecoctrl.cutContent.IPtoLoc;
 import it.mirea.ecoctrl.repositories.models.GeoResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,7 +12,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GeoApiService {
+public class LocationApiLogic {
     public boolean done;
     GeoResponse geoResponse =new GeoResponse();
     private LocationApiService api;
@@ -38,7 +33,7 @@ public class GeoApiService {
     }
 
 
-    public GeoApiService() {
+    public LocationApiLogic() {
         Log.i("IP","GEO BUILDER");
 
          Retrofit retrofit= new Retrofit.Builder()
@@ -52,7 +47,7 @@ public class GeoApiService {
         setIp("46.138.164.145");
         MutableLiveData<GeoResponse> address = new MutableLiveData<>();
         Log.e("IP","GET ADDRESSES FROM IP");
-        api.getNewLocation(getIp(), BuildConfig.IP_TO_LOCATION_API_KEY).enqueue(
+        api.getLocation(getIp(), BuildConfig.IP_TO_LOCATION_API_KEY).enqueue(
                 new Callback<GeoResponse>() {
                     @Override
                     public void onResponse(Call<GeoResponse> call, Response<GeoResponse> response) {

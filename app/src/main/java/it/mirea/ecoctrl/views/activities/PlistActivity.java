@@ -18,8 +18,7 @@ import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.di.ServiceLocator;
 import it.mirea.ecoctrl.di.AppExecutors;
 import it.mirea.ecoctrl.repositories.RepoTasks;
-import it.mirea.ecoctrl.repositories.models.Place;
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.domain.models.Place;
 import it.mirea.ecoctrl.repositories.room.MapRoomDatabase;
 import it.mirea.ecoctrl.viewModels.PlistViewModel;
 import it.mirea.ecoctrl.views.adapters.PlaceListAdapter;
@@ -33,7 +32,7 @@ public class PlistActivity extends AppCompatActivity {
     RecyclerView all_plcs;
     String email;
     String lvl;
-    List<PlaceF> placess;
+    List<Place> placess;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +72,7 @@ public class PlistActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
-                        List<PlaceF> tasks = listAdapter.getData();
+                        List<Place> tasks = listAdapter.getData();
                         plistViewModel.deletePlace(position,tasks);
 
                     }
@@ -90,9 +89,9 @@ public class PlistActivity extends AppCompatActivity {
 
     private void retrievePlaces() {
         plistViewModel.getAllPlaces();
-        plistViewModel.AllLiveData.observe(this, new Observer<List<PlaceF>>() {
+        plistViewModel.AllLiveData.observe(this, new Observer<List<Place>>() {
             @Override
-            public void onChanged(List<PlaceF> places) {
+            public void onChanged(List<Place> places) {
                 listAdapter.setData(places);
             }
         });

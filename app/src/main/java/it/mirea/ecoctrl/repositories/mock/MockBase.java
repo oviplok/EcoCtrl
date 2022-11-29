@@ -4,86 +4,86 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.mirea.ecoctrl.domain.models.User;
 import it.mirea.ecoctrl.repositories.RepoTasks;
-import it.mirea.ecoctrl.repositories.models.Place;
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.repositories.models.PlaceDTO;
+import it.mirea.ecoctrl.domain.models.Place;
 
 public class MockBase implements RepoTasks {
-    MutableLiveData<List<Place>> data;
-    List<Place> list;
+    MutableLiveData<List<PlaceDTO>> data;
+    List<PlaceDTO> list;
     // MutableLiveData<Place> searchPlace;
 
-    public MutableLiveData<List<Place>> getAllPlaces() {
+    public MutableLiveData<List<PlaceDTO>> getAllPlaces() {
         return data;
     }
 
     public MockBase() {
         list = new ArrayList<>();
 
-        Place place1 = new Place();
-        place1.setPlace_name("Dubai");
+        PlaceDTO placeDTO1 = new PlaceDTO();
+        placeDTO1.setPlace_name("Dubai");
        // place1.setCreator(new Person("Леонид", "Шешуков"));
-        place1.setMetanInfo("0.12");
-        place1.setSerdInfo("0.33");
-        place1.setAzdInfo("0.2");
-        place1.setLat(25.216982);
-        place1.setLng(55.170364);
-        list.add(place1);
+        placeDTO1.setMetanInfo("0.12");
+        placeDTO1.setSerdInfo("0.33");
+        placeDTO1.setAzdInfo("0.2");
+        placeDTO1.setLat(25.216982);
+        placeDTO1.setLng(55.170364);
+        list.add(placeDTO1);
 
-        Place place2 = new Place();
-        place2.setPlace_name("Podolsk");
-        place2.setMetanInfo("0.5");
-        place2.setSerdInfo("0.6");
-        place2.setAzdInfo("0.2002");
-        place2.setLat(55.412902);
-        place2.setLng(37.564411);
-        list.add(place2);
+        PlaceDTO placeDTO2 = new PlaceDTO();
+        placeDTO2.setPlace_name("Podolsk");
+        placeDTO2.setMetanInfo("0.5");
+        placeDTO2.setSerdInfo("0.6");
+        placeDTO2.setAzdInfo("0.2002");
+        placeDTO2.setLat(55.412902);
+        placeDTO2.setLng(37.564411);
+        list.add(placeDTO2);
 
-        Place place3 = new Place();
-        place3.setPlace_name("RTU MIREA");
-        place3.setMetanInfo("0.13");
-        place3.setSerdInfo("0.12");
-        place3.setAzdInfo("0.20");
-        place3.setLat(55.669911);
-        place3.setLng(37.479842);
-        list.add(place3);
+        PlaceDTO placeDTO3 = new PlaceDTO();
+        placeDTO3.setPlace_name("RTU MIREA");
+        placeDTO3.setMetanInfo("0.13");
+        placeDTO3.setSerdInfo("0.12");
+        placeDTO3.setAzdInfo("0.20");
+        placeDTO3.setLat(55.669911);
+        placeDTO3.setLng(37.479842);
+        list.add(placeDTO3);
 
-        Place place4 = new Place();
-        place4.setPlace_name("Dmitrievskogo");
+        PlaceDTO placeDTO4 = new PlaceDTO();
+        placeDTO4.setPlace_name("Dmitrievskogo");
         // place1.setCreator(new Person("Леонид", "Шешуков"));
-        place4.setMetanInfo("0.2");
-        place4.setSerdInfo("0.3");
-        place4.setAzdInfo("0.4");
-        place4.setLat(55.710630);
-        place4.setLng(37.879742);
-        list.add(place4);
+        placeDTO4.setMetanInfo("0.2");
+        placeDTO4.setSerdInfo("0.3");
+        placeDTO4.setAzdInfo("0.4");
+        placeDTO4.setLat(55.710630);
+        placeDTO4.setLng(37.879742);
+        list.add(placeDTO4);
 
-        Place place5 = new Place();
-        place5.setPlace_name("Nekrasovka");
-        place5.setMetanInfo("0.5");
-        place5.setSerdInfo("0.6");
-        place5.setAzdInfo("0.77");
-        place5.setLat(55.704756);
-        place5.setLng(37.927272);
-        list.add(place5);
+        PlaceDTO placeDTO5 = new PlaceDTO();
+        placeDTO5.setPlace_name("Nekrasovka");
+        placeDTO5.setMetanInfo("0.5");
+        placeDTO5.setSerdInfo("0.6");
+        placeDTO5.setAzdInfo("0.77");
+        placeDTO5.setLat(55.704756);
+        placeDTO5.setLng(37.927272);
+        list.add(placeDTO5);
 
         data = new MutableLiveData<>(list);
     }
 
 
     @Override
-    public void addPlace(PlaceF placeF) {
-        Place place = Place.convertFromFire(placeF);
-        list.add(place);
+    public void addPlace(Place place) {
+        PlaceDTO placeDTO = PlaceDTO.convertFromFire(place);
+        list.add(placeDTO);
         data.setValue(list);
     }
 
     @Override
-    public void changePlace(PlaceF placeF) {
+    public void changePlace(Place place) {
        // String check =placeF.getPlace_name();
        // Place place = Place.convertFromFire(placeF);
        // list.add(place);
@@ -91,17 +91,37 @@ public class MockBase implements RepoTasks {
     }
 
     @Override
-    public void deletePlace(PlaceF place) {
+    public void deletePlace(Place place) {
         list.remove(place);
         data.setValue(list);
     }
 
     @Override
-    public MutableLiveData<Place> findPlace(String id, LifecycleOwner owner) {
-        MutableLiveData<Place> specificPlace = new MutableLiveData<>();
+    public <T extends User> LiveData<T> findUser(String email, LifecycleOwner owner) {
+        return null;
+    }
 
-        data.observe(owner, (List<Place> places) -> {
-            specificPlace.setValue(places.stream()
+    @Override
+    public <T extends User> LiveData<T> findUser(String email, String password, LifecycleOwner owner) {
+        return null;
+    }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+    public void updateUser(User user) {
+
+    }
+
+    @Override
+    public MutableLiveData<PlaceDTO> findPlace(String id, LifecycleOwner owner) {
+        MutableLiveData<PlaceDTO> specificPlace = new MutableLiveData<>();
+
+        data.observe(owner, (List<PlaceDTO> placeDTOS) -> {
+            specificPlace.setValue(placeDTOS.stream()
                     .filter(place -> id.equals(place.getPlace_name()))
                     .findAny()
                     .orElse(null)

@@ -7,7 +7,7 @@
     <string name="insert_email">Write email</string>
     <string name="insert_job">Write your position</string>
     <string name="go_back">Go back</string>
-    <string name="places">Search for a place</string>
+    <string name="placeDTOS">Search for a place</string>
     <string name="search">Search</string>
     <string name="maybe">Here will be information… Maybe</string>
     <string name="change_info">Change</string>
@@ -30,7 +30,7 @@
     <string name="azd">\"\nNitrogen dioxide: \"</string>
     <string name="set_name">search line is empty!</string>
     <string name="your_email">Your email: </string>
-    <string name="your_lvl">Your lvl: </string>
+    <string name="your_role">Your role: </string>
     <string name="your_job">Your job: </string>
     <string name="no_inf">No results…</string>
     <string name="auth_error">Auth Error</string>
@@ -42,4 +42,5 @@
     <string name="image_resource">Set images</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="vk">Use VK to auth</string>
 </resources>

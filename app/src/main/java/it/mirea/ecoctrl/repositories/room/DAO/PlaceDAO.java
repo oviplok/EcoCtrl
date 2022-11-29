@@ -1,7 +1,6 @@
 package it.mirea.ecoctrl.repositories.room.DAO;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -10,25 +9,25 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import it.mirea.ecoctrl.repositories.models.Place;
+import it.mirea.ecoctrl.repositories.models.PlaceDTO;
 
 @Dao
 public interface PlaceDAO {
 
     @Insert
-    void addPlace(Place place);
+    void addPlace(PlaceDTO placeDTO);
 
     @Update
-    void changePlace(Place place);
+    void changePlace(PlaceDTO placeDTO);
 
     @Delete
-    void deletePlace(Place place);
+    void deletePlace(PlaceDTO placeDTO);
 
     @Query("SELECT * FROM places")
-    LiveData<List<Place>> getAllPlaces();
+    LiveData<List<PlaceDTO>> getAllPlaces();
 
     @Query("SELECT * FROM places WHERE place LIKE :place")
-    LiveData<Place> getPlace(String place);
+    LiveData<PlaceDTO> getPlace(String place);
 
    // @Query("SELECT * FROM places WHERE fav>0")
    // LiveData<List<Place>> getFav();

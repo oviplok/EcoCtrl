@@ -15,19 +15,19 @@ import it.mirea.ecoctrl.di.ServiceLocator;
 import it.mirea.ecoctrl.domain.operations.PlaceOps;
 import it.mirea.ecoctrl.repositories.RepoTasks;
 import it.mirea.ecoctrl.repositories.models.GeoResponse;
-import it.mirea.ecoctrl.repositories.models.Place;
+import it.mirea.ecoctrl.repositories.models.PlaceDTO;
 import it.mirea.ecoctrl.repositories.fireBase.MapFireBaseRepository;
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.domain.models.Place;
 
 public class MapViewModel extends AndroidViewModel {
     PlaceOps placeOps =new PlaceOps();
     RepoTasks repository;
     private MapFireBaseRepository mapFireBaseRepository;
+    PlaceDTO placeDTO;
     Place place;
-    PlaceF placeF;
 
-    public LiveData<Place> placeLiveData;
-    public LiveData<PlaceF> placeFireLiveData;
+    public LiveData<PlaceDTO> placeLiveData;
+    public LiveData<Place> placeFireLiveData;
 
 
     public MapViewModel(@NonNull Application application) {
@@ -53,15 +53,15 @@ public class MapViewModel extends AndroidViewModel {
                             String chSerd, String chAzd,String intern,double chLng,double chLat,List<String> chImage) {
         String Lng=""+chLng;
         String Lat=""+chLat;
-        PlaceF placeF = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,Lng,Lat,chImage);
+        Place place = PlaceOps.insertInfo(chPlace,chMetan,chSerd,chAzd,Lng,Lat,chImage);
         if(intern.equals("off"))
         {
-            ServiceLocator.getInstance().getRepository().changePlace(placeF);
+            ServiceLocator.getInstance().getRepository().changePlace(place);
            // repository.changePlace(placeF);
            // mapRoomRepository.changePlace(placeF);
         }
         else {
-            ServiceLocator.getInstance().getRepository().changePlace(placeF);
+            ServiceLocator.getInstance().getRepository().changePlace(place);
             // repository.changePlace(placeF);
            // mapRoomRepository.changePlace(placeF);
             Map<String, Object> InfoChangeMap = placeOps.MakeMap(chPlace,chMetan,chSerd,chAzd,"","");
@@ -72,11 +72,11 @@ public class MapViewModel extends AndroidViewModel {
     public void AddPlace(String addPlace, String addMetan,
                          String addSerd, String addAzd, String addLng, String addLat, List<String> addImage, boolean fav, String intern) {
         Log.e("AddPlace",addPlace);
-        PlaceF placeF = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat,addImage);
+        Place place = PlaceOps.insertInfo(addPlace,addMetan,addSerd,addAzd,addLng,addLat,addImage);
 
         if(intern.equals("off"))
         {
-            ServiceLocator.getInstance().getRepository().addPlace(placeF);
+            ServiceLocator.getInstance().getRepository().addPlace(place);
              // repository.addPlace(placeF);
             //mapRoomRepository.addPlace(placeF);
 
@@ -84,20 +84,20 @@ public class MapViewModel extends AndroidViewModel {
         else{
             Log.e("AddPlaceIN",addPlace);
             Map<String, Object> InfoChangeMap = placeOps.MakeMap(addPlace,addMetan,addSerd,addAzd,addLng,addLat);
-            ServiceLocator.getInstance().getRepository().addPlace(placeF);
+            ServiceLocator.getInstance().getRepository().addPlace(place);
            // repository.addPlace(placeF);
             //mapRoomRepository.addPlace(placeF);
             placeFireLiveData = mapFireBaseRepository.AddPlace(addPlace,InfoChangeMap);
             }
     }
 
-    public void setPlace(Place place) {
+    public void setPlace(PlaceDTO placeDTO) {
        // shareLiveData=place;
         //this.placeF=place;
     }
 
-    public Place getPlace(){
-        return place;
+    public PlaceDTO getPlace(){
+        return placeDTO;
     }
 
     public LiveData<GeoResponse> getAddressFromIp(String ip) {

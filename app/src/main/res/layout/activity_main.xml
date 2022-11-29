@@ -8,65 +8,25 @@
     tools:context=".views.activities.MainActivity">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/eco_theme" />
-
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="158dp"
-        android:layout_alignStart="@+id/imageView"
-        android:layout_alignEnd="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="0dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/comfortaa"
-        android:gravity="center_horizontal"
+       android:layout_centerHorizontal="true"
         android:text="@string/app_name"
         android:textColor="@color/black"
-        android:textSize="48sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.557"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.379" />
+        android:textSize="48sp"/>
 
-    <Button
-        android:id="@+id/to_login"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="23dp"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="30dp"
-        android:layout_toStartOf="@+id/to_registr"
-        android:fontFamily="@font/comfortaa"
-        android:text="@string/login" />
 
-    <Button
-        android:id="@+id/to_registr"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="23dp"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="30dp"
-        android:fontFamily="@font/comfortaa"
-        android:shadowColor="@color/black"
-        android:text="@string/registr" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
 
 </RelativeLayout>

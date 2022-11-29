@@ -8,7 +8,7 @@
     <string name="insert_email">Введите почту</string>
     <string name="insert_job">Введите должность</string>
     <string name="go_back">Вернуться</string>
-    <string name="places">Поиск места</string>
+    <string name="placeDTOS">Поиск места</string>
     <string name="search">Поиск</string>
     <string name="maybe">Тут будут данные… Возможно</string>
     <string name="change_info">Изменить</string>
@@ -22,7 +22,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
+    <string name="welcome">"Добро пожаловать!"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -31,7 +31,7 @@
     <string name="azd">\"\nДиоксид азота: \"</string>
     <string name="set_name">Введите название в поиск!</string>
     <string name="your_email">\Ваша почта: \</string>
-    <string name="your_lvl">\Ваш уровень доступа: \</string>
+    <string name="your_role">\Ваша роль: \</string>
     <string name="your_job">\Должность: \</string>
     <string name="no_inf">Ничего не найдено…</string>
     <string name="auth_error">Ошибка авторизации</string>
@@ -41,4 +41,7 @@
     <string name="back_to_map">Snap back to reality</string>
     <string name="more">Подробнее…</string>
     <string name="image_resource">Фотографии места</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="vk">Войти через VK</string>
 </resources>

@@ -15,19 +15,19 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Map;
 
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.domain.models.Place;
 
 public class MapFireBaseRepository {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference places;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference mapCol = db.collection(PlaceF.getCallPath());
-    private PlaceF place = new PlaceF();
+    private CollectionReference mapCol = db.collection(Place.getCallPath());
+    private Place place = new Place();
 
 
-    public MutableLiveData<PlaceF> SearchPlace(String search) {
-        MutableLiveData<PlaceF> mapLiveData = new MutableLiveData<>();
+    public MutableLiveData<Place> SearchPlace(String search) {
+        MutableLiveData<Place> mapLiveData = new MutableLiveData<>();
 
         mapCol.document(search).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -55,8 +55,8 @@ public class MapFireBaseRepository {
 
     }
 
-    public MutableLiveData<PlaceF> ChangePlace(String chPlace, Map<String, Object> infoChangeMap) {
-        MutableLiveData<PlaceF> mapLiveData = new MutableLiveData<>();
+    public MutableLiveData<Place> ChangePlace(String chPlace, Map<String, Object> infoChangeMap) {
+        MutableLiveData<Place> mapLiveData = new MutableLiveData<>();
 
         mapCol.document(chPlace).get().
                 addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -94,8 +94,8 @@ public class MapFireBaseRepository {
         return mapLiveData;
     }
 
-    public MutableLiveData<PlaceF> AddPlace(String addPlace, Map<String, Object> infoChangeMap) {
-        MutableLiveData<PlaceF> mapLiveData = new MutableLiveData<>();
+    public MutableLiveData<Place> AddPlace(String addPlace, Map<String, Object> infoChangeMap) {
+        MutableLiveData<Place> mapLiveData = new MutableLiveData<>();
         mapCol.document(addPlace).get().
                 addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override

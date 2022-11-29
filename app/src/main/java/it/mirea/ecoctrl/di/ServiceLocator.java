@@ -3,10 +3,21 @@ package it.mirea.ecoctrl.di;
 import android.app.Application;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import it.mirea.ecoctrl.domain.models.User;
 import it.mirea.ecoctrl.repositories.RepoTasks;
 import it.mirea.ecoctrl.repositories.mock.MockBase;
 import it.mirea.ecoctrl.cutContent.IPtoLocation;
-import it.mirea.ecoctrl.repositories.network.adressLogic.GeoApiService;
+import it.mirea.ecoctrl.repositories.network.adressLogic.LocationApiLogic;
+import it.mirea.ecoctrl.repositories.network.authLogic.VKApiLogic;
 import it.mirea.ecoctrl.repositories.room.MapRoomRepository;
 
 public class ServiceLocator {
@@ -34,11 +45,11 @@ public class ServiceLocator {
         }
         return repoTasks;
     }
-    private GeoApiService mApiService;
-    public GeoApiService getApiService() {
+    private LocationApiLogic mApiService;
+    public LocationApiLogic getApiService() {
         Log.e("IP","GET API SERVICE");
         if (mApiService== null) {
-            mApiService = new GeoApiService();
+            mApiService = new LocationApiLogic();
         }
         return mApiService;
     }
@@ -49,7 +60,11 @@ public class ServiceLocator {
         }
         return mAnalysis;
     }
-    /*private Gson mGson;
+////////////////////////////////////////////////////////////////////////////////////////
+    private Gson mGson;
+    private User mUser;
+    private VKApiLogic mVK_API;
+
     public Gson getGson() {
         if (mGson == null) {
             mGson = new GsonBuilder()
@@ -67,7 +82,21 @@ public class ServiceLocator {
                     .create();
         }
         return mGson;
-    }*/
+    }
 
+    public VKApiLogic getVK_API() {
+        if (mVK_API == null) {
+            mVK_API = new VKApiLogic();
+        }
+        return mVK_API;
+    }
 
+    public User getUser() {
+        return mUser;
+    }
+
+    public void setUser(User user) {
+        this.mUser = user;
+    }
+/////////////////////////////////////////////////////////////////////////////
 }

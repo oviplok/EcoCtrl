@@ -1,56 +1,95 @@
 package it.mirea.ecoctrl.repositories.room;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
+import it.mirea.ecoctrl.domain.models.User;
 import it.mirea.ecoctrl.repositories.RepoTasks;
-import it.mirea.ecoctrl.repositories.models.Place;
-import it.mirea.ecoctrl.repositories.models.PlaceF;
+import it.mirea.ecoctrl.repositories.models.PlaceDTO;
+import it.mirea.ecoctrl.domain.models.Place;
+import it.mirea.ecoctrl.repositories.models.UserDTO;
 import it.mirea.ecoctrl.repositories.room.DAO.PlaceDAO;
+import it.mirea.ecoctrl.repositories.room.DAO.UserDAO;
 
 public class MapRoomRepository implements RepoTasks {
     private PlaceDAO placeDAO;
-    private LiveData<List<Place>> allPlaces;
-    private LiveData<Place> searchPlace;
+    private UserDAO userDAO;
+    private LiveData<List<PlaceDTO>> allPlaces;
+    private LiveData<PlaceDTO> searchPlace;
 
     public MapRoomRepository(Application application){
         MapRoomDatabase db = MapRoomDatabase.getInstance(application);
         placeDAO= db.placeDAO();
+        userDAO = db.userDAO();
         allPlaces = placeDAO.getAllPlaces();
     }
-    public LiveData<List<Place>> getAllPlaces(){ return allPlaces; }
+    public LiveData<List<PlaceDTO>> getAllPlaces(){ return allPlaces; }
 
-    public LiveData<Place> findPlace(String place_name,LifecycleOwner owner) {
+    public LiveData<PlaceDTO> findPlace(String place_name, LifecycleOwner owner) {
         searchPlace = placeDAO.getPlace(place_name);
-       // MutableLiveData<Place> mapLiveData = new MutableLiveData<>();
         return searchPlace;
     }
 
-    public void addPlace(PlaceF placeF){
-       Place place = Place.convertFromFire(placeF);
+    public void addPlace(Place place){
+       PlaceDTO placeDTO = PlaceDTO.convertFromFire(place);
        MapRoomDatabase.databaseWriteExecutor.execute(()->{
-           placeDAO.addPlace(place);
-        });
-       // Log.e("AddPlaceRepo",place.getPlace_name());
-    }
-
-    public  void deletePlace(PlaceF placeF){
-        Place place = Place.convertFromFire(placeF);
-        MapRoomDatabase.databaseWriteExecutor.execute(()->{
-            placeDAO.deletePlace(place);
+           placeDAO.addPlace(placeDTO);
         });
     }
 
-    public  void changePlace(PlaceF placeF){
-        Place place = Place.convertFromFire(placeF);
+    public  void deletePlace(Place place){
+        PlaceDTO placeDTO = PlaceDTO.convertFromFire(place);
         MapRoomDatabase.databaseWriteExecutor.execute(()->{
-            placeDAO.changePlace(place);
+            placeDAO.deletePlace(placeDTO);
         });
+    }
+
+    public  void changePlace(Place place){
+        PlaceDTO placeDTO = PlaceDTO.convertFromFire(place);
+        MapRoomDatabase.databaseWriteExecutor.execute(()->{
+            placeDAO.changePlace(placeDTO);
+        });
+    }
+
+    @Override
+    public void addUser(User user) {
+        UserDTO dto = UserDTO.convertFromPerson(user);
+
+        MapRoomDatabase.databaseWriteExecutor.execute(() -> {
+            userDAO.addUser(dto);
+        });
+    }
+
+    @Override
+    public void updateUser(User user) {
+        UserDTO dto = UserDTO.convertFromPerson(user);
+
+        MapRoomDatabase.databaseWriteExecutor.execute(() -> {
+           userDAO.updatePersonInfo(dto);
+        });
+    }
+
+    @Override
+    public LiveData<UserDTO> findUser(String email, LifecycleOwner owner) {
+        MutableLiveData<UserDTO> answer = new MutableLiveData<>();
+
+        userDAO.getUserByEmail(email).observe(owner, answer::setValue);
+
+        return answer;
+    }
+
+    @Override
+    public LiveData<UserDTO> findUser(String email, String password, LifecycleOwner owner) {
+        MutableLiveData<UserDTO> answer = new MutableLiveData<>();
+
+        userDAO.getUserByEmailAndPassword(email, password).observe(owner, answer::setValue);
+
+        return answer;
     }
 
 }

@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="it.mirea.ecoctrl"
-    tools:ignore="CoarseFineLocation">
+    tools:ignore="CoarseFineLocation" >
 
     <uses-sdk
-        android:minSdkVersion="29"
-        android:targetSdkVersion="31" />
+        android:minSdkVersion="30"
+        android:targetSdkVersion="33" />
 
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
@@ -23,8 +23,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EcoCtrl">
-
+        android:theme="@style/Theme.EcoCtrl" >
         <activity
             android:name=".views.activities.PlistActivity"
             android:exported="true" />
@@ -36,7 +35,7 @@
             android:exported="true" />
         <activity
             android:name=".views.activities.MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

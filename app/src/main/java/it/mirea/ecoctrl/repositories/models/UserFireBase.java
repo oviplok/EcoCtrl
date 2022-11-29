@@ -4,17 +4,17 @@ import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class UserFireBase implements Serializable {
     private String job, email, password, lvl,token;
     private static String callPath = "Users";
 
     @Exclude
     private boolean usrResult;
 
-    public User(){
+    public UserFireBase(){
     }
 
-    public User(String email,String password,String job,String lvl, boolean usrResult){
+    public UserFireBase(String email, String password, String job, String lvl, boolean usrResult){
         this.email = email;
         this.password = password;
         this.job = job;

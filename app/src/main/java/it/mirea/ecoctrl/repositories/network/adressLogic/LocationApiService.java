@@ -18,5 +18,5 @@ import retrofit2.http.Url;
 public interface LocationApiService {
 
     @GET("{ip}")
-    Call<GeoResponse> getNewLocation(@Path("ip") String ip, @Query("apikey") String apiKey);
+    Call<GeoResponse> getLocation(@Path("ip") String ip, @Query("apikey") String apiKey);
 }

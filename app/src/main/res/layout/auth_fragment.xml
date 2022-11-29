@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/comfortaa"
+            android:text="@string/login"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/login"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/insert_email"
+            android:drawableLeft="@drawable/ic_action_email"
+            android:fontFamily="@font/comfortaa"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_action_password"
+            android:fontFamily="@font/comfortaa"
+            android:hint="@string/insert_pass"
+            android:inputType="textPassword"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/login" />
+
+        <Button
+            android:id="@+id/vkAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/vk" />
+    </LinearLayout>
+
+</RelativeLayout>

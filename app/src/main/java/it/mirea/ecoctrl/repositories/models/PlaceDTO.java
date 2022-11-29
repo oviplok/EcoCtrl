@@ -8,8 +8,10 @@ import androidx.room.PrimaryKey;
 import com.google.gson.Gson;
 import java.util.List;
 
+import it.mirea.ecoctrl.domain.models.Place;
+
 @Entity(tableName = "places")
-public class Place extends PlaceF{
+public class PlaceDTO extends Place {
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "place")
@@ -33,11 +35,11 @@ public class Place extends PlaceF{
     @ColumnInfo(name = "images")
     private String images;
 
-    public Place(){
+    public PlaceDTO(){
     }
 
-    public Place(String place_name, String metanInfo,
-                 String serdInfo,String azdInfo,double lat,double lng){
+    public PlaceDTO(String place_name, String metanInfo,
+                    String serdInfo, String azdInfo, double lat, double lng){
 
         this.place_name=place_name;
         this.metanInfo=metanInfo;
@@ -47,18 +49,18 @@ public class Place extends PlaceF{
         this.azdInfo=azdInfo;
     }
 
-    public static Place convertFromFire(PlaceF placeF) {
-        Place place= new Place();
+    public static PlaceDTO convertFromFire(Place place) {
+        PlaceDTO placeDTO = new PlaceDTO();
 
-        place.setPlace_name(placeF.getPlace_name());
-        place.setLat(placeF.getLat());
-        place.setLng(placeF.getLng());
-        place.setAzdInfo(placeF.getAzdInfo());
-        place.setMetanInfo(placeF.getMetanInfo());
-        place.setSerdInfo(placeF.getSerdInfo());
-        place.setImagesF(placeF.getImagesF());
+        placeDTO.setPlace_name(place.getPlace_name());
+        placeDTO.setLat(place.getLat());
+        placeDTO.setLng(place.getLng());
+        placeDTO.setAzdInfo(place.getAzdInfo());
+        placeDTO.setMetanInfo(place.getMetanInfo());
+        placeDTO.setSerdInfo(place.getSerdInfo());
+        placeDTO.setImagesF(place.getImagesF());
 
-        return place;
+        return placeDTO;
     }
 
     public String getImages() {

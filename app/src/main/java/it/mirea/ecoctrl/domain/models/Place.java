@@ -1,4 +1,4 @@
-package it.mirea.ecoctrl.repositories.models;
+package it.mirea.ecoctrl.domain.models;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PlaceF implements Serializable {
+public class Place implements Serializable {
 
     public String place_name;
 
@@ -27,24 +27,20 @@ public class PlaceF implements Serializable {
     private String serdInfo;
     private double lat;
     private double lng;
-    //private LatLng pointSee;
     private List<String> images;
 
 
-    public PlaceF(){
-        //id = UUID.randomUUID().toString();
-       // placeList = new ArrayList<>();
+    public Place(){
         images = new ArrayList<>();
     }
 
-    public PlaceF(String place_name, String metanInfo,
-                  String serdInfo, String azdInfo, LatLng pointSee, boolean mapResult){
+    public Place(String place_name, String metanInfo,
+                 String serdInfo, String azdInfo, LatLng pointSee, boolean mapResult){
 
         this.place_name=place_name;
         this.metanInfo=metanInfo;
         this.serdInfo=serdInfo;
         this.azdInfo=azdInfo;
-        //this.pointSee=pointSee;
         this.mapResult=mapResult;
     }
 
@@ -116,12 +112,5 @@ public class PlaceF implements Serializable {
         this.mapResult = mapResult;
     }
 
-    //public LatLng getPointSee() {
-      //  return pointSee;
-    //}
-
-    //public void setPointSee(LatLng pointSee) {
-      //  this.pointSee = pointSee;
-    //}
 }
 

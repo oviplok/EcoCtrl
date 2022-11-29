@@ -21,7 +21,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import it.mirea.ecoctrl.repositories.models.User;
+import it.mirea.ecoctrl.repositories.models.UserFireBase;
 
 public class UserFireBaseRepository {
 
@@ -30,102 +30,102 @@ public class UserFireBaseRepository {
     private DatabaseReference users;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference passCol = db.collection(User.getCallPath());
-    private User user = new User();
+    private CollectionReference passCol = db.collection(UserFireBase.getCallPath());
+    private UserFireBase userFireBase = new UserFireBase();
 
-    public MutableLiveData<User> AnonLogIn() {
-        MutableLiveData<User> isUserAuthLiveData = new MutableLiveData<>();
+    public MutableLiveData<UserFireBase> AnonLogIn() {
+        MutableLiveData<UserFireBase> isUserAuthLiveData = new MutableLiveData<>();
         auth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                user.setUsrResult(true);
-                isUserAuthLiveData.setValue(user);
+                userFireBase.setUsrResult(true);
+                isUserAuthLiveData.setValue(userFireBase);
             }
         });
         return isUserAuthLiveData;
     }
 
-    public MutableLiveData<User> LogIn(String email, String password) {
-        MutableLiveData<User> isUserAuthLiveData = new MutableLiveData<>();
+    public MutableLiveData<UserFireBase> LogIn(String email, String password) {
+        MutableLiveData<UserFireBase> isUserAuthLiveData = new MutableLiveData<>();
 
-        user.setEmail(email);
-        user.setPassword(password);
-        auth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
+        userFireBase.setEmail(email);
+        userFireBase.setPassword(password);
+        auth.signInWithEmailAndPassword(userFireBase.getEmail(), userFireBase.getPassword())
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        passCol.document(user.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        passCol.document(userFireBase.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                user.setLvl(documentSnapshot.getString("level"));
-                                user.setUsrResult(true);
-                                isUserAuthLiveData.setValue(user);
+                                userFireBase.setLvl(documentSnapshot.getString("level"));
+                                userFireBase.setUsrResult(true);
+                                isUserAuthLiveData.setValue(userFireBase);
                             }
                         });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@Nonnull Exception e) {
-                user.setUsrResult(false);
+                userFireBase.setUsrResult(false);
                 Log.e("AUTH", "auth Error");
-                isUserAuthLiveData.setValue(user);
+                isUserAuthLiveData.setValue(userFireBase);
 
             }
         });
         return isUserAuthLiveData;
     }
 
-    public MutableLiveData<User> RegIn(String email, String password, String job) {
-        MutableLiveData<User> isUserAuthLiveData = new MutableLiveData<>();
+    public MutableLiveData<UserFireBase> RegIn(String email, String password, String job) {
+        MutableLiveData<UserFireBase> isUserAuthLiveData = new MutableLiveData<>();
         Map<String, Object> userCode = new HashMap<>();
 
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setJob(job);
-        user.setLvl("red");
+        userFireBase.setEmail(email);
+        userFireBase.setPassword(password);
+        userFireBase.setJob(job);
+        userFireBase.setLvl("red");
 
-        if (user.getEmail() != null && user.getPassword() != null && user.getJob() != null) {
-            auth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+        if (userFireBase.getEmail() != null && userFireBase.getPassword() != null && userFireBase.getJob() != null) {
+            auth.createUserWithEmailAndPassword(userFireBase.getEmail(), userFireBase.getPassword())
                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
-                            userCode.put("email", user.getEmail());
-                            userCode.put("level", user.getLvl());
-                            userCode.put("UserPos", user.getJob());
-                            userCode.put("password", user.getPassword());
+                            userCode.put("email", userFireBase.getEmail());
+                            userCode.put("level", userFireBase.getLvl());
+                            userCode.put("UserPos", userFireBase.getJob());
+                            userCode.put("password", userFireBase.getPassword());
 
 
-                            Log.e("user.", user.getEmail() + " " + user.getPassword() + " " + user.getJob());
+                            Log.e("user.", userFireBase.getEmail() + " " + userFireBase.getPassword() + " " + userFireBase.getJob());
                             ////// запись в базу пользователей
-                            passCol.document(user.getEmail()).set(userCode)
+                            passCol.document(userFireBase.getEmail()).set(userCode)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            user.setUsrResult(true);
-                                            isUserAuthLiveData.setValue(user);
+                                            userFireBase.setUsrResult(true);
+                                            isUserAuthLiveData.setValue(userFireBase);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NotNull Exception e) {
-                                    user.setUsrResult(false);
-                                    isUserAuthLiveData.setValue(user);
+                                    userFireBase.setUsrResult(false);
+                                    isUserAuthLiveData.setValue(userFireBase);
                                     Log.e("FireBase", "pass Error");
                                 }
                             });
                             users = database.getReference("Users");
                             users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user.getEmail())
+                                    .setValue(userFireBase.getEmail())
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            user.setUsrResult(true);
-                                            isUserAuthLiveData.setValue(user);
+                                            userFireBase.setUsrResult(true);
+                                            isUserAuthLiveData.setValue(userFireBase);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NotNull Exception e) {
-                                    user.setUsrResult(false);
-                                    isUserAuthLiveData.setValue(user);
+                                    userFireBase.setUsrResult(false);
+                                    isUserAuthLiveData.setValue(userFireBase);
                                     Log.e("FireBase", "child Error");
                                 }
                             });
@@ -133,25 +133,25 @@ public class UserFireBaseRepository {
                         }
                     });
         } else {
-            user.setUsrResult(false);
-            isUserAuthLiveData.setValue(user);
+            userFireBase.setUsrResult(false);
+            isUserAuthLiveData.setValue(userFireBase);
             Log.e("FireBase", "entering Error");
         }
         return isUserAuthLiveData;
     }
 
-    public MutableLiveData<User> Check_acc(String email) {
-        MutableLiveData<User> isUserCheckLiveData = new MutableLiveData<>();
+    public MutableLiveData<UserFireBase> Check_acc(String email) {
+        MutableLiveData<UserFireBase> isUserCheckLiveData = new MutableLiveData<>();
 
         passCol.document(email).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                user.setLvl(documentSnapshot.getString("level"));
-                user.setJob(documentSnapshot.getString("UserPos"));
-                user.setEmail(email);
-                user.setUsrResult(true);
-                isUserCheckLiveData.setValue(user);
+                userFireBase.setLvl(documentSnapshot.getString("level"));
+                userFireBase.setJob(documentSnapshot.getString("UserPos"));
+                userFireBase.setEmail(email);
+                userFireBase.setUsrResult(true);
+                isUserCheckLiveData.setValue(userFireBase);
             }
 
         });
@@ -159,16 +159,16 @@ public class UserFireBaseRepository {
         return isUserCheckLiveData;
     }
 
-    public MutableLiveData<User> Change_pass(String email, String oldPass, String newPass) {
-        MutableLiveData<User> isUserCheckLiveData = new MutableLiveData<>();
+    public MutableLiveData<UserFireBase> Change_pass(String email, String oldPass, String newPass) {
+        MutableLiveData<UserFireBase> isUserCheckLiveData = new MutableLiveData<>();
         passCol.document(email).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
                 String checker = documentSnapshot.getString("password");
                 if (!oldPass.equals(checker)) {
-                    user.setUsrResult(false);
-                    isUserCheckLiveData.setValue(user);
+                    userFireBase.setUsrResult(false);
+                    isUserCheckLiveData.setValue(userFireBase);
                 } else {
                     String infoLVL = documentSnapshot.getString("level");
                     String infoPos = documentSnapshot.getString("UserPos");
@@ -182,8 +182,8 @@ public class UserFireBaseRepository {
                     passCol.document(email).set(InfoChange).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            user.setUsrResult(true);
-                            isUserCheckLiveData.setValue(user);
+                            userFireBase.setUsrResult(true);
+                            isUserCheckLiveData.setValue(userFireBase);
                         }
 
                     });

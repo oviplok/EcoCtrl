@@ -53,7 +53,7 @@
                 android:drawableLeft="@drawable/ic_action_loopa"
                 android:ems="10"
                 android:fontFamily="@font/comfortaa"
-                android:hint="@string/places"
+                android:hint="@string/placeDTOS"
                 android:inputType="textPersonName" />
 
             <TextView
@@ -82,6 +82,18 @@
                 android:visibility="gone"
                 />
 
+
+            <ImageButton
+                android:id="@+id/shareButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="21dp"
+                android:background="#00FFFFFF"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/share" />
 
             <ImageButton
                 android:id="@+id/listButton"
@@ -129,27 +141,18 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_action_changeinf" />
 
+
+
         <ImageButton
-            android:id="@+id/shareButton"
+            android:id="@+id/userButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="3dp"
             android:background="#00FFFFFF"
             android:foreground="?android:attr/selectableItemBackground"
-            android:src="@drawable/share" />
-
-        <ImageButton
-            android:id="@+id/userButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="3dp"
-            android:background="#00FFFFFF"
-            android:foreground="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_action_user"
-            android:visibility="gone" />
+             />
 
         <ImageButton
             android:id="@+id/addInfo"
