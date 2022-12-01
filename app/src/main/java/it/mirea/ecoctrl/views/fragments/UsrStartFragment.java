@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import it.mirea.ecoctrl.viewModels.UserViewModel;
 import it.mirea.ecoctrl.views.activities.UsrActivity;
 
-public class UsrStartActivity extends Fragment {
+public class UsrStartFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

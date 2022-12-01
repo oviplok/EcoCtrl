@@ -15,7 +15,7 @@ import it.mirea.ecoctrl.views.activities.MapActivity;
 
 public class AuthViewModel extends ViewModel {
 
-    //private static final String SHARED_PREF = "sharedPrefs";
+    private static final String SHARED_PREF = "sharedPrefs";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
     private static final String LVL = "lvl";
@@ -35,17 +35,17 @@ public class AuthViewModel extends ViewModel {
 
                         activity.getPreferences(Context.MODE_PRIVATE).edit().putString(EMAIL, user.getEmail()).putString(PASSWORD, user.getPassword())
                                 .putString(LVL, user.getRole().toString()).apply();
-                        //Context context= new MainActivity();
-                        //SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREF,0);
-                        //SharedPreferences.Editor editor = sharedPref.edit();
-                        //editor.putString(EMAIL, user.getEmail());
-                        //editor.putString(PASSWORD, user.getPassword());
-                        //editor.putString(LVL, user.getRole().toString());
-                        //editor.apply();
+
+                        SharedPreferences sharedPref = activity.getSharedPreferences(SHARED_PREF,0);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(EMAIL, user.getEmail());
+                        editor.putString(PASSWORD, user.getPassword());
+                        editor.putString(LVL, user.getRole().toString());
+                        editor.apply();
 
                         Intent intent = new Intent(activity, MapActivity.class);
                         intent.putExtra("email", user.getEmail());
-                        intent.putExtra("lvl", user.getRole());
+                        intent.putExtra("lvl", user.getRole().toString());
                         intent.putExtra("income_place","");
                         activity.startActivity(intent);
 

@@ -33,14 +33,15 @@ public class VKAuth {
 
                     ServiceLocator.getInstance().getRepository().findUser(email, activity).observe(activity, (user) -> {
                         if (user == null) {
-                            User newPerson = new User();
-                            newPerson.setEmail(email);
+                            User newUser = new User();
+                            newUser.setEmail(email);
 
-                            ServiceLocator.getInstance().setUser(newPerson);
+                            ServiceLocator.getInstance().setUser(newUser);
                         } else {
                             ServiceLocator.getInstance().setUser(user);
                         }
                         //засунуть intent и сервис_локатор
+                        //не надо
                     });
                     ServiceLocator.getInstance().getVK_API().getUserInfo(token, activity);
 

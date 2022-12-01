@@ -1,37 +1,37 @@
 package it.mirea.ecoctrl.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import it.mirea.ecoctrl.databinding.ActivityUsrBinding;
-import it.mirea.ecoctrl.domain.models.User;
+import it.mirea.ecoctrl.di.ServiceLocator;
 import it.mirea.ecoctrl.R;
-import it.mirea.ecoctrl.viewModels.UserViewModel;
 
 public class UsrActivity extends AppCompatActivity {
 
     public ActivityUsrBinding mBinding;
-
+    private String role;
+    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ServiceLocator.getInstance().initBase(getApplication());
+
         mBinding = ActivityUsrBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        email = getIntent().getStringExtra("email");
+        role = getIntent().getStringExtra("role");
+        if(role.equals("Admin")){
+            Navigation.findNavController(this.mBinding.userNavHostFragment).navigate(R.id.action_usrStartFragment_to_adminFragment);
+        }
+        else
+        {
+
+        }
+
 //        SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
 //        if(sharedPref.getString(LVL,"")=="Admin"){
 //

@@ -25,10 +25,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.AllV
     private Context context;
     private List<Place> data;
     private PlistActivity mActivity;
-   // private AddActivity addActivity;
-   // private List<Party> data;
-   // private MainActivity mActivity;
-   //List<Place> data,Context context)
+
     public PlaceListAdapter(List<Place> data, PlistActivity activity){
         mActivity = activity;
         this.data = data;
@@ -79,12 +76,11 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.AllV
     public class AllViewHolder extends RecyclerView.ViewHolder {
         PlaceListElementBinding binding;
         TextView place_name, place_met, place_serd, place_azd, lat_lng;
-        ImageView editImage;
-        MapRoomDatabase DB;
+       // MapRoomDatabase DB;
         public AllViewHolder(PlaceListElementBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            DB = MapRoomDatabase.getInstance(context);
+           // DB = MapRoomDatabase.getInstance(context);
             place_name = itemView.findViewById(R.id.place_name);
             place_met = itemView.findViewById(R.id.place_metan);
             place_serd = itemView.findViewById(R.id.place_serd);

@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.databinding.UserFragmentBinding;
+import it.mirea.ecoctrl.viewModels.PlistViewModel;
 import it.mirea.ecoctrl.viewModels.UserViewModel;
 import it.mirea.ecoctrl.views.activities.MainActivity;
 import it.mirea.ecoctrl.views.activities.UsrActivity;
@@ -43,10 +44,10 @@ public class UserFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        initUserViewModel();
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         Check_Acc(userBinding.emailView.toString());
-        context= new UsrActivity();
+        //context= new UsrActivity();
 
     }
 
@@ -79,6 +80,11 @@ public class UserFragment extends Fragment {
         });
 
         return userBinding.getRoot();
+    }
+
+    private void initUserViewModel() {
+        userViewModel = new ViewModelProvider(this)
+                .get(UserViewModel.class);
     }
 
     private void Check_Acc(String email){

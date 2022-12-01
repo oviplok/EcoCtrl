@@ -1,4 +1,4 @@
-package it.mirea.ecoctrl.viewModels;
+package it.mirea.ecoctrl.cutContent;
 
 import android.app.Application;
 import android.content.Context;

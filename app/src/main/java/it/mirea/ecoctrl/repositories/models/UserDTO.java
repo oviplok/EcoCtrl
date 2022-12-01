@@ -41,7 +41,7 @@ public class UserDTO extends User {
         return super.getConnections();
     }
 
-    public static UserDTO convertFromPerson(User person) {
+    public static UserDTO convertFromUser(User person) {
         UserDTO dto = new UserDTO();
 
         dto.setId(person.getId());

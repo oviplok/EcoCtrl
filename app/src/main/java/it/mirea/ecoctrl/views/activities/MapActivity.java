@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 
 import android.text.TextUtils;
 import android.text.format.Formatter;
@@ -154,6 +153,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             public void onClick(View v) {
                     Intent intent = new Intent(MapActivity.this, UsrActivity.class);
                     intent.putExtra("email", email);
+                    intent.putExtra("role", role);
                     startActivity(intent);
             }
         });
@@ -339,7 +339,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getPointSee, zoomLevel));
                                 place.setMapResult(false);
                                 searchRes = true;
-                                PlaceDTO placeDTO1 = PlaceDTO.convertFromFire(place);
+                                PlaceDTO placeDTO1 = PlaceDTO.convertFromPlace(place);
                                 mapViewModel.setPlace(placeDTO1);
                             } else {
                                 infoPlace.setTextColor(Color.parseColor("#CC0000"));

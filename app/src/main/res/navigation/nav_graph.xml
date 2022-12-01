@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/webFragment"
-        android:name="ru.realityfamily.partyapp.Presentation.View.WebFragment"
+        android:name="it.mirea.ecoctrl.views.fragments.WebFragment"
         android:label="WebFragment">
         <action
             android:id="@+id/action_webFragment_to_authFragment"

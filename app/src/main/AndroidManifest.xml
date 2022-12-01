@@ -51,6 +51,15 @@
                     android:host="rf.ecoctrl_app"
                     android:scheme="http" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="oauth.vk.com"/>
+            </intent-filter>
         </activity>
 
         <meta-data

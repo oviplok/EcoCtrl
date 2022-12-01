@@ -63,7 +63,7 @@ public class AuthFragment extends Fragment {
 
                         Intent intent = new Intent((MainActivity) requireActivity(), MapActivity.class);
                         intent.putExtra("email", user.getEmail());
-                        intent.putExtra("lvl", user.getRole());
+                        intent.putExtra("lvl", user.getRole().toString());
                         intent.putExtra("income_place","");
                         startActivity(intent);
 

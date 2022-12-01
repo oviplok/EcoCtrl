@@ -49,7 +49,7 @@ public class PlaceDTO extends Place {
         this.azdInfo=azdInfo;
     }
 
-    public static PlaceDTO convertFromFire(Place place) {
+    public static PlaceDTO convertFromPlace(Place place) {
         PlaceDTO placeDTO = new PlaceDTO();
 
         placeDTO.setPlace_name(place.getPlace_name());

@@ -1,37 +1,23 @@
 package it.mirea.ecoctrl.views.activities;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.databinding.ActivityMainBinding;
 import it.mirea.ecoctrl.di.ServiceLocator;
-import it.mirea.ecoctrl.repositories.models.UserFireBase;
-import it.mirea.ecoctrl.viewModels.MainViewModel;
+import it.mirea.ecoctrl.cutContent.MainViewModel;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -85,22 +71,22 @@ public class MainActivity extends AppCompatActivity {
             if (income_place==null){
                 income_place="";
             }
-            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
-              //  mainViewModel.LogInWindow(Email,Password);
-                mapAct(Email,LEVEL,income_place);
-            }
+//            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
+//              //  mainViewModel.LogInWindow(Email,Password);
+//                mapAct(Email,LEVEL,income_place);
+//            }
         }
         else {
             connected = false;
             if (income_place==null){
                 income_place="";
             }
-            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
-                mapAct(Email,LEVEL,income_place);
-            }
-            else{
-                mapAct("anon","red",income_place);
-            }
+//            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
+//                mapAct(Email,LEVEL,income_place);
+//            }
+//            else{
+//                mapAct("anon","red",income_place);
+//            }
         }
 
        /* to_login.setOnClickListener(new View.OnClickListener() {

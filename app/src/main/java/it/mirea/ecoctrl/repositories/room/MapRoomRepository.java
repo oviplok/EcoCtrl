@@ -19,6 +19,7 @@ import it.mirea.ecoctrl.repositories.room.DAO.UserDAO;
 public class MapRoomRepository implements RepoTasks {
     private PlaceDAO placeDAO;
     private UserDAO userDAO;
+    LiveData<List<UserDTO>> allUsers;
     private LiveData<List<PlaceDTO>> allPlaces;
     private LiveData<PlaceDTO> searchPlace;
 
@@ -27,8 +28,10 @@ public class MapRoomRepository implements RepoTasks {
         placeDAO= db.placeDAO();
         userDAO = db.userDAO();
         allPlaces = placeDAO.getAllPlaces();
+        allUsers = userDAO.getAllPeople();
     }
     public LiveData<List<PlaceDTO>> getAllPlaces(){ return allPlaces; }
+
 
     public LiveData<PlaceDTO> findPlace(String place_name, LifecycleOwner owner) {
         searchPlace = placeDAO.getPlace(place_name);
@@ -36,41 +39,49 @@ public class MapRoomRepository implements RepoTasks {
     }
 
     public void addPlace(Place place){
-       PlaceDTO placeDTO = PlaceDTO.convertFromFire(place);
+       PlaceDTO placeDTO = PlaceDTO.convertFromPlace(place);
        MapRoomDatabase.databaseWriteExecutor.execute(()->{
            placeDAO.addPlace(placeDTO);
         });
     }
 
     public  void deletePlace(Place place){
-        PlaceDTO placeDTO = PlaceDTO.convertFromFire(place);
+        PlaceDTO placeDTO = PlaceDTO.convertFromPlace(place);
         MapRoomDatabase.databaseWriteExecutor.execute(()->{
             placeDAO.deletePlace(placeDTO);
         });
     }
 
     public  void changePlace(Place place){
-        PlaceDTO placeDTO = PlaceDTO.convertFromFire(place);
+        PlaceDTO placeDTO = PlaceDTO.convertFromPlace(place);
         MapRoomDatabase.databaseWriteExecutor.execute(()->{
             placeDAO.changePlace(placeDTO);
         });
     }
 
+    public  void deleteUser(User user){
+        UserDTO userDTO = UserDTO.convertFromUser(user);
+        MapRoomDatabase.databaseWriteExecutor.execute(()->{
+            userDAO.deleteUser(userDTO);
+        });
+    }
+
+    public LiveData<List<UserDTO>> getAllUsers(){ return allUsers; }
+
     @Override
     public void addUser(User user) {
-        UserDTO dto = UserDTO.convertFromPerson(user);
-
+        UserDTO userDTO = UserDTO.convertFromUser(user);
         MapRoomDatabase.databaseWriteExecutor.execute(() -> {
-            userDAO.addUser(dto);
+            userDAO.addUser(userDTO);
         });
     }
 
     @Override
     public void updateUser(User user) {
-        UserDTO dto = UserDTO.convertFromPerson(user);
+        UserDTO userDTO = UserDTO.convertFromUser(user);
 
         MapRoomDatabase.databaseWriteExecutor.execute(() -> {
-           userDAO.updatePersonInfo(dto);
+           userDAO.updatePersonInfo(userDTO);
         });
     }
 

@@ -11,6 +11,7 @@ import it.mirea.ecoctrl.domain.models.User;
 import it.mirea.ecoctrl.repositories.RepoTasks;
 import it.mirea.ecoctrl.repositories.models.PlaceDTO;
 import it.mirea.ecoctrl.domain.models.Place;
+import it.mirea.ecoctrl.repositories.models.UserDTO;
 
 public class MockBase implements RepoTasks {
     MutableLiveData<List<PlaceDTO>> data;
@@ -26,7 +27,6 @@ public class MockBase implements RepoTasks {
 
         PlaceDTO placeDTO1 = new PlaceDTO();
         placeDTO1.setPlace_name("Dubai");
-       // place1.setCreator(new Person("Леонид", "Шешуков"));
         placeDTO1.setMetanInfo("0.12");
         placeDTO1.setSerdInfo("0.33");
         placeDTO1.setAzdInfo("0.2");
@@ -54,7 +54,6 @@ public class MockBase implements RepoTasks {
 
         PlaceDTO placeDTO4 = new PlaceDTO();
         placeDTO4.setPlace_name("Dmitrievskogo");
-        // place1.setCreator(new Person("Леонид", "Шешуков"));
         placeDTO4.setMetanInfo("0.2");
         placeDTO4.setSerdInfo("0.3");
         placeDTO4.setAzdInfo("0.4");
@@ -77,7 +76,7 @@ public class MockBase implements RepoTasks {
 
     @Override
     public void addPlace(Place place) {
-        PlaceDTO placeDTO = PlaceDTO.convertFromFire(place);
+        PlaceDTO placeDTO = PlaceDTO.convertFromPlace(place);
         list.add(placeDTO);
         data.setValue(list);
     }
@@ -103,6 +102,16 @@ public class MockBase implements RepoTasks {
 
     @Override
     public <T extends User> LiveData<T> findUser(String email, String password, LifecycleOwner owner) {
+        return null;
+    }
+
+    @Override
+    public void deleteUser(User user) {
+
+    }
+
+    @Override
+    public <T extends PlaceDTO> LiveData<List<User>> getAllUsers() {
         return null;
     }
 

@@ -8,6 +8,7 @@ import java.util.List;
 import it.mirea.ecoctrl.domain.models.User;
 import it.mirea.ecoctrl.repositories.models.PlaceDTO;
 import it.mirea.ecoctrl.domain.models.Place;
+import it.mirea.ecoctrl.repositories.models.UserDTO;
 
 public interface RepoTasks {
     <T extends PlaceDTO> LiveData<List<Place>>  getAllPlaces();
@@ -18,6 +19,8 @@ public interface RepoTasks {
 
     <T extends User> LiveData<T> findUser(String email, LifecycleOwner owner);
     <T extends User> LiveData<T> findUser(String email, String password, LifecycleOwner owner);
+    void deleteUser(User user);
+    <T extends PlaceDTO> LiveData<List<User>>  getAllUsers();
     void addUser(User user);
     void updateUser(User user);
 }
