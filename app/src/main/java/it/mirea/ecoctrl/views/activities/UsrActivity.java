@@ -1,7 +1,9 @@
 package it.mirea.ecoctrl.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Bundle;
 
@@ -19,18 +21,31 @@ public class UsrActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ServiceLocator.getInstance().initBase(getApplication());
 
+        email = getIntent().getStringExtra("email");
+        role = getIntent().getStringExtra("role");
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+
         mBinding = ActivityUsrBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        email = getIntent().getStringExtra("email");
-        role = getIntent().getStringExtra("role");
         if(role.equals("Admin")){
-            Navigation.findNavController(this.mBinding.userNavHostFragment).navigate(R.id.action_usrStartFragment_to_adminFragment);
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.user_nav);
+            NavController navCo = navHostFragment.getNavController();
+            navCo.navigate(R.id.action_userFragment_to_adminFragment);
         }
-        else
-        {
 
-        }
+//        else
+//        {
+//            Bundle bundle = new Bundle();
+//            bundle.putString("email", email);
+//            Navigation.findNavController(mBinding.navHostFragment).navigate(
+//                    R.id.action_usrStartFragment_to_userFragment,
+//                    bundle
+//            );
+
+      //  }
 
 //        SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
 //        if(sharedPref.getString(LVL,"")=="Admin"){

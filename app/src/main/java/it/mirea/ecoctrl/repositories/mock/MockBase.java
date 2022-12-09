@@ -115,6 +115,26 @@ public class MockBase implements RepoTasks {
         return null;
     }
 
+//    @Override
+//    public <T extends UserDTO> LiveData<List<User>> getAllUsers() {
+//        return null;
+//    }
+
+//    @Override
+//    public <T extends UserDTO> LiveData<List<UserDTO>> getAllUsers() {
+//        return null;
+//    }
+
+//    @Override
+//    public <T extends UserDTO> LiveData<List<User>> getAllUsers() {
+//        return null;
+//    }
+
+//    @Override
+//    public <T extends PlaceDTO> LiveData<List<User>> getAllUsers() {
+//        return null;
+//    }
+
     @Override
     public void addUser(User user) {
 

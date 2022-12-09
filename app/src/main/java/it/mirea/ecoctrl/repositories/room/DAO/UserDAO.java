@@ -27,7 +27,7 @@ public interface UserDAO {
     LiveData<UserDTO> getUserByEmailAndPassword(String email, String password);
 
     @Query("SELECT * FROM user")
-    LiveData<List<UserDTO>> getAllPeople();
+    LiveData<List<UserDTO>> getAllUsers();
 
     @Update
     void updatePersonInfo(UserDTO user);

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,8 +20,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Map;
+
 import it.mirea.ecoctrl.R;
 import it.mirea.ecoctrl.databinding.UserFragmentBinding;
+import it.mirea.ecoctrl.di.ServiceLocator;
+import it.mirea.ecoctrl.domain.models.User;
 import it.mirea.ecoctrl.viewModels.PlistViewModel;
 import it.mirea.ecoctrl.viewModels.UserViewModel;
 import it.mirea.ecoctrl.views.activities.MainActivity;
@@ -37,7 +42,7 @@ public class UserFragment extends Fragment {
     private UserViewModel userViewModel;
 
 
-    Context context;
+
     String lvl;
     int back_tap;
 
@@ -46,8 +51,7 @@ public class UserFragment extends Fragment {
         super.onCreate(savedInstanceState);
         initUserViewModel();
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        Check_Acc(userBinding.emailView.toString());
-        //context= new UsrActivity();
+
 
     }
 
@@ -56,6 +60,9 @@ public class UserFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         userBinding= UserFragmentBinding.inflate(inflater, container, false);
 
+        Context context= new MainActivity();
+        SharedPreferences sharedPref = this.getActivity().getSharedPreferences(SHARED_PREF,context.MODE_PRIVATE);
+        Check_Acc(sharedPref.getString("email",""));
 
         userBinding.backButt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,8 +74,7 @@ public class UserFragment extends Fragment {
                 else
                 {
                     back_tap++;
-                    Snackbar.make(getActivity().findViewById(R.id.content), "If you want exit from your account, tap again",
-                            Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Кликните еще раз, если хотите выйти из аккаунта", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -91,14 +97,12 @@ public class UserFragment extends Fragment {
         userViewModel.Check_acc(email,(UsrActivity) requireActivity());
         userViewModel.userLiveData.observe(getViewLifecycleOwner(), (user) -> {
                 if (!user.getEmail().isEmpty()) {
-                    lvl = user.getRole().toString();
+                    userBinding.idView.setText(user.getId());
                     userBinding.emailView.setText(getString(R.string.your_email)+ user.getEmail());
-                    userBinding.lvlView.setText(getString(R.string.your_role)+lvl);
+                    userBinding.lvlView.setText(getString(R.string.your_role)+user.getRole().toString());
 
                 } else {
-                    Snackbar.make(getActivity().findViewById(R.id.content), "Не удалось загрузить пользователя",
-                            Snackbar.LENGTH_LONG).show();
-
+                    Toast.makeText(getContext(), "Не удалось загрузить пользователя", Toast.LENGTH_SHORT).show();
                 }
 
         });
@@ -108,13 +112,23 @@ public class UserFragment extends Fragment {
 
     private void Back_but(){
         Intent intent = new Intent((UsrActivity) requireActivity(), MainActivity.class);
-        SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREF,0);
+        Context context= new MainActivity();
+        SharedPreferences sharedPref = this.getActivity().getSharedPreferences(SHARED_PREF,context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(EMAIL, "");
         editor.putString(PASSWORD, "");
         editor.putString(LVL, "");
         editor.apply();
+
         startActivity(intent);
+
+//        SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREF,0);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putString(EMAIL, "");
+//        editor.putString(PASSWORD, "");
+//        editor.putString(LVL, "");
+//        editor.apply();
+//        startActivity(intent);
     }
 
     private void Change_Pass(String email,String oldPass,String newPass){
@@ -122,12 +136,29 @@ public class UserFragment extends Fragment {
             userBinding.newPass.setHint("Введите пароль");
             userBinding.newPass.setHintTextColor(Color.parseColor("#CC0000"));
         }
-        if (TextUtils.isEmpty(userBinding.oldPass.getText().toString())) {
+        else if (TextUtils.isEmpty(userBinding.oldPass.getText().toString())) {
             userBinding.oldPass.setHint("Введите пароль");
             userBinding.oldPass.setHintTextColor(Color.parseColor("#CC0000"));
         }
+        else{
 
-        userViewModel.Change_pass(email,oldPass,newPass);
+            userViewModel.Check_acc(email,(UsrActivity) requireActivity());
+            userViewModel.userLiveData.observe(getViewLifecycleOwner(), (user) -> {
+                if (!user.getPassword().isEmpty() || user.getPassword()==oldPass) {
+                    userViewModel.Change_pass(user.getEmail(),user.getId(),
+                            newPass,user.getConnections().get("vk"),
+                            user.getRole(),user.getPhone(),
+                            user.getFirst_name(),user.getLast_name());
+
+                } else {
+                    Toast.makeText(getContext(), "Не удалось обновить пароль", Toast.LENGTH_SHORT).show();
+
+                }
+
+            });
+
+        }
+       // userViewModel.Change_pass(email,oldPass,newPass);
         /*usrViewModel.userLiveData.observe(UsrActivity.this, new Observer<UserFireBase>() {
 
             @Override

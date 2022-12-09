@@ -19,7 +19,7 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/allPlaces"
+        android:id="@+id/allUsers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="36dp"

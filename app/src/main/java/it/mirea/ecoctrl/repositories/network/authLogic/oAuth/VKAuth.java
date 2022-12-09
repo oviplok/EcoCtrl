@@ -3,6 +3,7 @@ package it.mirea.ecoctrl.repositories.network.authLogic.oAuth;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -18,12 +19,16 @@ import it.mirea.ecoctrl.views.activities.MainActivity;
 public class VKAuth {
     public void auth(MainActivity activity) {
         Bundle bundle = new Bundle();
+        //51492894
         //String url = "https://oauth.vk.com/authorize?client_id=7975999&scope=email&redirect_uri=https://oauth.vk.com/blank.html&display=mobile&response_type=token&scope=offline, email"
         bundle.putString("url", "https://oauth.vk.com/authorize?client_id=7975999&scope=email&redirect_uri=https://oauth.vk.com/blank.html&display=mobile&response_type=token&scope=offline, email");
         Navigation.findNavController(activity.mBinding.navHostFragment).navigate(R.id.action_authFragment_to_webFragment, bundle);
     }
 
     public WebViewClient oath2VK(MainActivity activity) {
+
+        Log.e("oath2VK","RTRN");
+
         return new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -41,8 +46,9 @@ public class VKAuth {
                             ServiceLocator.getInstance().setUser(user);
                         }
                         //засунуть intent и сервис_локатор
-                        //не надо
+                        //не надо, дядя
                     });
+                    Log.e("GetVK_API","GetUserInfo");
                     ServiceLocator.getInstance().getVK_API().getUserInfo(token, activity);
 
                    // activity.getPreferences(Context.MODE_PRIVATE).edit().putString("token", token).putString("email", email).apply();

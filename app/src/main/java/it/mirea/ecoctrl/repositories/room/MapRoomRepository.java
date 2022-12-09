@@ -1,6 +1,7 @@
 package it.mirea.ecoctrl.repositories.room;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -19,7 +20,7 @@ import it.mirea.ecoctrl.repositories.room.DAO.UserDAO;
 public class MapRoomRepository implements RepoTasks {
     private PlaceDAO placeDAO;
     private UserDAO userDAO;
-    LiveData<List<UserDTO>> allUsers;
+    private LiveData<List<UserDTO>> allUsers;
     private LiveData<List<PlaceDTO>> allPlaces;
     private LiveData<PlaceDTO> searchPlace;
 
@@ -28,8 +29,9 @@ public class MapRoomRepository implements RepoTasks {
         placeDAO= db.placeDAO();
         userDAO = db.userDAO();
         allPlaces = placeDAO.getAllPlaces();
-        allUsers = userDAO.getAllPeople();
+        allUsers = userDAO.getAllUsers();
     }
+    @Override
     public LiveData<List<PlaceDTO>> getAllPlaces(){ return allPlaces; }
 
 
@@ -66,7 +68,12 @@ public class MapRoomRepository implements RepoTasks {
         });
     }
 
-    public LiveData<List<UserDTO>> getAllUsers(){ return allUsers; }
+    @Override
+    public LiveData<List<UserDTO>> getAllUsers(){
+        //String F = allPlaces.getValue().;
+        Log.d("Repo",allUsers.toString());
+        return allUsers;
+    }
 
     @Override
     public void addUser(User user) {

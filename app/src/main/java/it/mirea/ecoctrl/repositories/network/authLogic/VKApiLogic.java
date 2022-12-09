@@ -1,6 +1,6 @@
 package it.mirea.ecoctrl.repositories.network.authLogic;
 
-import androidx.navigation.Navigation;
+import android.util.Log;
 
 import java.util.Map;
 
@@ -35,6 +35,10 @@ public class VKApiLogic {
             @Override
             public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
                 if (response.isSuccessful()) {
+
+                    Log.e("onResponse","damn");
+
+
                     if (ServiceLocator.getInstance().getUser() != null) {
                         ServiceLocator.getInstance().getUser().setFirst_name(response.body().response.first_name);
                         ServiceLocator.getInstance().getUser().setLast_name(response.body().response.last_name);
@@ -60,6 +64,7 @@ public class VKApiLogic {
                                 }
                             }
 
+                            //Исправить возврат
                            // Navigation.findNavController(activity.mBinding.navHostFragment).navigate(R.id.action_authFragment_to_partyList);
                         });
                     }
@@ -74,13 +79,13 @@ public class VKApiLogic {
     }
 
     public class APIResponse {
-        public class APIPerson {
+        public class APIUser {
             public String first_name;
             public String last_name;
             public int id;
             public String screen_name;
         }
 
-        public APIPerson response;
+        public APIUser response;
     }
 }

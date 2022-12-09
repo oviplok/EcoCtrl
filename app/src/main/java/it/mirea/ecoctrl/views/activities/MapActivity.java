@@ -144,6 +144,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             share.setVisibility(View.GONE);
         }
         else{
+            list.setVisibility(View.GONE);
             add.setVisibility(View.GONE);
             change.setVisibility(View.GONE);
         }

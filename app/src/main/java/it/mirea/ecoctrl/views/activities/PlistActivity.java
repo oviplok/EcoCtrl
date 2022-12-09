@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,9 +26,9 @@ import it.mirea.ecoctrl.views.adapters.PlaceListAdapter;
 
 public class PlistActivity extends AppCompatActivity {
     PlistViewModel plistViewModel;
-    RepoTasks repository;
+   // RepoTasks repository;
     private PlaceListAdapter listAdapter;
-    private MapRoomDatabase mapRoomDatabase;
+   // private MapRoomDatabase mapRoomDatabase;
     Button back_map;
     RecyclerView all_plcs;
     String email;
@@ -58,7 +59,7 @@ public class PlistActivity extends AppCompatActivity {
 
         listAdapter= new PlaceListAdapter(placess,this);
         all_plcs.setAdapter(listAdapter);
-        mapRoomDatabase = MapRoomDatabase.getInstance(getApplicationContext());
+        //mapRoomDatabase = MapRoomDatabase.getInstance(getApplicationContext());
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -93,6 +94,7 @@ public class PlistActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Place> places) {
                 listAdapter.setData(places);
+               // Log.d("onBindView",placess);
             }
         });
 

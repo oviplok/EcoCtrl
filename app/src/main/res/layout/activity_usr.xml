@@ -8,9 +8,10 @@
     android:background="@drawable/eco_background"
     tools:context=".views.activities.UsrActivity">
 
+<!--app:defaultNavHost="true"-->
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/user_nav_host_fragment"
+        android:id="@+id/user_nav"
         android:name="androidx.navigation.fragment.NavHostFragment"
 
         android:layout_width="match_parent"

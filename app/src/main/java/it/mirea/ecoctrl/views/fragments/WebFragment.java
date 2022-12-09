@@ -1,6 +1,7 @@
 package it.mirea.ecoctrl.views.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class WebFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         webBinding = WebFragmentBinding.inflate(inflater, container, false);
-
+        Log.e("WEB","onCreateView");
         if (url != null && !url.isEmpty()) {
             CookieManager.getInstance().removeAllCookies(null);
             webBinding.Web.clearCache(true);

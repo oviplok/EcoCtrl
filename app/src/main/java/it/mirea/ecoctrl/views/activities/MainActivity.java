@@ -25,14 +25,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
     private static final String LVL = "lvl";
-    private MainViewModel mainViewModel;
+    //private MainViewModel mainViewModel;
 
     public ActivityMainBinding mBinding;
 
 
-    ImageView logo;
+   // ImageView logo;
     String income_place;
-    Button to_reg, to_login;
+   // Button to_reg, to_login;
     boolean connected = false;
     RelativeLayout root;
 
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
         ServiceLocator.getInstance().initBase(getApplication());
-        //initMainViewModel();
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF,MODE_PRIVATE);
         String Email = sharedPreferences.getString(EMAIL,"");
@@ -71,22 +70,21 @@ public class MainActivity extends AppCompatActivity {
             if (income_place==null){
                 income_place="";
             }
-//            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
-//              //  mainViewModel.LogInWindow(Email,Password);
-//                mapAct(Email,LEVEL,income_place);
-//            }
+            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
+                mapAct(Email,LEVEL,income_place);
+            }
         }
         else {
             connected = false;
             if (income_place==null){
                 income_place="";
             }
-//            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
-//                mapAct(Email,LEVEL,income_place);
-//            }
-//            else{
-//                mapAct("anon","red",income_place);
-//            }
+            if(!Email.equals("") && !LEVEL.equals("") && !Password.equals("")){
+                mapAct(Email,LEVEL,income_place);
+            }
+            else{
+                mapAct("anon","red",income_place);
+            }
         }
 
        /* to_login.setOnClickListener(new View.OnClickListener() {

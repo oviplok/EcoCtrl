@@ -54,12 +54,26 @@ public abstract class MapRoomDatabase extends RoomDatabase {
 
                                                 getInstance(context).userDAO().addUser(moder);
 
+                                                UserDTO moder2 = new UserDTO();
+                                                moder2.setEmail("moder2@mirea.ru");
+                                                moder2.setPassword("moder");
+                                                moder2.setRole(User.Role.Moder);
+
+                                                getInstance(context).userDAO().addUser(moder2);
+
                                                 UserDTO user = new UserDTO();
                                                 user.setEmail("egorov.n.v@edu.mirea.ru");
                                                 user.setPassword("nikita");
                                                 user.setRole(User.Role.User);
 
-                                        getInstance(context).userDAO().addUser(user);
+                                                getInstance(context).userDAO().addUser(user);
+
+                                                UserDTO user2 = new UserDTO();
+                                                user2.setEmail("user@mirea.ru");
+                                                user2.setPassword("user");
+                                                user2.setRole(User.Role.User);
+
+                                                getInstance(context).userDAO().addUser(user2);
 
 
                                             }

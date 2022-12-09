@@ -27,7 +27,7 @@ public class LocationApiLogic {
         Log.e("IP",this.ip);
     }
 
-    public String ip;//= "46.138.164.145" ;
+    public String ip;
     public String getApi(){
         return "https://api.apilayer.com/ip_to_location/";
     }
@@ -51,7 +51,6 @@ public class LocationApiLogic {
                 new Callback<GeoResponse>() {
                     @Override
                     public void onResponse(Call<GeoResponse> call, Response<GeoResponse> response) {
-                        //  address.setValue();
                         Log.i("IP","ON RESPONSE");
                         Log.i("IP",response.toString());
                         if (response.isSuccessful() && response.body() != null) {
@@ -72,7 +71,6 @@ public class LocationApiLogic {
                         Log.e("IP","ON FAILURE");
                         done=true;
                     }
-
                 }
         );
 

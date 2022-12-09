@@ -32,7 +32,7 @@ public class PlistViewModel extends AndroidViewModel {
        // AllLiveData = mapRoomRepository.getAllPlaces();
     }
     public void deletePlace(int position,List<Place> place){
-        List<Place> placee = place;
+        //List<Place> placee = place;
         ServiceLocator.getInstance().getRepository().deletePlace(place.get(position));
         //repository.deletePlace(place.get(position));
         //mapRoomRepository.deletePlace(place.get(position));

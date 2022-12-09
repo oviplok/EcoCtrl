@@ -28,6 +28,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.AllVie
     private List<User> data;
 
     public UserListAdapter(List<User> data, UsrActivity activity){
+        Log.d("UserListAdapter","usrlistadptr");
         mActivity = activity;
         this.data = data;
     }
@@ -42,7 +43,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.AllVie
     @Override
     public void onBindViewHolder(@NonNull UserListAdapter.AllViewHolder holder, int position) {
 
-
+        Log.e("onBindView",data.get(position).getEmail());
         holder.binding.userId.setText(data.get(position).getId());
         holder.binding.userEmail.setText(data.get(position).getEmail());
         holder.binding.userPassword.setText(data.get(position).getPassword());
@@ -71,8 +72,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.AllVie
         return data.size();
     }
 
-    public void setData(List<User> placeList) {
-        data = placeList;
+    public void setData(List<User> usrList) {
+        Log.e("SetData",usrList.get(0).getEmail());
+        Log.e("SetData",usrList.get(1).getEmail());
+        Log.e("SetData",usrList.get(2).getEmail());
+        Log.e("SetData",usrList.get(3).getEmail());
+        data = usrList;
         notifyDataSetChanged();
     }
 

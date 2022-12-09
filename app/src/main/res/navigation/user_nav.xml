@@ -3,23 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/user_nav"
-    app:startDestination="@id/usrStartFragment">
+    app:startDestination="@id/userFragment">
 
     <fragment
         android:id="@+id/userFragment"
         android:name="it.mirea.ecoctrl.views.fragments.UserFragment"
-        android:label="Userfragment"
-        tools:layout="@layout/user_fragment" />
-    <fragment
-        android:id="@+id/usrStartFragment"
-        android:name="it.mirea.ecoctrl.views.fragments.UsrStartFragment"
-        android:label="StartUserfragment"
-        tools:layout="@layout/start_user_fragment">
+        tools:layout="@layout/user_fragment" >
         <action
-            android:id="@+id/action_usrStartFragment_to_userFragment"
-            app:destination="@id/userFragment" />
-        <action
-            android:id="@+id/action_usrStartFragment_to_adminFragment"
+            android:id="@+id/action_userFragment_to_adminFragment"
             app:destination="@id/adminFragment" />
     </fragment>
     <fragment

@@ -45,7 +45,7 @@
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/activity_plist.xml" value="0.25" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/activity_reg.xml" value="0.25" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/activity_signin.xml" value="0.25" />
-        <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/activity_usr.xml" value="0.1" />
+        <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/activity_usr.xml" value="0.165" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/activity_zak.xml" value="0.335" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/add_element.xml" value="0.335" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/add_fragment.xml" value="0.165" />
@@ -67,9 +67,10 @@
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/place_list_element.xml" value="0.375" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/reg_element.xml" value="0.11684782608695653" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/start_fragment.xml" value="0.11684782608695653" />
-        <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/start_user_fragment.xml" value="0.18206521739130435" />
-        <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/user_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/start_user_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/user_fragment.xml" value="0.5" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/user_list_element.xml" value="0.25" />
+        <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/usr_start_fragment.xml" value="0.10764944275582573" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/web_element.xml" value="0.1272644927536232" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/layout/web_fragment.xml" value="0.12228260869565218" />
         <entry key="..\:/Users/mi/AndroidStudioProjects/EcoCtrl/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.12395833333333334" />
